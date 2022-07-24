@@ -1,0 +1,170 @@
+/* 重写colorui样式开始 */
+body {
+	background-color: #F5F5F5;
+	line-height: 1.6;
+}
+button[loading]:before {
+	margin-right: 10rpx;
+}
+.cu-list.menu>.cu-item.arrow {
+	padding-right: 70rpx;
+}
+.cu-list.menu>.cu-item .content>text[class*=cuIcon] {
+	width: auto;
+}
+.cu-modal .cu-dialog>.cu-bar {
+	padding: 0 30rpx;
+}
+.cu-modal .cu-dialog>.cu-bar:first-child .action {
+	min-width: auto;
+	margin-right: 0;
+	margin-left: 0;
+	font-size: 30rpx;
+}
+/* #ifndef MP-ALIPAY */
+radio::before,
+checkbox::before {
+	margin-top: -8rpx;
+	right: 8rpx;
+	font-size: 36rpx;
+	line-height: 16rpx;
+}
+
+radio .wx-radio-input,
+checkbox .wx-checkbox-input,
+radio .uni-radio-input,
+checkbox .uni-checkbox-input {
+	margin: 0;
+	width: 48rpx;
+	height: 48rpx;
+}
+/* #endif */
+switch.theme[checked] .wx-switch-input.wx-switch-input-checked,
+checkbox.theme[checked] .wx-checkbox-input,
+radio.theme[checked] .wx-radio-input,
+switch.theme.checked .uni-switch-input.uni-switch-input-checked,
+checkbox.theme.checked .uni-checkbox-input,
+radio.theme.checked .uni-radio-input {
+	background-color: $zj-color-primary !important;
+	border-color: $zj-color-primary !important;
+	color: #ffffff !important;
+}
+/* 重写colorui样式结束 */
+
+/* 重写uni-ui样式开始 */
+.uni-popup {
+	z-index: 999!important;
+}
+.uni-modal .uni-modal__btn_primary {
+	color: $zj-color-primary!important;
+}
+/* 重写uni-ui样式结束 */
+
+// .text-theme,
+// .line-theme{
+// 	color: $zj-color-primary;
+// }
+// .line-theme::after {
+// 	border-color: $zj-color-primary;
+// }
+.bg-theme {
+	// background-color: $zj-color-primary;
+	color: $zj-text-color-inverse;
+}
+.bg-theme.light {
+	color: $zj-color-primary;
+	background-color: rgba($zj-color-primary, 0.2);
+}
+
+button {
+	padding-left: 0;
+	padding-right: 0;
+}
+button:after {
+	border: none;
+}
+.button-disabled {
+	color: #FFFFFF!important;
+	background: #A9A9A9!important;
+}
+uni-radio:not([disabled]) .uni-radio-input:hover, uni-checkbox:not([disabled]) .uni-checkbox-input:hover {
+  border-color: #d1d1d1!important;
+}
+
+.image-bg {
+	position: absolute;
+	z-index: -1;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+}
+
+image {
+	height: auto;
+}
+
+
+
+// @mixin theme_color($color) {
+//   background: $color;
+//   [data-theme = 'theme1'] & {
+//     background-color: $background-color-theme1 !important;
+//   }
+//   [data-theme = 'theme2'] & {
+//     background-color: $background-color-theme2 !important;
+//   }
+
+// }
+
+.bg-theme-green{
+  background-color: green !important;
+  color: $zj-text-color-inverse;
+}
+.bg-theme-blue{
+  background-color: #34A2E8 !important;
+  color: $zj-text-color-inverse;
+}
+.bg-theme-red{
+  background-color: red !important;
+  color: $zj-text-color-inverse;
+}
+// .text-theme,
+.line-theme{
+	color: $zj-color-primary;
+}
+.line-theme::after {
+	border-color: $zj-color-primary;
+}
+.bg-theme-red.light {
+	color: red;
+	background-color: rgba(red, 0.2);
+}
+.bg-theme-green.ligh{
+	color: green;
+	background-color: rgba(green, 0.2);
+}
+.bg-theme-blue.ligh {
+	color: #34A2E8;
+	background-color: rgba(#34A2E8, 0.2);
+}
+
+// 写入对应的公共样式
+.index-home-swiper-item-img, .main-image {
+	background-color: rgba(255, 255, 255, 0.1);
+}
+
+// [data-theme = 'bg-theme-blue'] {
+//   background-color: #34A2E8 !important;
+//   color: $zj-text-color-inverse;
+// }
+// [data-theme = 'bg-theme-red'] {
+//   background-color: red !important;
+//   color: $zj-text-color-inverse;
+// }
+// [data-theme = 'bg-theme-green'] {
+//   background-color: green !important;
+//   color: $zj-text-color-inverse;
+// }
+

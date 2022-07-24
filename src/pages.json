@@ -1,0 +1,620 @@
+{
+	"easycom": {
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
+		"^fhu-(.*)": "fhuview-ui/components/fhu-$1/fhu-$1.vue"
+	},
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle": "light", // 下拉刷新loading小圆点颜色，白底+白色小圆点可以实现“隐藏”原生小圆点哦
+				"navigationStyle": "custom" // 自定义导航栏(不自定义导航栏也可以使用本组件哦，只不过就只能使用原生小圆点样式了，无法自定义下拉刷新样式)
+				// "backgroundColor": "#34A2E8" // 页面背景底色
+			}
+		},
+		{
+			"path": "pages/shop/shop-detail",
+			"style": {
+				"navigationBarTitleText": "门店详情"
+			}
+		},
+		{
+			"path": "pages/user/user-recharge",
+			"style": {
+				"navigationBarTitleText": "会员充值"
+			}
+		},
+		{
+			"path": "pages/user/user-recharge-success",
+			"style": {
+				"navigationBarTitleText": "充值成功"
+			}
+		},
+		{
+			"path": "pages/shop/shop-check",
+			"style": {
+				"navigationBarTitleText": "买单"
+			}
+		},
+		{
+			"path": "pages/shop/shop-check-success",
+			"style": {
+				"navigationBarTitleText": "买单成功"
+			}
+		},
+		{
+			"path": "pages/user/user-msg",
+			"style": {
+				"navigationBarTitleText": "我的消息"
+			}
+		},
+		{
+			"path": "pages/user/user-msg-list",
+			"style": {
+				"navigationBarTitleText": "我的消息列表"
+			}
+		},
+		{
+			"path": "pages/user/user-address-list",
+			"style": {
+				"navigationBarTitleText": "我的地址"
+			}
+		},
+		{
+			"path": "pages/user/user-address-manage",
+			"style": {
+				"navigationBarTitleText": "新建收货人"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet",
+			"style": {
+				"navigationBarTitleText": "钱包"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-bankcard-add",
+			"style": {
+				"navigationBarTitleText": "添加银行卡号"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-bankcard-add-userinfo",
+			"style": {
+				"navigationBarTitleText": "添加银行卡(身份证正面)"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-bankcard-add-userinfoMore",
+			"style": {
+				"navigationBarTitleText": "添加银行卡(身份证背面)"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-bankcard-support",
+			"style": {
+				"navigationBarTitleText": "支持银行卡列表"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-pay-open",
+			"style": {
+				"navigationBarTitleText": "添加银行卡"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-pay-open-success",
+			"style": {
+				"navigationBarTitleText": "开通成功"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-recharge",
+			"style": {
+				"navigationBarTitleText": "余额充值"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-recharge-success",
+			"style": {
+				"navigationBarTitleText": "充值已受理"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-withdraw-success",
+			"style": {
+				"navigationBarTitleText": "提现已受理"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-record-detail",
+			"style": {
+				"navigationBarTitleText": "提现成功"
+			}
+		},
+		{
+			"path": "pages/user/user-wallet-record",
+			"style": {
+				"navigationBarTitleText": "钱包明细"
+			}
+		},
+		{
+			"path": "pages/user/user-bankcard",
+			"style": {
+				"navigationBarTitleText": "银行卡"
+			}
+		},
+		{
+			"path": "pages/user/user-bankcard-detail",
+			"style": {
+				"navigationBarTitleText": "银行卡详情"
+			}
+		},
+		{
+			"path": "pages/user/user-bankcard-del-success",
+			"style": {
+				"navigationBarTitleText": "解绑成功"
+			}
+		},
+		{
+			"path": "pages/user/user-bankcard-add",
+			"style": {
+				"navigationBarTitleText": "添加银行卡"
+			}
+		},
+		{
+			"path": "pages/user/user-bankcard-add-userinfo",
+			"style": {
+				"navigationBarTitleText": "添加银行卡"
+			}
+		},
+		{
+			"path": "pages/user/user-bankcard-add-success",
+			"style": {
+				"navigationBarTitleText": "开通成功"
+			}
+		},
+		{
+			"path": "pages/user/user-bankcard-support",
+			"style": {
+				"navigationBarTitleText": "支持银行卡列表"
+			}
+		},
+		{
+			"path": "pages/shop/categories",
+			"style": {
+				"navigationBarTitleText": "商城",
+				"enablePullDownRefresh": true,
+				"backgroundTextStyle": "light", // 下拉刷新loading小圆点颜色，白底+白色小圆点可以实现“隐藏”原生小圆点哦
+				"navigationStyle": "custom" // 自定义导航栏(不自定义导航栏也可以使用本组件哦，只不过就只能使用原生小圆点样式了，无法自定义下拉刷新样式)
+				// "backgroundColor": "#34A2E8" // 页面背景底色
+			}
+		},
+		{
+			"path": "pages/shop/search",
+			"style": {
+				"navigationBarTitleText": "搜索"
+			}
+		},
+		{
+			"path": "pages/shop/goods-detail",
+			"style": {
+				"navigationBarTitleText": "商品详情"
+			}
+		},
+		{
+			"path": "pages/shop/order-submit",
+			"style": {
+				"navigationBarTitleText": "提交订单"
+			}
+		},
+		{
+			"path": "pages/shop/remarks",
+			"style": {
+				"navigationBarTitleText": "备注"
+			}
+		},
+		{
+			"path": "pages/shop/list-detail",
+			"style": {
+				"navigationBarTitleText": "门店列表"
+			}
+		},
+		{
+			"path": "pages/login/login-mobile",
+			"style": {
+				"navigationBarTitleText": "登录"
+			}
+		},
+		{
+			"path": "pages/user/user-code",
+			"style": {
+				"navigationBarTitleText": "一码通"
+			}
+		},
+		{
+			"path": "pages/error/error",
+			"style": {
+				"navigationBarTitleText": "错误"
+			}
+		},
+		{
+			"path": "pages/shop/user/user-address-list",
+			"style": {
+				"navigationBarTitleText": "收货地址"
+			}
+		},
+		{
+			"path": "pages/shop/user/user-address-manage",
+			"style": {
+				"navigationBarTitleText": "新建收货人"
+			}
+		},
+		{
+			"path": "pages/openId-page/index",
+			"style": {
+				"navigationBarTitleText": "获取openId"
+			}
+		}
+	],
+	"subPackages": [
+		{
+			"root": "myPackageA",
+			"pages": [
+				{
+					"path": "pages/member/index",
+					"style": {
+						"navigationBarTitleText": "会员中心"
+					}
+				},
+				{
+					"path": "pages/user/user-fav",
+					"style": {
+						"navigationBarTitleText": "我的收藏"
+					}
+				},
+				{
+					"path": "pages/user/user-recharge-record",
+					"style": {
+						"navigationBarTitleText": "充值提现记录"
+					}
+				},
+				{
+					"path": "pages/user/user-recharge-record-detail",
+					"style": {
+						"navigationBarTitleText": "充值详情"
+					}
+				},
+				{
+					"path": "pages/order/user-order-list",
+					"style": {
+						"navigationBarTitleText": "我的订单"
+					}
+				},
+				{
+					"path": "pages/order/appoint-list",
+					"style": {
+						"navigationBarTitleText": "我的预约"
+					}
+				},
+				{
+					"path": "pages/order/user-order-detail",
+					"style": {
+						"navigationBarTitleText": "订单详情"
+					}
+				},
+				{
+					"path": "pages/dealRecord/user-deal-record",
+					"style": {
+						"enablePullDownRefresh": true,
+						"navigationBarTitleText": "交易记录"
+					}
+				},
+				{
+					"path": "pages/dealRecord/user-deal-record-detail",
+					"style": {
+						"navigationBarTitleText": "交易记录详情"
+					}
+				},
+				{
+					"path": "pages/cash-coupon",
+					"style": {
+						"navigationBarTitleText": "代金券"
+					}
+				},
+				{
+					"path": "pages/userCoupon/user-coupon-all",
+					"style": {
+						"navigationBarTitleText": "卡劵包"
+					}
+				},
+				{
+					"path": "pages/userCoupon/user-coupon-list",
+					"style": {
+						"navigationBarTitleText": "我的代金券"
+					}
+				},
+				{
+					"path": "pages/userCoupon/user-coupon-detail",
+					"style": {
+						"navigationBarTitleText": "代金券详情"
+					}
+				},
+				{
+					"path": "pages/cmpshow",
+					"style": {
+						"navigationBarTitleText": "组件查看"
+					}
+				},
+				{
+					"path": "pages/purse",
+					"style": {
+						"navigationBarTitleText": "钱包"
+					}
+				},
+				{
+					"path": "pages/searchPage/index",
+					"style": {
+						"navigationBarTitleText": "搜索门店"
+					}
+				},
+				{
+					"path": "pages/shopMall/shopSearch",
+					"style": {
+						"navigationBarTitleText": "搜索药品"
+					}
+				},
+				{
+					"path": "pages/shopMall/search"
+				},
+				{
+					"path": "pages/environment/index",
+					"style": {
+						"navigationBarTitleText": "环境切换"
+					}
+				},
+				{
+					"path": "pages/shopMall/user/user-address-manage",
+					"style": {
+						"navigationBarTitleText": "新建收货人"
+					}
+				},
+				{
+					"path": "pages/shopMall/remarks",
+					"style": {
+						"navigationBarTitleText": "备注"
+					}
+				},
+				{
+					"path": "pages/coupon/index",
+					"style": {
+						"enablePullDownRefresh": true,
+						"backgroundTextStyle": "dark", // 下拉刷新loading小圆点颜色，白底+白色小圆点可以实现“隐藏”原生小圆点哦
+						"navigationStyle": "custom", // 自定义导航栏(不自定义导航栏也可以使用本组件哦，只不过就只能使用原生小圆点样式了，无法自定义下拉刷新样式)
+						// "backgroundColor": "#FEF4EE", // 页面背景底色
+						"navigationBarTitleText": "特惠活动"
+					}
+				},
+				{
+					"path": "pages/coupon/appointment",
+					"style": {
+						"navigationBarTitleText": "预约"
+					}
+				},
+				{
+					"path": "pages/coupon/coupon-detail",
+					"style": {
+						"navigationBarTitleText": "商品详情"
+					}
+				},
+				{
+					"path": "pages/coupon/coupon-order",
+					"style": {
+						"navigationBarTitleText": "立即抢购"
+					}
+				},
+				{
+					"path": "pages/coupon/coupon-detail-shop",
+					"style": {
+						"navigationBarTitleText": "查看使用门店"
+					}
+				},
+				{
+					"path": "pages/protocol/protocol-custom",
+					"style": {
+						"navigationBarTitleText": "服务协议"
+					}
+				},
+				{
+					"path": "pages/protocol/protocol-account",
+					"style": {
+						"navigationBarTitleText": "管理协议"
+					}
+				},
+				{
+					"path": "pages/user-camera",
+					"style": {
+						"navigationBarTitleText": "相机（H5不支持拍照）"
+					}
+				},
+				{
+					"path": "pages/cards-camera",
+					"style": {
+						"navigationBarTitleText": "相机（银行卡）"
+					}
+				},
+				{
+					"path": "pages/idcard-camera",
+					"style": {
+						"navigationBarTitleText": "相机（身份证）"
+					}
+				},
+				{
+					"path": "pages/user/user-wallet-password",
+					"style": {
+						"navigationBarTitleText": "支付密码"
+					}
+				},
+				{
+					"path": "pages/user/user-wallet-password-set",
+					"style": {
+						"navigationBarTitleText": "设置支付密码"
+					}
+				},
+				{
+					"path": "pages/user/user-wallet-password-set-success",
+					"style": {
+						"navigationBarTitleText": "密码设置成功"
+					}
+				},
+				{
+					"path": "pages/user/user-card-list",
+					"style": {
+						"navigationBarTitleText": "权益卡历史记录"
+					}
+				},
+				{
+					"path": "pages/user/user-code-success-pay",
+					"style": {
+						"navigationBarTitleText": "支付成功"
+					}
+				},
+				{
+					"path": "pages/user/user-code-success-enter",
+					"style": {
+						"navigationBarTitleText": "刷码入园成功"
+					}
+				},
+				{
+					"path": "pages/userCoupon/user-menu-list",
+					"style": {
+						"navigationBarTitleText": "特惠商品"
+					}
+				},
+				{
+					"path": "pages/pointList/index",
+					"style": {
+						"navigationBarTitleText": "积分"
+					}
+				},
+				{
+					"path": "pages/member/recharge-order",
+					"style": {
+						"navigationBarTitleText": "会员充值明细"
+					}
+				},
+				{
+					"path": "pages/member/recharge-detail",
+					"style": {
+						"navigationBarTitleText": "充值详情"
+					}
+				},
+				{
+					"path": "pages/member/member-scan",
+					"style": {
+						"navigationBarTitleText": "会员码"
+					}
+				}
+			]
+		},
+		{
+			"root": "myPackageB",
+			"pages": [
+				{
+					"name": "myPackageB",
+					"path": "pages/explames/componentsred",
+					"style": {
+						"navigationBarTitleText": "uni-app组件导读"
+					}
+				},
+				{
+					"name": "myPackageB",
+					"path": "pages/explames/tabbar-dome",
+					"style": {
+						"navigationBarTitleText": "tabbar导航组件"
+					}
+				},
+				{
+					"name": "myPackageB",
+					"path": "pages/explames/journalweb",
+					"style": {
+						"navigationBarTitleText": "前端日志方法journalweb"
+					}
+				},
+				{
+					"name": "myPackageB",
+					"hideRouter": true,
+					"path": "pages/read/read",
+					"style": {
+						"navigationBarTitleText": "项目查看总页面"
+					}
+				}
+			]
+		}
+	],
+	"preloadRule": {},
+	"globalStyle": {
+		"app-plus": {
+			// #ifdef H5
+			"navigationStyle": "custom"
+			// #endif
+		},
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"navigationBarTitleText": "",
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "black"
+	},
+	"condition": { //模式配置，仅开发期间生效
+		"current": 9, //当前激活的模式(list 的索引项)
+		"list": [
+			{
+				"name": "首页",
+				"path": "pages/index/index"
+			},
+			{
+				"name": "充值记录",
+				"path": "pages/user/user-recharge-record"
+			},
+			{
+				"name": "会员充值",
+				"path": "pages/user/user-recharge"
+			},
+			{
+				"name": "我的优惠券",
+				"path": "pages/user/user-coupon-list"
+			},
+			{
+				"name": "我的地址",
+				"path": "pages/user/user-address-list"
+			},
+			{
+				"name": "我的收藏",
+				"path": "pages/user/user-fav"
+			},
+			{
+				"name": "钱包",
+				"path": "pages/user/user-wallet"
+			},
+			{
+				"name": "钱包",
+				"path": "pages/user/user-wallet-bankcard-add"
+			},
+			{
+				"name": "医药商城",
+				"path": "pages/shopMall/index"
+			},
+			{
+				"name": "医药商城门店",
+				"path": "pages/shopMall/categories"
+			}
+		]
+	}
+}

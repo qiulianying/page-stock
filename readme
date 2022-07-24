@@ -1,0 +1,6 @@
+云闪付小程序
+这边有关云闪付小程序必须使用功能vue-cli模式搭建架构，才能将uni-app的代码实现关联，如果需要使用功能，可以通过以下代码
+//进行有关upsdk的初始化
+upsdk.pluginReady(function () {
+
+})

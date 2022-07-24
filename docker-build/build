@@ -1,0 +1,5 @@
+#!/bin/sh
+docker build -t dockerdev.51zcm.cc/sp-mate/page-stock:$1 .
+docker push dockerdev.51zcm.cc/sp-mate/page-stock:$1
+
+
