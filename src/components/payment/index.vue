@@ -56,7 +56,6 @@
 </template>
 
 <script>
-    import { memberAccount } from '../../api/infomember'
     import {queryAccBalance, queryAccBind} from "../../api/paymentspmate";
     export default {
         name: "index",
@@ -109,87 +108,6 @@
                     accountId: accountId
                 })
             },
-            async memberAccount() {
-                await memberAccount({
-                    accountType: 1,
-                    subjectNo: this.merchantNo,
-                    appid: this.$appid,
-                    isOpen: 1,
-                    subjectType: 5,			//软件园项目固定是5机构会员
-                    subjectId: this.$regionId,
-                }, {
-                    hideLoading: true,
-                    hideMsg: true
-                }).then(res => {
-                    const obj = res.object
-                    this.member = obj.member || {}
-                    let account = {}
-                    if (obj.account != null && obj.account.length > 0) {
-                        account = obj.account[0]
-                        this.accountList = obj.account.filter(item => {
-                            return item.amount > 0
-                        })
-                        if (this.accountList.length > 0) {
-                            this.selectedAccount = this.accountList[0]
-                        }
-                    }
-                    this.companyStaffEntity = obj.companyStaffEntity || {}
-                    if (this.companyStaffEntity.status === 1) { // 软件园渠道且认证通过
-                        if (account.isOpenPurse != null && account.isOpenPurse === 0) { // 已开通钱包
-                            uni.showLoading({
-                                title: this.$t('pub').loading,
-                                mask: true
-                            })
-                            Promise.all([
-                                this.queryAccBalance(account.accountId),
-                                this.queryAccBind(account.accountId)
-                            ]).then(arr => {
-                                let blanceObj = arr[0].object
-                                this.cardList.push({
-                                    cardId: blanceObj.cardId,
-                                    balance: blanceObj.accountBalance,
-                                    type: 'wallet'		//钱包
-                                })
-                                arr[1].object.records.forEach(item => {
-                                    this.cardList.push({
-                                        cardId: item.cardId,
-                                        bankTp: item.bankTp,
-                                        bindMedium: item.bindMedium,
-                                        type: 'bankcard'		//银行卡
-                                    })
-                                })
-                                if (this.cardList.length > 0) {
-                                    this.selectedCard = this.cardList[0]
-                                }
-                                //开通钱包的情况下可以选择微信支付
-                                this.cardList.push({
-                                    type: 'WECHAT',		//微信
-                                    cardId: 'WECHAT'	//微信支付默认id情况
-                                })
-                                uni.hideLoading()
-                            }).catch(err => {
-                                console.error(err)
-                                uni.hideLoading()
-                            })
-                        } else {
-                            //软件园渠道且认证通过但未开通钱包情况下，暂时添加微信支付，默认使用
-                            this.cardList.push({
-                                type: 'WECHAT',		//微信
-                                cardId: 'WECHAT'	//微信支付默认id情况
-                            })
-                            this.selectedCard = this.cardList[0]
-                            uni.hideLoading()
-                            //
-                            // uni.showToast({
-                            // 	title: '暂未开通钱包，请先开通！',
-                            // 	icon: 'none'
-                            // })
-                        }
-                    }
-                }).catch(error => {
-                    console.log(error)
-                })
-            },
             //切换获取到的支付方式详情
             changeCardType(card) {
                 this.selectedCard = card
@@ -230,8 +148,6 @@
             }
         },
         created() {
-            //获取当前金额情况
-            this.memberAccount()
         }
     }
 </script>

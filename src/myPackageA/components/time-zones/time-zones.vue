@@ -6,8 +6,8 @@
 				<!-- tab栏 -->
 				<view class="scroll-view_H b-t b-b" scroll-x>
 					<block v-for="(item, index) in dateArr" :key="index">
-						<view v-if="index < dateArr.length-1" @click="selectDateEvent(index, item)" 
-							class="flex-box" 
+						<view v-if="index < dateArr.length-1" @click="selectDateEvent(index, item)"
+							class="flex-box"
 							:class="[index == dateActive ? 'active-date' : item.disable ? 'disable-date' : '']"
 							:style="{ 'background': index == dateActive ? `linear-gradient(0, ${selectedItemColor}, ${themeShadow})` : ''}">
 							<view class="date-box">
@@ -48,7 +48,7 @@
 			</view>
 			<view class="bot-btn">
 				<view class="btn btn-left" @click="popupClose">取消</view>
-				<view class="btn btn-right" 
+				<view class="btn btn-right"
 					:style="{ 'background':`${selectedItemColor}` }"
 					@click="confirmTime">确定<text v-if="hour">（{{hour}}）</text></view>
 					<!-- `linear-gradient(0, ${themeShadow}, ${selectedItemColor})` -->
@@ -59,7 +59,6 @@
 
 <script>
 import { dateData, timeData, timeStamp } from './date.js';
-import { appointmentDateCanUse } from '../../../api/rightsmarketing.js'
 let maxIndex;
 export default {
 	props: {
@@ -286,39 +285,12 @@ export default {
 						this.dateArr[j].disable = true
 					}
 				}
-			}	
+			}
 			// 获取当前日期可用的时间段
 			this.getDateCanUse(this.cDate)
 		},
 		getDateCanUse(date) {
 			date = date.replace(/\//g, "-")
-			appointmentDateCanUse({
-				date: date,
-				activityId: this.activityId
-			}).then(res => {
-				console.log('appointmentDateCanUse', res, this.appointData)
-				// 查询当前日期的时间段库存，并且做时间限制等判断
-				let dateDisable = this.dateArr[this.dateActive].disable
-				console.log('日期的是否可用',this.cDate, this.dateActive, this.dateArr[this.dateActive])
-				let hour = this.appointData.hours == -1 ? 0 : this.appointData.hours // 提前预约时间
-				this.stampLimit = this.currentTimeStamp + (3600 * hour * 1000)
-				this.timeArr = res.object
-				this.timeArr.forEach(item => {
-					let time = `${this.cDate} ${item.start}`
-					// let fromTime = cDate + ' ' + info.start + ':00'
-					// let toTime = cDate + ' ' + info.end + ':00'
-					// console.log('时间戳',fromTime,toTime)
-					// obj.from = new Date(fromTime).getTime()
-					item.startStamp = new Date(time).getTime()
-					console.log('时间错', time, item.startStamp, this.stampLimit)
-					if (item.bookLimit > 0 && item.startStamp > this.stampLimit && !dateDisable) {
-						item.disable = false // 可用
-					} else {
-						item.disable = true // 禁用
-					}
-				})
-				console.log('this.timeArr', this.timeArr)
-			})
 		},
 		onDateConfirm(e) {
 			// console.log('eeeeeeeeeeeeeeeeeeeeeeeeee',e)
@@ -500,7 +472,7 @@ export default {
 							title: '所选时段已被预约',
 							icon: 'none',
 							duration: 2000
-						}) 
+						})
 						this.count = 1
 						// this.$set(this.timeActive, 0, index);
 						// this.selectTime[0] = this.timeArr[index]['time'];

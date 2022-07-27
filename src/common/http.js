@@ -2,7 +2,6 @@
 import Vue from 'vue'
 import {BASE, BASE_URL, PLATFORM_ID} from './config'
 import {authLogin} from './auth'
-import store from '../store/index'
 
 const showToast = (title) => {
     uni.showToast({
@@ -17,11 +16,6 @@ const http = (url, data = {}, option = {}, apiType) => {
     let contentType = option.contentType || 'application/json'
     let errorRedirect = option.errorRedirect || false
     let token = ''
-    //根据高毓锋2021.8.30日要求，以下下单接口，包括商品和权益的下单，强制参数中添加formId，参数内容随意
-    if ((url.indexOf('api/v1/order') !== -1 && url.indexOf('jft/api/v1/order') === -1) || url.indexOf('api/v2/order') !== -1 || url.indexOf('order/pay') !== -1 || url.indexOf('api/v1/takeout/order') !== -1) {
-        data.formId = '123456789'
-    }
-
     try {
         token = uni.getStorageSync('mspToken')
     } catch (e) {
@@ -56,8 +50,6 @@ const http = (url, data = {}, option = {}, apiType) => {
             success: res => {
                 if (!hideLoading) uni.hideLoading()
                 if (res.statusCode === 401) {
-                    // showToast(httpLang.loginTimeout)
-
                     // #ifndef H5
                     // 重新调用登录接口获取token
                     authLogin({
@@ -78,33 +70,6 @@ const http = (url, data = {}, option = {}, apiType) => {
                     // #endif
                 } else if (res.statusCode === 200) {
                     let result = res.data
-                    if (result.errcode === '0' || result.errcode === '404003') {
-                        //判断是否是member/account接口，如果是的话，就获取相关的接口数据进行验证
-                        if (url === 'member/account') {
-                            if (result.object.account) {
-                                if (result.object.account[0].enableMemberPassword === 1) {
-                                    store.dispatch('changeEnableMember', {
-                                        type: 1
-                                    })
-                                } else {
-                                    store.dispatch('changeEnableMember', {
-                                        type: 0
-                                    })
-                                }
-                                if (result.object.account[0].hasPassword === 1) {
-                                    store.dispatch('changeHasPassword', {
-                                        type: 1
-                                    })
-                                } else {
-                                    store.dispatch('changeHasPassword', {
-                                        type: 0
-                                    })
-                                }
-                            }
-                        }
-                        resolve(result)
-                        return
-                    }
                     reject(result.errmsg || result.error)
                     if (!hideMsg) {
                         if (errorRedirect) {

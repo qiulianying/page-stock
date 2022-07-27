@@ -7,13 +7,7 @@
   </view>
 </template>
 <script>
-import Cookies from 'js-cookie'
-import Vue from 'vue'
-import {BASE, BASE_URL, PLATFORM_ID} from '../../common/config'
 import uniCopy from '../../common/uni-copy'
-import consts from '../../common/const'
-const API_TYPE = consts.API_TYPE.INFO_MEMBER
-import {getAppIdOpenId} from '../../api/infomember'
 export default {
   data() {
     return {
@@ -27,9 +21,6 @@ export default {
   },
   methods: {
     getOpenID() {
-      getAppIdOpenId().then(res => {
-        this.openId = res.object.openId
-      })
     },
     copyOpenId() {
       if (!this.openId) {

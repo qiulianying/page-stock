@@ -93,12 +93,6 @@
 				bankThem: '',
 				image: '',
 				showCanvas: true,
-				// #ifdef MP-WEIXIN
-				uuid: 'bankIcon',
-				// #endif
-				// #ifndef MP-WEIXIN
-				uuid: buildUuid()
-				// #endif
 			};
 		},
 		methods: {
@@ -195,7 +189,7 @@
 		margin-right: 12rpx;
 		color: #fff;
 	}
-	
+
 	.card-code {
 		margin-top: 15rpx;
 		display: flex;
@@ -203,34 +197,34 @@
 		color: #FFFFFF;
 		font-size: 32rpx;
 	}
-	
+
 	.flex-1 {
 		flex: 1;
 	}
-	
+
 	.card-type {
 		font-size: 24rpx;
 		color: #F1F1F1;
 	}
-	
+
 	.bank-name {
 		font-size: 32rpx;
 		color: #FFFFFF;
 	}
-	
+
 	.bank-info {
 		display: flex;
 		flex-direction: column;
 		margin-left: 24rpx;
 		margin-top: -6rpx;
 	}
-	
+
 	.bank-head {
 		display: flex;
 		flex: 1;
 		height: 160rpx;
 	}
-	
+
 	.bank-head image {
 		width: 76rpx;
 		height: 76rpx;
@@ -239,7 +233,7 @@
 		border-radius: 50%;
 		overflow: hidden;
 	}
-	
+
 	.bank-icon {
 		position: absolute;
 		top: 10rpx;
@@ -269,7 +263,7 @@
 		padding: 40rpx 24rpx;
 		overflow: hidden;
 	}
-	
+
 	.bank-item:after {
 		content: "";
 		display: block;

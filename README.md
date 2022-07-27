@@ -18,12 +18,22 @@
 但是这里都有一个共同的问题，如果只是需要·进行有关路由的自动化获取，是没有问题的，但是这里如果说要对路由进行展示以及其他附带内容
 的操作，发现还是不行看的，所以这里提供一个build.js用于进行普通项目的自动化抓取方式，提供index.js进行路由获取以及读取
 
+# 该快速项目使用功能到的ui库
+1、fhuview-ui：这个是自己编写的uni-app组件库，目前测试阶段，组件不多，慎用
+2、uview-ui：主要使用功能的是这个，对应使用方式可以直接查看官网
+3、colroui：作为优秀的css组件库，有进行是使用功能，详细使用接入方式可以查看src/colorui/reader
+参考页面库访问地址：https://spdev.51zcm.cc/page-stock/h5/index.html#/myPackageB/pages/read/read
+
 # 页面结构路径如下
 docker-build   // 项目打包构建以及配置文件
-Jenkinsfile    // 项目构建文件
-README.md      // 项目注解
-vue.config.js  // 项目配置文件
-fhuview-ui     // 模拟uView组件编写的组件，到时候作为组件库使用
+public         // 类似vue-cli3.0以上版本打包使用功能的pbulic一样功能html
+src/api        // 接口地址
+src/colorui    // colorui相关css组件库
+src/common/const.js // 封装项目公用枚举
+src/common/https.js // 封装uni-app接口调用方法
+src/common/util.js  // 封装公用方法
+src/fhuview-ui // 自己编写的模拟uView组件编写的组件，到时候作为组件库使用
+src/locales    // 用于处理多语言切换
 src/myPackageA // 主要页面库所在页面
 src/myPackageB // 主要页面库以及组件库文档所在页面
 src/static     // 对应图片以及icon相关
@@ -33,7 +43,7 @@ src/manifest.json // uni-app的相关配置项
 src/pages.json // uni-app路由方法的存放
 src/setting    // 相关全局设置
 vue.config.js  // 这里是类似vue-cli3.0以上版本的配置方式，新增vue.config.js进行对应uni-app配置的快捷操作，分离了部分manifest.json的操作
-
+README.md      // 项目注解
 
 # 对应分支所属功能
 master          // 包括完整页面库以及uni-app组件库以及全部配置在内的详细总体项目
@@ -46,12 +56,6 @@ develop         // 可以用于搭建一个基础的vue-cli的uni-app项目
 (3)、包括微信小程序环境切换等主要配置也进行了保留
 
 feature-dream   // 作为一个初步项目，在develop基础上，根据master页面库进行的开发新项目
-
-
-# 相关组件库访问地址
-
-# 页面库访问地址
-页面库访问地址：https://spdev.51zcm.cc/page-stock/h5/index.html#/myPackageB/pages/read/read
 
 # 有关项目命令说民如下
 ## 项目依赖安装

@@ -149,23 +149,8 @@
 				this.$toView('user/user-wallet-bankcard-add')
 				this.$emit('selectShow', false)
 			},
-
-			async memberAccount() {
-
-				if (account.isOpenPurse != null && account.isOpenPurse === 0) { // 已开通钱包
-					uni.showLoading({
-						title: this.$t('pub').loading,
-						mask: true
-					})
-
-					uni.hideLoading()
-
-				} 
-
-
-			},
 			changeCardType(card) {
-			
+
 			},
 		}
 	};

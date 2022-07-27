@@ -42,7 +42,14 @@
 	"subPackages": [
 		{
 			"root": "myPackageA",
-			"pages": []
+			"pages": [
+				{
+					"path": "pages/createdream/index",
+					"style": {
+						"navigationBarTitleText": "创建梦"
+					}
+				}
+			]
 		},
 		{
 			"root": "myPackageB",

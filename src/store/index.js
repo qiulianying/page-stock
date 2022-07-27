@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import {memberAccount} from '../api/infomember'
 
 Vue.use(Vuex)
 
@@ -61,39 +60,6 @@ const store = new Vuex.Store({
         },
         changeHasPassword({commit}, hasPassword) {
             commit('setHasPassword', hasPassword.type || 0)
-        },
-        async getAccountId({commit, state}) {
-            // if (state.accountId == null) {
-            //     await memberAccount({
-            //         subjectType: 5,
-            //         accountType: 1,
-            //         subjectId: Vue.prototype.$regionId,
-            //         appid: Vue.prototype.$appid,
-            //         isOpen: 1
-            //     }).then(res => {
-            //         const obj = res.object
-            //         if (obj.account != null && obj.account.length > 0) {
-            //             commit('setAccountId', obj.account[0].accountId)
-            //         }
-            //         if (obj.account) {
-            //             //判断是否需要密码支付
-            //             if (obj.account[0].enableMemberPassword === 1) {
-            //                 commit('setEnableMemberPassword', obj.account[0].enableMemberPassword)
-            //             } else {
-            //                 commit('setEnableMemberPassword', 0)
-            //             }
-            //             //判断是否设置密码
-            //             if (obj.account[0].hasPassword === 1) {
-            //                 commit('setHasPassword', obj.account[0].hasPassword)
-            //             } else {
-            //                 commit('setHasPassword', 0)
-            //             }
-            //         }
-            //     }).catch(err => {
-            //         console.error(err)
-            //     })
-            // }
-            // return state.accountId
         },
         changeRouterNow({commit}, routerNow) {
             commit('setRouterNow', routerNow || '/pages/index/index')

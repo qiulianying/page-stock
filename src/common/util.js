@@ -78,12 +78,6 @@ export default {
 			}
 		})
 	},
-	isDeveloping() {
-		uni.showToast({
-			title: '敬请期待！',
-			icon: 'none'
-		})
-	},
 	promiseWithAbort(fetchPromise) {
 		let abort = null
 		const abortPromise = new Promise((resolve, reject) => {
