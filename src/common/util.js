@@ -41,7 +41,8 @@ export default {
 	strToDate(str) {
 		return strIsEmpty(data) ? '' : new Date(data)
 	},
-	toMoney(num) { // 转金额并四舍五入 只能用于显示，不能用于数据比较
+	// 转金额并四舍五入 只能用于显示，不能用于数据比较
+	toMoney(num) {
 		if (num == null || num === '') return ''
 		num = parseFloat(num).toFixed(2).toString().split('.')
 		num[0] = num[0].replace(new RegExp('(\\d)(?=(\\d{3})+$)', 'ig'), '$1,')
@@ -62,7 +63,8 @@ export default {
 		s = Math.round(s * 6378.137 * 10000) / 10000
 		return s > 1 ? `${s.toFixed(2)} km` : `${Math.round(s * 1000)} m`
 	},
-	toBack(delta, reload) { // 返回刷新
+	// 返回刷新
+	toBack(delta, reload) {
 		uni.navigateBack({
 			delta: delta,
 			success: () => {

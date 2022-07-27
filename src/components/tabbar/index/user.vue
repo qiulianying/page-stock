@@ -13,14 +13,16 @@
 						<view>{{ $util.phoneDesensitization(member.phone) || '暂无电话' }}</view>
 					</template>
 				</view>
-				<view :class="companyStaffEntity.status === 1 ? 'index-user-info-box-certed' : 'index-user-info-box-certing'" :style="{background: companyStaffEntity.status === 1 ? themeColor : '#EE2D28'}">
-					<text class="cuIcon- zjIcon-authentication text-df"></text>
-					<text class="text-xs margin-lr-xs">已认证</text>
+				<!-- 认证标签，暂时屏蔽 -->
+				<view v-if="$util.strIsNotEmpty(companyStaffEntity.companyName)"
+					:class="companyStaffEntity.status === 1 ? 'index-user-info-box-certed' : 'index-user-info-box-certing'"
+					:style="{background: companyStaffEntity.status === 1 ? themeColor : '#EE2D28'}">
+					<text v-if="companyStaffEntity.status === 1" class="cuIcon- zjIcon-authentication text-df"></text>
+					<text v-if="companyStaffEntity.status === 1" class="text-xs margin-lr-xs">已认证</text>
+					<text v-else class="text-xs margin-lr-xs" @tap="showCertingTip">认证审核中</text>
 				</view>
 			</view>
 			<view class="index-user-statistics">
-
-				<!--需要在存在用户手机号且作为软件园项目的时候才会存在钱包的情况-->
 				<template v-if="$util.strIsNotEmpty(member.phone) && isSoftware">
 					<template>
 						<view v-if="account.isOpenPurse != null && account.isOpenPurse === 0"
@@ -39,37 +41,39 @@
 						</view>
 					</template>
 				</template>
-				<view class="index-user-statistics-item" @click="clickToIntegral">
+				<view class="index-user-statistics-item">
 					<text
 						class="index-user-statistics-item-num">{{ account.pointAmount ? account.pointAmount : '0' }}</text>
-					<text>关注</text>
+					<text>积分</text>
 				</view>
 
-				<view class="index-user-statistics-item" @click="clickToCoupon">
+				<view class="index-user-statistics-item">
 					<text class="index-user-statistics-item-num">
 						{{ occupationNumber ? occupationNumber : 0 }}
 					</text>
-					<text>粉丝</text>
+					<text>卡券包</text>
 				</view>
 
 				<view class="index-user-statistics-item" @tap="$toView('/myPackageA/pages/user/user-fav', true,false,true)">
 					<text class="index-user-statistics-item-num">2</text>
-					<text>筑梦</text>
+					<text>我的收藏</text>
 				</view>
 			</view>
 		</view>
 
 		<view class="index-user-menu cu-list menu">
-			<view class="cu-item arrow" @tap="$toView('user/user-msg', false)">
-				<view class="content">
-					<text class="cuIcon- zjIcon-password text-theme" :style="[{color: themeColor}]"></text>
-					<text class="text-black">消息通知</text>
-				</view>
-			</view>
+
 			<view class="cu-item arrow" @tap="$toView('/myPackageA/pages/order/user-order-list', true, false, true)">
 				<view class="content">
 					<text class="cuIcon- zjIcon-password text-theme" :style="[{color: themeColor}]"></text>
-					<text class="text-black">个人主页</text>
+					<text class="text-black">我的订单</text>
+				</view>
+			</view>
+			<view class="cu-item arrow"
+				@tap="$toView(`/myPackageA/pages/order/appoint-list?fromPage=appointment&account=${jsonAccount}`, true, false, true)">
+				<view class="content">
+					<text class="cuIcon- newIcon-remind text-theme" :style="[{color: themeColor}]"></text>
+					<text class="text-black">我的预约</text>
 				</view>
 			</view>
 			<view class="cu-item arrow"
@@ -79,10 +83,17 @@
 					<text class="text-black">交易记录</text>
 				</view>
 			</view>
-			<view class="cu-item arrow" @tap="$toView('shop/user/user-address-manage', false)">
+			<view class="cu-item arrow" v-if="isSoftware"
+				@tap="$toView('/myPackageA/pages/user/user-recharge-record', true,false,true)">
+				<view class="content">
+					<text class="cuIcon- zjIcon-recharge_record text-theme" :style="[{color: themeColor}]"></text>
+					<text class="text-black">充值提现记录</text>
+				</view>
+			</view>
+			<view class="cu-item arrow" @tap="$toView('shop/user/user-address-list', true)">
 				<view class="content">
 					<text class="cuIcon- zjIcon-address text-theme" :style="[{color: themeColor}]"></text>
-					<text class="text-black">编辑资料</text>
+					<text class="text-black">联系地址</text>
 				</view>
 			</view>
 			<view class="cu-item arrow"
@@ -92,6 +103,30 @@
 					<text class="text-black">支付密码</text>
 				</view>
 			</view>
+			<!-- #ifdef MP-WEIXIN -->
+			<view class="cu-item arrow" @tap="$toView('/myPackageA/pages/environment/index', false, false, true)"
+				v-if="nowEnvironment === 'trial' || nowEnvironment === 'develop'">
+				<view class="content">
+					<text class="cuIcon- zjIcon-password text-theme" :style="[{color: themeColor}]"></text>
+					<text class="text-black">环境切换(只有小程序开发版和体验版适用)</text>
+				</view>
+			</view>
+
+			<view class="cu-item arrow" @tap="changeStyle"
+				v-if="nowEnvironment === 'trial' || nowEnvironment === 'develop'">
+				<view class="content">
+					<text class="cuIcon- zjIcon-password text-theme" :style="[{color: themeColor}]"></text>
+					<text class="text-black">换肤体验(只有小程序开发版和体验版存在)</text>
+				</view>
+			</view>
+
+			<view class="cu-item arrow" @tap="clickShowComponents" v-if="nowEnvironment === 'develop'">
+				<view class="content">
+					<text class="cuIcon- zjIcon-password text-theme" :style="[{color: themeColor}]"></text>
+					<text class="text-black">非uview额外自定组件预览(只有小程序开发版存在)</text>
+				</view>
+			</view>
+			<!-- #endif -->
 		</view>
 		<view class="user-bottom" @tap="phoneToRegion(linkPhone)" v-if="linkPhone">
 			<view class="text-black">客服热线(时间8:30-12:00,14:30-18:00)</view>
@@ -186,7 +221,7 @@
 				extraTotal: {},
 				accountBalance: null,
 				couponParams: {
-					"appid": "wx67205035cdd52bc0",
+					"appid": "wx4af6284d6f4bf2a1",
 					"openid": "ozZZB5dlQD2DhQm4B1d6jgt82ecQ",
 					"phone": "18060570125"
 				},
@@ -194,9 +229,6 @@
 				rightsCount: 0,
 				popShow: false,
 				themeColor: '#353D96', //当前默认使用颜色
-				// colorData: [
-				// 	'#34A2E8', '#353D96', 'green', 'red', '#0324CA'
-				// ],
 				colorData: [{
 						color: '#34A2E8',
 						shadowColor: '#0D8CFC',
@@ -220,49 +252,24 @@
 				],
 				linkPhone: '',
 				isSoftware: true,
-				nowEnvironment: ''
+				nowEnvironment: 'develop'
 			}
 		},
 		computed: {
 			// 计算卡劵包
 			occupationNumber() {
-				let couponCount = (this.extraTotal && this.extraTotal.couponCount) ? parseInt(this.extraTotal
-					.couponCount) : 0
-				let couponCountCard = this.rightsCount ? parseInt(this.rightsCount) : 0
-				console.log(couponCount + couponCountCard)
-				return couponCount + couponCountCard
+        return 0
 			}
 		},
 		created() {
-			// #ifdef MP-WEIXIN
-			const accountInfo = uni.getAccountInfoSync();
-			// miniProgram.envVersion的合法值：develop开发版、trial体验版、release正式版
-			this.nowEnvironment = accountInfo.miniProgram.envVersion;
-			// #endif
-			// #ifdef H5
-			let host = window.location.host // 'spdev.51zcm.cc' 是开发环境   https://sptest.51zcm.cc 是测试
-			// let myHost = '172.26.113.207:8082'
-			if (host.indexOf('spdev.51zcm.cc') > -1 || host.indexOf('sptest.51zcm.cc') > -1) {
-				this.nowEnvironment = 'trial'
-			}
-			console.log('host------host', host)
-			// #endif
 		},
 		mounted() {
 			this.getMemberInfo()
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
 			this.regionId = this.$regionId
-
 			this.linkPhone = '188887788888'
-			// let host = window.location.host // 'spdev.51zcm.cc' 是开发环境
-			// console.log('host',host)
 		},
 		methods: {
-			goopen() {
-				uni.navigateTo({
-					url: '/pages/openId-page/index?token=gouc_a1b659ea24804b9b87eec83d1cadfee5'
-				})
-			},
 			...mapActions(['getAccountId']),
 			init() {
 				this.memberAccount()
@@ -302,7 +309,6 @@
 				}
 			},
 			memberAccount() {
-
 				this.rightsCount = '0'
 				this.member = {
 					"subjectIds": ["MD1400029938156965888", "MD1296349752773971968", "9999",
@@ -348,53 +354,9 @@
 					"status": 1,
 					"createTime": 1625659843964
 				}
-
-				// 暂时先注释
-				// if(obj.companyStaffEntity && obj.companyStaffEntity.status === 1){
-				//   this.queryAccBalance()
-				// }
 				// 不管是否是软件园员工都可以查余额
 				this.queryAccBalance()
-
 				this.visible.page = true
-
-			},
-			// 积分页面
-			clickToIntegral() {
-				return // 积分不上线，先屏蔽
-				this.$toView(
-					`/myPackageA/pages/pointList/index?params=${JSON.stringify(this.account)}`,
-					true, false, true)
-			},
-			// 跳转卡劵包页面
-			clickToCoupon() {
-				if (this.couponParams.phone) {
-					this.$toView(
-						`/myPackageA/pages/userCoupon/user-coupon-all?couponParams=${JSON.stringify(this.couponParams)}`,
-						true, false, true)
-				}
-				// else {
-				// 	uni.showToast({
-				// 		title: '未登录，请先登录！',
-				// 		icon: 'none',
-				// 		duration: 2500
-				// 	})
-				// }
-				// if (this.couponParams.phone) {
-				// 	this.$toView(
-				// 		`/myPackageA/pages/userCoupon/user-coupon-list?couponParams=${JSON.stringify(this.couponParams)}`,
-				// 		true, false, true)
-				// } else {
-				// 	uni.showToast({
-				// 		title: '未登录，请先登录！',
-				// 		icon: 'none',
-				// 		duration: 2500
-				// 	})
-				// }
-			},
-			// h5清除缓存
-			cleanStorage() {
-				uni.clearStorage()
 			},
 			clickShowComponents() {
 				uni.navigateTo({
@@ -418,16 +380,6 @@
 				// #ifdef H5
 				location.reload()
 				// #endif
-			},
-			phoneToRegion(number) {
-				uni.makePhoneCall({
-					phoneNumber: number
-				})
-			},
-			topay() {
-				uni.navigateTo({
-					url: '/pages/shop/settlement?orderNo=00031636716908628000074'
-				})
 			}
 		}
 	}
@@ -506,13 +458,6 @@
 					line-height: 40rpx;
 					border-radius: 20rpx;
 				}
-
-				// &-certed {
-				// 	background: linear-gradient(84deg, #3CA5FF 0%, #34A2E8 100%);
-				// }
-				// &-certing {
-				// 	background: linear-gradient(90deg, #F85088 0%, #EE2D28 100%);
-				// }
 			}
 
 			.index-user-statistics {
@@ -575,9 +520,6 @@
 		margin: 20rpx;
 
 		&-circle {
-			// width: 33%;
-			// height: 70rpx;
-			// line-height: 70rpx;
 			padding: 20rpx;
 			display: inline-block;
 

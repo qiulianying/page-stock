@@ -18,9 +18,6 @@
 但是这里都有一个共同的问题，如果只是需要·进行有关路由的自动化获取，是没有问题的，但是这里如果说要对路由进行展示以及其他附带内容
 的操作，发现还是不行看的，所以这里提供一个build.js用于进行普通项目的自动化抓取方式，提供index.js进行路由获取以及读取
 
-# 页面库访问地址
-页面库访问地址：https://spdev.51zcm.cc/page-stock/h5/index.html#/myPackageB/pages/read/read
-
 # 页面结构路径如下
 docker-build   // 项目打包构建以及配置文件
 Jenkinsfile    // 项目构建文件
@@ -28,7 +25,33 @@ README.md      // 项目注解
 vue.config.js  // 项目配置文件
 fhuview-ui     // 模拟uView组件编写的组件，到时候作为组件库使用
 src/myPackageA // 主要页面库所在页面
-src/myPackageB // 主要页面库以及组件库文档所在页面 
+src/myPackageB // 主要页面库以及组件库文档所在页面
+src/static     // 对应图片以及icon相关
+src/store      // 对应store，这里为了方便全局性快速开发，进行了分组处理
+src/main.js    // 提供了类似
+src/manifest.json // uni-app的相关配置项
+src/pages.json // uni-app路由方法的存放
+src/setting    // 相关全局设置
+vue.config.js  // 这里是类似vue-cli3.0以上版本的配置方式，新增vue.config.js进行对应uni-app配置的快捷操作，分离了部分manifest.json的操作
+
+
+# 对应分支所属功能
+master          // 包括完整页面库以及uni-app组件库以及全部配置在内的详细总体项目
+(1)、包括组件库以及页面库
+(2)、保留了之前详细的接口调用以及所有内容，方便用于查看
+
+develop         // 可以用于搭建一个基础的vue-cli的uni-app项目
+(1)、只保留了部分常用页面，以及部分常用组件，其他的需要去master分支进行获取
+(2)、针对store，main.js，以及封装的https都有处理，便于快捷开发
+(3)、包括微信小程序环境切换等主要配置也进行了保留
+
+feature-dream   // 作为一个初步项目，在develop基础上，根据master页面库进行的开发新项目
+
+
+# 相关组件库访问地址
+
+# 页面库访问地址
+页面库访问地址：https://spdev.51zcm.cc/page-stock/h5/index.html#/myPackageB/pages/read/read
 
 # 有关项目命令说民如下
 ## 项目依赖安装

@@ -62,8 +62,6 @@ Vue.use(VueI18n)
 Vue.component('cu-custom', cuCustom)
 Vue.config.productionTip = false
 
-// Vue.mixin(share)
-
 const i18n = new VueI18n({
 	locale: 'zh-CN',
 	messages: {
@@ -115,6 +113,10 @@ Vue.prototype.$isMemmber = () => {
 	}
 	return isMember
 }
+
+/*
+* 在uni-app中自定义编写
+* */
 Vue.prototype.$toView = (page, mustReg = false, isRedirect = false, isPackage = false) => {
 	let url = ''
 	if (!isPackage) {
@@ -125,18 +127,6 @@ Vue.prototype.$toView = (page, mustReg = false, isRedirect = false, isPackage = 
 		url = mustReg && Vue.prototype.$isMemmber() ?
 			`/pages/login/login-mobile?fromurl=${encodeURIComponent(`${page}`)}` : `${page}`
 	}
-
-	//判断进入某些页面的时候进行特殊操作
-	if (page === 'user/user-bankcard-add' || page === 'user/user-wallet-bankcard-add') {
-		uni.removeStorageSync('cardOcr')
-	} else if (page === 'user/user-wallet-bankcard-add-userinfo') {
-		uni.removeStorageSync('idcardFront')
-		uni.removeStorageSync('idcardBack')
-		uni.removeStorageSync('idCardOcr')
-		uni.removeStorageSync('idCardOcrBack')
-	}
-
-
 	if (isRedirect) {
 		uni.redirectTo({
 			url: url
@@ -147,10 +137,6 @@ Vue.prototype.$toView = (page, mustReg = false, isRedirect = false, isPackage = 
 		})
 	}
 }
-
-
-//
-
 
 App.mpType = 'app'
 

@@ -68,6 +68,8 @@
 				<view class="index-home-cate-outbox">
 					<view v-for="(item,index) in categoryList" :key="index" class="index-home-cate-item"
 						@click="handleClickMenu(index)">
+						<!-- 为了不影响页面加载速度，图片采用缩略图，加后缀fixStr -->
+						<!-- :src="fileBaseURL + item.icon + fixStr" -->
 						<image style="width:100rpx;height:100rpx;border-radius:50rpx"
 							:src="item.icons" />
 						<text>{{item.name}}</text>
@@ -86,6 +88,51 @@
 						<view class="box-name">{{item.name}}</view>
 					</view>
 				</view>
+			</view>
+			<!-- 开通钱包：存在用户手机号且作为软件园项目的时候才会存在钱包的情况 -->
+			<view class="index-home-purse" @click="handleClickPurse">
+				<image mode="widthFix" src="../../../static/images/purse_tab.png" />
+			</view>
+			<view class="index-home-title" :style="{marginTop: categoryList.length > 0 ? '32rpx' : '52rpx'}"
+				v-if="isAct">热门活动</view>
+			<!-- 一张图片的情况 -->
+			<view class="index-home-cover" v-if="isAct && actList.length === 1">
+				<image src="/static/images/bg_hot11.png" @click="gotoCoupon(actList[0].id)" mode="widthFix" />
+			</view>
+			<!-- 两张图片的情况 -->
+			<view class="index-home-two" v-if="isAct && actList.length === 2">
+				<image :src="actList[0].icon ? `${spMatefileBaseURL}${actList[0].icon}` : ''"
+					@click="gotoCoupon(actList[0].id)" mode="widthFix" />
+				<image style="margin-left: 16rpx" :src="actList[1].icon ? `${spMatefileBaseURL}${actList[1].icon}` : ''"
+					@click="gotoCoupon(actList[1].id)" mode="widthFix" />
+			</view>
+			<!-- 三张图片的情况 -->
+			<view class="index-home-three" v-if="isAct && actList.length >= 3">
+				<!-- :src="actList[0].icon ? `${spMatefileBaseURL}${actList[0].icon}` : ''" -->
+				<image class="index-home-three-img" src="/static/images/bg_hot31.png" @click="gotoCoupon(actList[0].id)"
+					mode="widthFix" />
+				<view class="index-home-three-imgs">
+					<image src="/static/images/bg_hot32.png" @click="gotoCoupon(actList[1].id)" mode="widthFix" />
+					<image src="/static/images/bg_hot33.png" @click="gotoCoupon(actList[2].id)" mode="widthFix" />
+				</view>
+			</view>
+			<!-- 热门活动底下的热门商家 -->
+			<view class="index-hot" v-if="isAct && hotShopList.length > 0" style="margin-top:36rpx;">
+				<scroll-view scroll-x="true" class="hot-scroll-box">
+					<view class="hot-box" :class="hotShopList.length>4?'hot-box-gap':''"
+						v-for="(item, index) in hotShopList" :key="index" @click="goHotActivity(item)">
+						<view class="hot-shop-logo">
+							<image class="hot-shop-logo-img"
+								:src="$util.strIsEmpty(item.icon) ? '/static/images/login-grey.png' : (fileBaseURL + item.icon + fixStr)"
+								@error="onErrorShopIcon(item)" />
+						</view>
+						<view class="hot-shop-name">
+							<text>{{item.name}}</text>
+							<!-- 这个view是圆弧 -->
+							<view class="hot-shop-name-circle"></view>
+						</view>
+					</view>
+				</scroll-view>
 			</view>
 
 			<!-- 首页tab分类列表 -->
@@ -141,7 +188,8 @@
 				<!-- 推荐商家、收藏 -->
 				<view  v-else>
 					<view class="index-shop">
-						<view v-for="shopItem in tabItem.list" :key="shopItem.id" class="index-shop-item" @tap="$toView(`shop/shop-detail?merchantNo=${shopItem.merchantNo}`)">
+						<view v-for="shopItem in tabItem.list" :key="shopItem.id" class="index-shop-item"
+							@tap="$toView(`shop/shop-detail?merchantNo=${shopItem.merchantNo}`)">
 							<!-- 为了不影响页面加载速度，图片采用缩略图，加后缀fixStr -->
 							<image class="index-shop-item-logo"
 								:src="$util.strIsEmpty(shopItem.logo) ? '/static/images/login-grey.png' : (fileBaseURL + shopItem.logo + fixStr)"
@@ -151,13 +199,14 @@
 								<view class="index-shop-item-type">
 									<text class="cuIcon- zjIcon-tag_type"
 										style="font-size: 30rpx;vertical-align: middle;"></text>
-									<text class="margin-left-xs">梦想分类</text>
+									<text class="margin-left-xs">分类名称</text>
+									<!-- {{ shopItem.categoryArray[shopItem.categoryArray.length - 1].categoryName||'21323' }} -->
 								</view>
 								<view class="index-shop-item-address text-black">
 									<text>{{ shopItem.address ||'商户地址'}}</text>
 									<text>1.5km</text>
+									<!-- {{ $util.getDistance(location.latitude, location.longitude, shopItem.location.lat, shopItem.location.lon) }} -->
 								</view>
-								<!--相关图标以及点赞等各类信息情况-->
 								<template v-if="shopItem.favList != null && shopItem.favList.length > 0">
 									<view v-for="(item, index) in shopItem.favList" :key="index"
 										class="index-shop-item-fav">
@@ -167,6 +216,9 @@
 							</view>
 						</view>
 					</view>
+					<!-- <zj-empty v-if="tabItem.loaded && (tabItem.list == null || tabItem.list.length === 0)"
+						:img="`${imgUrl}1639019849000/pic_search.png`" text="暂无相关门店" :shortWindows="true" />
+					<uni-load-more v-else :status="tabItem.status"></uni-load-more> -->
 				</view>
 			</swiper-item>
 		</swiper>
@@ -174,6 +226,9 @@
 </template>
 
 <script>
+	import {
+		orgHomeConfig,
+	} from '../../../api/infouser'
 	import Payment from '../../../components/payment/index'
 
 	export default {
@@ -189,7 +244,8 @@
 		},
 		data() {
 			return {
-				searchText: '搜索梦想....',
+				myRegionCtn: !(this.$const.REGION_NAME[uni.getStorageSync('regionNo')]), // 这些渠道进行特殊处理
+				searchText: !(this.$const.REGION_NAME[uni.getStorageSync('regionNo')]) ? '搜索门店....' : '搜索代金券....',
 				pageHeadType: 1,
 				showSearch: true,
 				scrollTop: 0,
@@ -430,7 +486,7 @@
 				merchantSwiperHeight: 0,
 				merchantTabCurIndex: 0,
 				merchantTabList: [{
-						name: '已结束',
+						name: '推荐商家',
 						loaded: false,
 						status: 'more',
 						pager: {
@@ -438,18 +494,67 @@
 						},
 						list: [{
 							address: "软件大道89号A区双创城",
+							createTime: "2021-07-08 20:13:44",
+							district: "350102",
+							districtName: "鼓楼区",
+							createUserId: "ab1a6e905ddc41949efdfb41246c1456",
+							city: "350100",
+							cityName: "福州市",
 							closeTime: "23:00",
+							enableAdvert: 1,
+							enableAppoint: 1,
+							enableCall: 1,
+							enableDiffTerminalRefund: 0,
+							enableMember: 1,
+							enableNegativeStorage: 0,
+							enableOrder: 1,
+							enableOrderUnOpenTime: 1,
+							enablePay: 1,
+							enablePeddle: 1,
+							enableRights: 0,
+							enableShiftChange: 0,
+							enableShowInStore: 1,
+							enableStorageManage: 0,
+							enableTakeout: 1,
+							headPhoto: "service-org-7adc24dc/20211231/634098f99ab9484d8bfb0f7744d539f1.png",
+							id: "MD1413109041353330688",
+							indoorPhotos: {
+								"data": ["service-org-7adc24dc/20211231/cae29b9fb615417b9ce6392d224ffd1a.png"]
+							},
+							location: {
+								lat: 26.112792972395003,
+								lon: 119.2704301872128
+							},
+
+							updateTime: "2022-03-25 14:27:53",
+							userId: "daefc160e23a4b35877f1826d4f99ac2",
 							ownerPhone: "13599098689",
+							industry: 2,
+							institutionalSettlement: null,
 							isDelete: 0,
 							logo: "service-org-7adc24dc/20210708/e146701857a042db9ecc2a8f0ffe479c.jpg",
-							merchantName: "实现财务自由",
+							merchantName: "精彩电影",
+							merchantNo: "9ZLWBzob",
+							province: "350000",
+							provinceName: "福建省",
+							qrcodeMode: 1,
+							region: "福州软件园",
+							regionNo: "DL1333225698034458624",
 							businessLicense: "service-org-7adc24dc/20211231/7f8324b5a089496c81bf97e2d0e7f0c4.png",
+							categoryArray: {
+								categoryName: "美食",
+								goodsTemplate: null,
+								level: 1,
+								loadType: null,
+								merchantCategory: "7d87cedb35734128be5185ebcaf2f854",
+							},
+
 						}]
 					},
 
 					{
 						id: 2,
-						name: '进行中',
+						name: '代金券',
 						loaded: false,
 						status: 'more',
 						pager: {
@@ -472,6 +577,14 @@
 							transactionQueryTypes: ['1', '2', '3', '16'],
 							value: 1,
 						}]
+					}, {
+						name: '收藏',
+						loaded: false,
+						status: 'more',
+						pager: {
+							curPageNum: 0
+						},
+						list: []
 					}
 				],
 				titleType: [{
@@ -518,7 +631,21 @@
 				timer: ''
 			}
 		},
-		mounted() {},
+		mounted() {
+			// 监听页面滚动，先隐藏
+			// var that = this;
+			// uni.$on('onPageScroll', function(data) {
+			// 	console.log("页面滚动了")
+			// 	console.log(data);
+			// 	that.scrollTop = data;
+			// 	if (that.scrollTop <= 200) {
+			// 		that.showSearch = true
+			// 	} else {
+			// 		that.showSearch = false
+			// 	}
+			// 	console.log('this.showSearch', that.showSearch)
+			// });
+		},
 		created() {
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
 			this.bigFixStr = this.$imageFixStr(750, 592)
@@ -587,14 +714,29 @@
 					return
 				}
 			},
+			onErrorShopIcon(item) {
+				this.$set(item, 'icon', null)
+			},
+			onErrorShopLogo(item) {
+				this.$set(item, 'logo', null)
+			},
 			tabSelect(e) {
 				// this.merchantTabCurIndex = e.currentTarget.dataset.id;
 				this.merchantTabCurIndex = e
 				this.tabCurrentId = this.merchantTabList[e].id
 			},
+			getPreSettleCalcApi() {
+
+			},
 			async changeTab(e) {
+				console.log(e)
 				this.merchantTabCurIndex = e.target.current
 				this.tabCurrentId = this.merchantTabList[e.target.current].id
+				if (this.merchant.pager.totalPageNum == null) {
+					if (this.tabCurrentId === 2) {
+						this.getPreSettleCalcApi()
+					}
+				}
 			},
 			orgHomeConfig() {
 				let res = {
@@ -994,6 +1136,14 @@
 					`/myPackageA/pages/coupon/index?lon=${this.location.longitude}&lat=${this.location.latitude}&imgId=${id}`,
 					true, false, true)
 			},
+			goHotActivity(item) {
+				item.fileBaseURL = this.fileBaseURL
+				let activeInfo = encodeURIComponent(JSON.stringify(item))
+				this.$toView(
+					`/myPackageA/pages/activity/index?lon=${this.location.longitude}&lat=${this.location.latitude}&activeInfo=${activeInfo}`,
+					true, false, true)
+
+			},
 			clickCoupon(isBuy, goodsId) {
 				clearTimeout(this.timer)
 				this.timer = setTimeout(() => {
@@ -1036,13 +1186,22 @@
 
 			},
 			async handleClickMenu(index) {
+				// if(index === 0 || index === 3){
 				this.categoryName = this.categoryList[index].name
 				this.categoryIndex = index
+
 				this.toGoodListView(this.categoryName, this.categoryIndex, this.categoryMerchantId)
+				// }
+
 			},
 			toGoodListView(name, index, mid) {
 				this.$toView(`shop/list-detail?categoryName=${name}&categoryIndex=${index}&categoryMerchantId=${mid}`,
 					true)
+			},
+			handleClickPurse() {
+				uni.navigateTo({
+					url: `/myPackageA/pages/purse`,
+				});
 			}
 		}
 	}

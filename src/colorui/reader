@@ -1,0 +1,6 @@
+这里主要是引入了国内的css样式库colorui，colorui在对于uni-app或者其他项目的快速开发上，有很大的帮助
+
+gitHub
+https://github.com/weilanwl/ColorUI/tree/master
+
+我发现这个colorui实际上缺乏对应的文档，而且官网貌似不行了，这里可以通过img.png，扫码访问colorui的小程序进行查看

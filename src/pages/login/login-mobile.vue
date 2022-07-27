@@ -22,9 +22,6 @@
 </template>
 
 <script>
-	import { sendMobileCode, userForceBind } from '../../api/platformgouc'
-	import { memberSupply, memberMerge, memberAccount } from '../../api/infomember'
-	import { smsSend, smsSendH5 } from '../../api/smsapi'
 	import {BASE_URL} from "../../common/config";
 	import myLoginSrc from '../../static/images/dream.png'
 
@@ -82,43 +79,6 @@
 					if (valid) {
 						this.registerForm.captcha = ''
 						this.sendLoading = true
-
-						/*
-						* 注意：如果是云闪付和普通h是否存在差异
-						* */
-						// #ifdef H5
-						sendMobileCode({
-							phoneNum: this.registerForm.phoneNum,
-							regionNo: this.$regionId,
-							op: 1
-						}).then(res => {
-							this.sendLoading = false
-							uni.showToast({
-								title: '短信验证码发送成功！',
-								icon: 'none'
-							})
-							this.canSendNextMsg()
-						}).catch (err => {
-							this.sendLoading = false
-							console.error(err)
-						})
-						// #endif
-
-						// #ifdef MP-WEIXIN
-            			smsSend({
-							phone: this.registerForm.phoneNum,
-						}).then(res => {
-							this.sendLoading = false
-							uni.showToast({
-								title: '短信验证码发送成功！',
-								icon: 'none'
-							})
-							this.canSendNextMsg()
-						}).catch (err => {
-							this.sendLoading = false
-							console.error(err)
-						})
-						// #endif
 					}
 				})
 			},
