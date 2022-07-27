@@ -1,13 +1,13 @@
 <template>
 	<view>
 		<view>
-<!--			<tab-home v-if="selectedTap === tabList[0].name" :ref="'tab-' + tabList[0].name"
+			<tab-home v-if="selectedTap === tabList[0].name" :ref="'tab-' + tabList[0].name"
 					  :isFresh="tabList[0].isFresh" @changeIsFresh="changeIsFresh"></tab-home>
 			<tab-discount v-if="selectedTap === tabList[1].name" :ref="'tab-' + tabList[1].name"
 						  :isFresh="tabList[1].isFresh" :isReachBottom="isReachBottom"></tab-discount>
-			&lt;!&ndash; 购物车注释 &ndash;&gt;
+			<!-- 购物车注释 -->
 			<tab-recommend v-if="selectedTap === tabList[3].name" :ref="'tab-' + tabList[3].name"></tab-recommend>
-			<tab-user v-if="selectedTap === tabList[4].name" :ref="'tab-' + tabList[4].name"></tab-user>-->
+			<tab-user v-if="selectedTap === tabList[4].name" :ref="'tab-' + tabList[4].name"></tab-user>
 		</view>
 		<!--底部导航组件-->
 		<fhu-tabbar-item :tabList="tabList" :selectedTap="selectedTap" :themeColor="themeColor" @handleChangeTab="handleChangeTab"></fhu-tabbar-item>
@@ -15,17 +15,17 @@
 </template>
 
 <script>
-/*	import tabHome from '@/components/tabbar/index/home'
-	import tabRecommend from '@/components/tabbar/index/recommend'
-	import tabUser from '@/components/tabbar/index/user'
-	import tabDiscount from '@/components/tabbar/index/discount'*/
+	import tabHome from './tabbar/index/home'
+	import tabRecommend from './tabbar/index/recommend'
+	import tabUser from './tabbar/index/user'
+	import tabDiscount from './tabbar/index/discount'
 	export default {
-/*		components: {
+		components: {
 			tabHome,
 			tabRecommend,
 			tabUser,
 			tabDiscount
-		},*/
+		},
 		data() {
 			return {
 				backgroundStyle: {

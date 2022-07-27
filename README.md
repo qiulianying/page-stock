@@ -32,6 +32,7 @@ src/colorui    // colorui相关css组件库
 src/common/const.js // 封装项目公用枚举
 src/common/https.js // 封装uni-app接口调用方法
 src/common/util.js  // 封装公用方法
+src/components // 各类组件，在uni-app中，组件按照命名规范写入之后可以直接调用无需引入
 src/fhuview-ui // 自己编写的模拟uView组件编写的组件，到时候作为组件库使用
 src/locales    // 用于处理多语言切换
 src/myPackageA // 主要页面库所在页面

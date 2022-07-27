@@ -1,9 +1,9 @@
 <template>
   <view>
-    <cu-custom :isBack="true">
+<!--    <cu-custom :isBack="true">
       <block slot="backText">返回</block>
-      <block slot="content">创建梦</block>
-    </cu-custom>
+      <block slot="content">创建</block>
+    </cu-custom>-->
     <form>
       <view class="cu-form-group margin-top">
         <view class="title">邮件</view>
