@@ -2,7 +2,7 @@
 	<view>
 		<!-- #ifdef H5 -->
 		<view :class="isBgBlue ? 'cu-custom-blue' : 'cu-custom'"
-			:style="[{height: CustomBar ? CustomBar + 'px' : ''}, {backgroundColor: isBgBlue ? themeColor : ''}]">
+			:style="[{height: CustomBar ? CustomBar + 'px' : ''}, {backgroundColor: isBgBlue ? themeColor : '#ffffff'}]">
 			<!-- <view class="cu-bar fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]"> -->
 			<view class="cu-bar fixed" :style="style" :class="[bgImage!=''?'none-bg text-white bg-img':'',bgColor]">
 				<view class="action" style="font-size: 34rpx; font-weight: bold;" @tap="backPageH5" v-if="isBack">

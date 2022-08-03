@@ -32,6 +32,25 @@ export default {
 		s = s < 10 ? ('0' + s) : s;
 		return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
 	},
+	/**
+	 * @name 时间格式化函数
+	 * @author hyx
+	 * @param {Date} data
+	 * @param {String} separator //分隔文本
+	 * @param {Boolean} Chinese // 是否为中文分隔
+	 * @returns String
+	 */
+	dateFormat(data, separator, Chinese) {
+		const date = data ? new Date(data) : new Date()
+		if (!separator) separator = ''
+		if (Chinese) {
+			return `${date.getFullYear()}年${date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : date.getMonth() +
+				1}月${date.getDate() <= 9 ? '0' + date.getDate() : date.getDate()}日`
+		} else {
+			return `${date.getFullYear()}${separator}${date.getMonth() < 9 ? '0' + (date.getMonth() + 1) : date.getMonth() +
+				1}${separator}${date.getDate() <= 9 ? '0' + date.getDate() : date.getDate()}`
+		}
+	},
 	strIsEmpty(str) {
 		return str == null || str === ''
 	},

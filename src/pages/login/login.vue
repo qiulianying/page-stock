@@ -7,10 +7,10 @@
 			<view class="page-img">
 				<image class="login-logo" :src="myLoginSrc" mode="widthFix" v-if="myLoginSrc" />
 			</view>
-			<button class="cu-btn page-box-btn bg-theme" :style="{background: themeColor}" open-type="getPhoneNumber"
-				@getphonenumber="getPhoneNumber">微信账号一键登录</button>
+			<button class="cu-btn page-box-btn bg-theme" open-type="getPhoneNumber"
+				@getphonenumber="getPhoneNumber">微信一键登录</button>
 			<button class="cu-btn page-box-btn page-box-btn-mobile"
-					@tap="toView('login/login-mobile')">手动输入手机号码登录</button>
+					@tap="toView('login/login-mobile')">直接试用</button>
 		</view>
 	</view>
 </template>
@@ -75,6 +75,11 @@
 		.page-box {
 			text-align: center;
 
+      .bg-theme {
+        background: linear-gradient(106deg, #4749FF 0%, #5A3380 100%);
+        border-radius: 45px;
+      }
+
 			.page-box-btn {
 				margin: 40rpx 60rpx;
 				border-radius: 47rpx;
@@ -87,7 +92,8 @@
 
 				// background: #3FAEEF;
 				&-mobile {
-					color: #161616;
+          font-weight: 500;
+          color: #523DB8;
 					height: 90rpx;
 					line-height: 90rpx;
 					border: 2rpx solid #E4E4E4;

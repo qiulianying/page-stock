@@ -74,42 +74,6 @@
 			{
 				"name": "首页",
 				"path": "pages/index/index"
-			},
-			{
-				"name": "充值记录",
-				"path": "pages/user/user-recharge-record"
-			},
-			{
-				"name": "会员充值",
-				"path": "pages/user/user-recharge"
-			},
-			{
-				"name": "我的优惠券",
-				"path": "pages/user/user-coupon-list"
-			},
-			{
-				"name": "我的地址",
-				"path": "pages/user/user-address-list"
-			},
-			{
-				"name": "我的收藏",
-				"path": "pages/user/user-fav"
-			},
-			{
-				"name": "钱包",
-				"path": "pages/user/user-wallet"
-			},
-			{
-				"name": "钱包",
-				"path": "pages/user/user-wallet-bankcard-add"
-			},
-			{
-				"name": "医药商城",
-				"path": "pages/shopMall/index"
-			},
-			{
-				"name": "医药商城门店",
-				"path": "pages/shopMall/categories"
 			}
 		]
 	}
