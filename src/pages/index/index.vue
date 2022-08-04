@@ -17,14 +17,16 @@
 <script>
 	import tabHome from './tabbar/index/home'
 	import tabRecommend from './tabbar/index/recommend'
-	import tabUser from './tabbar/index/user'
 	import tabDiscount from './tabbar/index/discount'
+  import fhuTabbarItem from '../../fhuview-ui/components/fhu-tabbar-item/fhu-tabbar-item'
+  import tabUser from './tabbar/index/user'
 	export default {
 		components: {
 			tabHome,
 			tabRecommend,
 			tabUser,
-			tabDiscount
+			tabDiscount,
+      fhuTabbarItem
 		},
 		data() {
 			return {

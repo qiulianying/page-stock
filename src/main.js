@@ -31,10 +31,6 @@ import {IMG_PRE_URL} from './common/env'
 import {router,RouterMount} from './router/router.js'  //路径换成自己的
 Vue.use(router)
 
-// 引入自己编写的fhuView-ui组件：该组件模拟uView组件进行编写，后期如果修改就改为文档编号的方式引入
-import fhuView from './fhuview-ui/index'
-Vue.use(fhuView)
-
 
 // 测试引入弹窗组件
 import DialogTest from './components/dialogTest/index'
@@ -116,16 +112,17 @@ Vue.prototype.$isMemmber = () => {
 
 /*
 * 在uni-app中自定义编写
+* page：路径
+* isRedirect：是否需要直接跳转或者保存当前路径跳转
+* isPackage：是否分包
 * */
-Vue.prototype.$toView = (page, mustReg = false, isRedirect = false, isPackage = false) => {
+Vue.prototype.$toView = (page, isRedirect = false, isPackage = false) => {
 	let url = ''
 	if (!isPackage) {
 		// 如果不是分包里面的路由
-		url = mustReg && Vue.prototype.$isMemmber() ?
-			`/pages/login/login-mobile?fromurl=${encodeURIComponent(`/pages/${page}`)}` : `/pages/${page}`
+		url = `/pages/${page}`
 	} else {
-		url = mustReg && Vue.prototype.$isMemmber() ?
-			`/pages/login/login-mobile?fromurl=${encodeURIComponent(`${page}`)}` : `${page}`
+		url = `${page}`
 	}
 	if (isRedirect) {
 		uni.redirectTo({

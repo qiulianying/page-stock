@@ -1,7 +1,6 @@
 {
 	"easycom": {
-		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue",
-		"^fhu-(.*)": "fhuview-ui/components/fhu-$1/fhu-$1.vue"
+		"^u-(.*)": "uview-ui/components/u-$1/u-$1.vue"
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
@@ -45,6 +44,12 @@
 			"pages": [
 				{
 					"path": "pages/createdream/index",
+					"style": {
+						"navigationBarTitleText": "创建梦"
+					}
+				},
+				{
+					"path": "pages/createdream/createform",
 					"style": {
 						"navigationBarTitleText": "创建梦"
 					}

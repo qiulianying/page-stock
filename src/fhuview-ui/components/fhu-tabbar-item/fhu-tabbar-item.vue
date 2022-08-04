@@ -3,7 +3,7 @@
           v-show="tabList.length > 0"
           style="background: #ffffff; box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);">
         <block v-for="(item, index) in tabList" :key="index">
-            <view v-if="item.otherImage && item.visible" class="action" @tap.stop="$toView('user/user-code', true)"
+            <view v-if="item.otherImage && item.visible" class="action" @tap.stop="$toView('myPackageA/pages/createdream/index', false, true)"
                   style="background: transparent; margin-top: -16rpx;">
                 <view class="cuIcon-" style="width: auto;">
                     <view class="bot-code-box">

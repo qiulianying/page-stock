@@ -4,10 +4,10 @@
       <block slot="backText"></block>
       <block slot="content">创建梦</block>
       <block slot="right">
-        <button class='cu-btn bg-oblue' style="margin-right: 20rpx">发表</button>
+        <button class='cu-btn bg-oblue' style="margin-right: 20rpx" :disabled="true">发表</button>
       </block>
     </cu-custom>
-    <form>
+    <form class="cu-myDream">
       <view class="cu-form-group">
         <input placeholder="写梦想标题更有可能被人关注 (选填)" name="input" maxlength="30"></input>
       </view>
@@ -45,7 +45,10 @@
       </view>
 
       <view class="cu-form-group margin-top">
-        <view class="title">更新频次</view>
+        <view class="title">
+          <text class="cuIcon-light text-theme"></text>
+          <text>更新频次</text>
+        </view>
         <picker @change="PickerChange" :value="index" :range="picker">
           <view class="picker">
             {{ index>-1? picker[index]:'默认每天打卡'}}
@@ -53,12 +56,24 @@
         </picker>
       </view>
       <view class="cu-form-group" @tap="chooseLocation">
-        <view class="title">在哪里</view>
+        <view class="title">
+          <text class="cuIcon- zjIcon-address text-theme"></text>
+          <text>在哪里</text>
+        </view>
         <input placeholder="点击选择地址" name="input"></input>
       </view>
       <view class="cu-form-group">
-        <view class="title">公开</view>
+        <view class="title">
+          <text class="cuIcon-form text-theme"></text>
+          <text>公开</text>
+        </view>
         <switch @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"></switch>
+      </view>
+      <view class="cu-form-group">
+        <view class="saveAlbum">
+          <text class="saveAlbumTitle">保存相册</text>
+          <checkbox class='round blue' :class="checkboxMe?'checked checkboxMe':'checkboxMe'" :checked="checkboxMe?true:false"></checkbox>
+        </view>
       </view>
     </form>
   </view>
@@ -70,18 +85,14 @@ export default {
     return {
       index: -1,
       picker: ['每天打卡', '每周打卡', '每月打卡'],
-      multiArray: [
-        ['无脊柱动物', '脊柱动物'],
-        ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物'],
-        ['猪肉绦虫', '吸血虫']
-      ],
       multiIndex: [0, 0, 0],
       date: '',
       switchA: false,
+      checkboxMe: false,
       imgList: [],
       modalName: null,
       textareaAValue: '',
-      textareaBValue: ''
+      textareaBValue: '',
     };
   },
   onLoad(options) {
@@ -99,71 +110,6 @@ export default {
     },
     PickerChange(e) {
       this.index = e.detail.value
-    },
-    MultiChange(e) {
-      this.multiIndex = e.detail.value
-    },
-    MultiColumnChange(e) {
-      let data = {
-        multiArray: this.multiArray,
-        multiIndex: this.multiIndex
-      };
-      data.multiIndex[e.detail.column] = e.detail.value;
-      switch (e.detail.column) {
-        case 0:
-          switch (data.multiIndex[0]) {
-            case 0:
-              data.multiArray[1] = ['扁性动物', '线形动物', '环节动物', '软体动物', '节肢动物'];
-              data.multiArray[2] = ['猪肉绦虫', '吸血虫'];
-              break;
-            case 1:
-              data.multiArray[1] = ['鱼', '两栖动物', '爬行动物'];
-              data.multiArray[2] = ['鲫鱼', '带鱼'];
-              break;
-          }
-          data.multiIndex[1] = 0;
-          data.multiIndex[2] = 0;
-          break;
-        case 1:
-          switch (data.multiIndex[0]) {
-            case 0:
-              switch (data.multiIndex[1]) {
-                case 0:
-                  data.multiArray[2] = ['猪肉绦虫', '吸血虫'];
-                  break;
-                case 1:
-                  data.multiArray[2] = ['蛔虫'];
-                  break;
-                case 2:
-                  data.multiArray[2] = ['蚂蚁', '蚂蟥'];
-                  break;
-                case 3:
-                  data.multiArray[2] = ['河蚌', '蜗牛', '蛞蝓'];
-                  break;
-                case 4:
-                  data.multiArray[2] = ['昆虫', '甲壳动物', '蛛形动物', '多足动物'];
-                  break;
-              }
-              break;
-            case 1:
-              switch (data.multiIndex[1]) {
-                case 0:
-                  data.multiArray[2] = ['鲫鱼', '带鱼'];
-                  break;
-                case 1:
-                  data.multiArray[2] = ['青蛙', '娃娃鱼'];
-                  break;
-                case 2:
-                  data.multiArray[2] = ['蜥蜴', '龟', '壁虎'];
-                  break;
-              }
-              break;
-          }
-          data.multiIndex[2] = 0;
-          break;
-      }
-      this.multiArray = data.multiArray;
-      this.multiIndex = data.multiIndex;
     },
     DateChange(e) {
       this.date = e.detail.value
@@ -193,7 +139,7 @@ export default {
     },
     DelImg(e) {
       uni.showModal({
-        title: '情爱的',
+        title: '亲爱的',
         content: '确定要删除这段回忆吗？',
         cancelText: '再看看',
         confirmText: '再见',
@@ -211,8 +157,29 @@ export default {
 }
 </script>
 
-<style>
-.cu-form-group .title {
-  min-width: calc(4em + 15px);
+<style lang="scss">
+.cu-myDream {
+  .cu-form-group {
+    .title {
+      min-width: calc(4em + 15px);
+    }
+
+    .saveAlbum {
+      .saveAlbumTitle {
+        margin-right: 10rpx;
+      }
+
+      .checkboxMe {
+        /deep/ .uni-checkbox-input {
+          width: 35rpx;
+          height: 35rpx;
+        }
+      }
+    }
+  }
+
+  .text-theme {
+    margin-right: 15rpx;
+  }
 }
 </style>
