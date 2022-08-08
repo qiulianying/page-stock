@@ -1,5 +1,5 @@
 {
-    "name" : "福州软件园",
+    "name" : "助梦行",
     "appid" : "__UNI__B48E472",
     "description" : "",
     "versionName" : "1.0.0",
@@ -55,7 +55,7 @@
             "sdkConfigs" : {
                 "share" : {
                     "weixin" : {
-                        "appid" : "wx67205035cdd52bc0",
+                        "appid" : "wx4f9144675b75b1c9",
                         "UniversalLinks" : ""
                     }
                 }
@@ -66,7 +66,7 @@
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "wx67205035cdd52bc0",
+        "appid" : "wx4f9144675b75b1c9",
         "setting" : {
             "urlCheck" : false
         },

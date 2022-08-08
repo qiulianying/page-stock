@@ -348,9 +348,10 @@
 				this.getMemberInfo()
 			},
 			handleLogin() {
-				if (this.member == null || this.$util.strIsEmpty(this.member.phone)) {
-					this.$toView('login/login')
-				}
+				// if (this.member == null || this.$util.strIsEmpty(this.member.phone)) {
+				//
+				// }
+				this.$toView('login/login')
 			},
 			showCertingTip() {
 				uni.showToast({

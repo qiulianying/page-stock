@@ -1,6 +1,6 @@
 # pageStock
 该项目作为页面库使用
-有关该uni-app相关优化如下，是的项目更加方便可控
+有关该uni-app相关优化如下，是的项目更加方便可控，该项目可以通过
 1、新增vue.config.js进行对应uni-app配置的快捷操作，分离了部分manifest.json的操作
 
 2、编写小程序环境切换工具实现环境快速切换
@@ -72,4 +72,14 @@ yarn serve
 ### 项目打包h5模式
 ```
 yarn build
+```
+
+### hbuilder微信小程序启动方式
+```
+打开hbuilder引入该项目，确保已经yarn install安装对应依赖以及本地有微信开发者工具之后，通过hbuilder 运行 -》运行到小程序模拟器
+```
+
+### hbuilder微信小程序启动方式
+```
+打开hbuilder引入该项目，确保已经yarn install安装对应依赖以及本地有微信开发者工具之后，通过hbuilder 运行 -》运行到小程序模拟器
 ```

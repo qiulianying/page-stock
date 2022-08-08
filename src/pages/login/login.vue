@@ -50,10 +50,9 @@
 					url: url
 				})
 			},
-			// 微信小程序获取手机号码
+			// 微信一键登录获取相关信息微信小程序获取手机号码
 			getPhoneNumber(e) {
-			},
-			getWXPhone(data) {
+				console.log(e)
 			},
 			// 输入手机号码登录成功之后，进行会员账户的开通
 			loginSuccess() {
@@ -75,10 +74,10 @@
 		.page-box {
 			text-align: center;
 
-      .bg-theme {
-        background: linear-gradient(106deg, #4749FF 0%, #5A3380 100%);
-        border-radius: 45px;
-      }
+		  .bg-theme {
+			background: linear-gradient(106deg, #4749FF 0%, #5A3380 100%);
+			border-radius: 45px;
+		  }
 
 			.page-box-btn {
 				margin: 40rpx 60rpx;

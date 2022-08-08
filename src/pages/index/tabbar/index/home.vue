@@ -532,7 +532,7 @@
 							province: "350000",
 							provinceName: "福建省",
 							qrcodeMode: 1,
-							region: "福州软件园",
+							region: "助梦行",
 							regionNo: "DL1333225698034458624",
 							businessLicense: "service-org-7adc24dc/20211231/7f8324b5a089496c81bf97e2d0e7f0c4.png",
 							categoryArray: {

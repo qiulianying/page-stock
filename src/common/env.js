@@ -8,7 +8,7 @@ export const ENV_SECRETFILE_CARD = '/rights-marketing/OCR/bankCardRecognize'    
 export const ENV_SECRETFILE_IDCARD = '/rights-marketing/OCR/idCardRecognize'        //身份证图片流文件上传
 
 /*默认当前为微信小程序appId*/
-let ENV_MP_WECHAT_APPID = 'wx67205035cdd52bc0'
+let ENV_MP_WECHAT_APPID = 'wx4f9144675b75b1c9'
 /*默认当前为云闪付小程序appId：目前默认写的是U热购小程序的appId，实际都优先使用接口调用*/
 let ENV_MP_APPLET_APPID = '1b09a54d391a48ef88f75bcc871aee43'
 

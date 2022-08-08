@@ -1,11 +1,7 @@
 <template>
   <view>
-    <cu-custom :isBack="true">
-      <block slot="backText"></block>
+    <cu-custom bgColor="bg-white" :isBack="true">
       <block slot="content">创建梦</block>
-      <block slot="right">
-        <button class='cu-btn bg-oblue' style="margin-right: 20rpx" :disabled="true">发表</button>
-      </block>
     </cu-custom>
     <form class="cu-myDream">
       <view class="cu-form-group">
@@ -75,6 +71,11 @@
           <checkbox class='round blue' :class="checkboxMe?'checked checkboxMe':'checkboxMe'" :checked="checkboxMe?true:false"></checkbox>
         </view>
       </view>
+
+        <!--发表按钮-->
+        <view class="page-bottom">
+            <button @tap="createDream" class='cu-btn bg-theme' :disabled="true" :style="{background: themeColor}">保 存</button>
+        </view>
     </form>
   </view>
 </template>
@@ -96,9 +97,15 @@ export default {
     };
   },
   onLoad(options) {
+    // 屏蔽微信右上角工具栏
+    wx.hideShareMenu()
     this.date = this.$util.dateFormat(new Date(), '-')
   },
   methods: {
+    // 创建梦
+    createDream() {
+
+    },
     // 地图选择
     chooseLocation() {
       uni.chooseLocation({
@@ -181,5 +188,18 @@ export default {
   .text-theme {
     margin-right: 15rpx;
   }
+
+    .page-bottom {
+        button {
+            margin: 64rpx 24rpx 24rpx;
+            border-radius: 47rpx;
+            font-size: 34rpx;
+            color: #FFFFFF;
+            height: 94rpx;
+            line-height: 94rpx;
+            text-align: center;
+            display: block;
+        }
+    }
 }
 </style>
