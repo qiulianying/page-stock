@@ -176,6 +176,17 @@
         <view class="title">文本框</view>
         <textarea maxlength="-1" :disabled="modalName!=null" @input="textareaBInput" placeholder="多行文本输入框"></textarea>
       </view>
+<!--   保存按钮   -->
+      <view class="page-bottom">
+        <button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveAddress">保 存</button>
+      </view>
+
+<!--   弹出层搜索框   -->
+      <u-popup v-model="show" mode="bottom" :closeable="true">
+        <view class="mySearch">
+          <zy-search :isFocus="true" :theme="'circle'" :showWant="true"></zy-search>
+        </view>
+      </u-popup>
     </form>
   </view>
 </template>
@@ -184,6 +195,7 @@
 export default {
   data() {
     return {
+      show: false,
       index: -1,
       picker: ['喵喵喵', '汪汪汪', '哼唧哼唧'],
       multiArray: [
@@ -254,10 +266,17 @@ export default {
       imgList: [],
       modalName: null,
       textareaAValue: '',
-      textareaBValue: ''
+      textareaBValue: '',
+      themeColor: ''
     };
   },
+  onLoad() {
+    this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
+  },
   methods: {
+    saveAddress() {
+      this.show = true
+    },
     PickerChange(e) {
       this.index = e.detail.value
     },
@@ -406,8 +425,27 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .cu-form-group .title {
   min-width: calc(4em + 15px);
+}
+
+/*保存按钮*/
+.page-bottom {
+  button {
+    margin: 64rpx 24rpx 24rpx;
+    border-radius: 47rpx;
+    font-size: 34rpx;
+    color: #FFFFFF;
+    height: 94rpx;
+    line-height: 94rpx;
+    text-align: center;
+    display: block;
+  }
+}
+
+/*弹出层搜索框*/
+.mySearch {
+  height: 700rpx;
 }
 </style>
