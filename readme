@@ -4,3 +4,5 @@
 upsdk.pluginReady(function () {
 
 })
+
+第一次更新代码的时候进行代理取消
