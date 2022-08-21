@@ -54,6 +54,12 @@
 					"style": {
 						"navigationBarTitleText": "创建梦"
 					}
+				},
+				{
+					"path": "pages/updatadream/index",
+					"style": {
+						"navigationBarTitleText": "更新梦"
+					}
 				}
 			]
 		},

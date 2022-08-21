@@ -8,7 +8,7 @@
         <input placeholder="写梦想标题更有可能被人关注 (选填)" name="input" maxlength="30"></input>
       </view>
       <view class="cu-form-group">
-        <textarea maxlength="-1" :disabled="modalName!=null" @input="textareaAInput" placeholder="多行文本输入框"></textarea>
+        <textarea maxlength="-1" @input="textareaAInput" placeholder="多行文本输入框"></textarea>
       </view>
       <view class="cu-bar bg-white">
 <!--        <view class="action">
@@ -51,6 +51,13 @@
           </view>
         </picker>
       </view>
+        <view class="cu-form-group" @tap="topicSelect">
+            <view class="title">
+                <text class="cuIcon- zjIcon-address text-theme"></text>
+                <text>选话题</text>
+            </view>
+            <input placeholder="点击输入或选择话题" name="input"></input>
+        </view>
       <view class="cu-form-group" @tap="chooseLocation">
         <view class="title">
           <text class="cuIcon- zjIcon-address text-theme"></text>
@@ -71,12 +78,17 @@
           <checkbox class='round blue' :class="checkboxMe?'checked checkboxMe':'checkboxMe'" :checked="checkboxMe?true:false"></checkbox>
         </view>
       </view>
-
-        <!--发表按钮-->
+        <!--   保存按钮   -->
         <view class="page-bottom">
-            <button @tap="createDream" class='cu-btn bg-theme' :disabled="true" :style="{background: themeColor}">保 存</button>
+            <button class="cu-btn bg-theme" :disabled="!havaContent" :style="{background: themeColor}" @tap="saveAddress">保 存</button>
         </view>
     </form>
+      <!--   弹出层搜索框   -->
+      <u-popup v-model="showInput" mode="bottom" :closeable="true">
+          <view class="mySearch">
+              <zy-search :isFocus="true" :theme="'circle'" :showWant="true"></zy-search>
+          </view>
+      </u-popup>
   </view>
 </template>
 
@@ -84,6 +96,8 @@
 export default {
   data() {
     return {
+        havaContent: false,
+        showInput: false,
       index: -1,
       picker: ['每天打卡', '每周打卡', '每月打卡'],
       multiIndex: [0, 0, 0],
@@ -91,22 +105,27 @@ export default {
       switchA: false,
       checkboxMe: false,
       imgList: [],
-      modalName: null,
       textareaAValue: '',
       textareaBValue: '',
+      themeColor: ''
     };
   },
   onLoad(options) {
+      this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
     // 屏蔽微信右上角工具栏
     wx.hideShareMenu()
     this.date = this.$util.dateFormat(new Date(), '-')
   },
   methods: {
     // 创建梦
-    createDream() {
-
-    },
-    // 地图选择
+      saveAddress() {
+          this.showInput = true
+      },
+    // 话题选择
+      topicSelect() {
+          this.showInput = true
+      },
+      // 地图选择
     chooseLocation() {
       uni.chooseLocation({
         success: data => {
@@ -172,6 +191,10 @@ export default {
     }
 
     .saveAlbum {
+        width: 100%;
+        display: inline-flex;
+        justify-content: space-between;
+        align-items: center;
       .saveAlbumTitle {
         margin-right: 10rpx;
       }
@@ -201,5 +224,9 @@ export default {
             display: block;
         }
     }
+}
+/*弹出层搜索框*/
+.mySearch {
+    height: 700rpx;
 }
 </style>

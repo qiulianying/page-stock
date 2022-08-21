@@ -6,7 +6,7 @@
 			<tab-discount v-if="selectedTap === tabList[1].name" :ref="'tab-' + tabList[1].name"
 						  :isFresh="tabList[1].isFresh" :isReachBottom="isReachBottom"></tab-discount>
 			<!-- 购物车注释 -->
-			<tab-recommend v-if="selectedTap === tabList[3].name" :ref="'tab-' + tabList[3].name"></tab-recommend>
+			<tab-recommend :isReachBottom="isReachBottom" v-if="selectedTap === tabList[3].name" :ref="'tab-' + tabList[3].name"></tab-recommend>
 			<tab-user v-if="selectedTap === tabList[4].name" :ref="'tab-' + tabList[4].name"></tab-user>
 		</view>
 		<!--底部导航组件-->
@@ -49,7 +49,7 @@
 					}, {
 						name: 'shop',
 						icon: 'item02',
-						title: '权益',
+						title: '筑梦',
 						barColor: 'white',
 						visible: true,
 						isFresh: false
@@ -66,7 +66,7 @@
 					{
 						name: 'recommend',
 						icon: 'item04',
-						title: '购物车',
+						title: '梦圈',
 						barColor: 'black',
 						visible: true,
 						isFresh: false
@@ -121,7 +121,7 @@
 			}
 		},
 		onReachBottom() {
-			if (this.selectedTap === this.tabList[1].name) {
+			if (this.selectedTap === this.tabList[1].name || this.selectedTap === this.tabList[3].name) {
 				// 对于发现模块，上拉要给该页面传值，加载数据
 				this.isReachBottom = new Date().getTime()
 			}
