@@ -3,6 +3,14 @@
 		<cu-custom bgColor="bg-white">
 			<block slot="backText" class="text-black">梦圈</block>
 		</cu-custom>
+		<view class="myheader-search">
+			<view class="search-box">
+				<view class="search-box-left">
+					<u-search :placeholder="searchText" v-model="keyword" :focus="true" :show-action="false" @search="inputSearch()">
+					</u-search>
+				</view>
+			</view>
+		</view>
 		<view class="mall-cart-list flex flex-direction" v-if="cartList.length > 0">
 			<zj-dream-list :list="cartList" @itemClick="toShowList"></zj-dream-list>
 		</view>
@@ -22,6 +30,8 @@
 		},
 		data() {
 			return {
+				searchText: '搜索您感兴趣的梦想',
+				keyword: '',
 				allFlag: {
 					checked: false,
 					value: 'all'
@@ -98,6 +108,9 @@
 		onShow(){
 		},
 		methods: {
+			doSearch() {
+
+			},
 			toShowList(item) {
 				console.log(item)
 			}
@@ -106,6 +119,13 @@
 </script>
 
 <style lang="scss" scoped>
+	.myheader-search {
+		background-color: #ffffff;
+		.search-box {
+			width: 96%;
+			margin: 0 auto;
+		}
+	}
 	.pb100 {
 		padding-bottom: 100rpx;
 	}

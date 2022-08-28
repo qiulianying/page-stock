@@ -36,6 +36,18 @@
 			"style": {
 				"navigationBarTitleText": "获取openId"
 			}
+		},
+		{
+			"path": "pages/user/user-msg",
+			"style": {
+				"navigationBarTitleText": "我的消息"
+			}
+		},
+		{
+			"path": "pages/user/user-fans",
+			"style": {
+				"navigationBarTitleText": "粉丝"
+			}
 		}
 	],
 	"subPackages": [
@@ -59,6 +71,12 @@
 					"path": "pages/updatadream/index",
 					"style": {
 						"navigationBarTitleText": "更新梦"
+					}
+				},
+				{
+					"path": "pages/dream/dream-detail",
+					"style": {
+						"navigationBarTitleText": "我的筑梦"
 					}
 				}
 			]
@@ -90,6 +108,10 @@
 			{
 				"name": "创建梦",
 				"path": "myPackageA/pages/createdream/index"
+			},
+			{
+				"name": "我的筑梦",
+				"path": "myPackageA/pages/dream/dream-detail"
 			}
 		]
 	}
