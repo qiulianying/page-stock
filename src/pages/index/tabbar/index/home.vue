@@ -37,16 +37,28 @@
 					:current="merchantTabCurIndex" @change="tabSelect" :active-color="themeColor"></u-tabs>
 			</view>
 		</view>
-		<swiper :current="merchantTabCurIndex" class="swiper-box" duration="300" @change="changeTab"
+		<div class="swiper-box" style="margin-bottom:100rpx">
+			<div v-if="cartList.length > 0" style="width: 100%;background-color: #ffffff">
+				<zj-dream-list :list="cartList" @itemClick="toShowList"></zj-dream-list>
+			</div>
+			<zj-empty v-else :img="`${imgUrl}1639019849000/pic_shoping.png`" :shortWindows="true"
+					  text="暂无梦圆数据~" />
+		</div>
+<!--		<swiper :current="merchantTabCurIndex" class="swiper-box" duration="300" @change="changeTab"
 			style="margin-bottom:100rpx">
 			<swiper-item class="tab-content" v-for="(tabItem, tabIndex) in merchantTabList" :key="tabIndex">
-
+				<div v-if="cartList.length > 0">
+					<zj-dream-list :list="cartList" @itemClick="toShowList"></zj-dream-list>
+				</div>
+				<zj-empty v-else :img="`${imgUrl}1639019849000/pic_shoping.png`"
+						  text="暂无梦圆数据~" />
 			</swiper-item>
-		</swiper>
+		</swiper>-->
 	</view>
 </template>
 
 <script>
+	import { getDreamgodenList } from '../../../../api/home'
 	export default {
 		props: {
 			isFresh: { // 是否刷新
@@ -60,18 +72,27 @@
 		},
 		data() {
 			return {
+				cartList: [
+					// {
+					// 	title: '2024 考研成功上岸',
+					// 	time: '2022-10-21',
+					// 	name: '春日回暖衬',
+					// 	headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
+					// 	content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
+					// 	imagesArray: [
+					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
+					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
+					// 	]
+					// }
+				],
 				searchText: '搜索梦想....',
-				showSearch: true,
-				scrollTop: 0,
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
 				imgUrl: this.$imgUrl,
 				showTab: true,
 				isSoftware: this.$Software,
 				keyword: '',
-				searchValue: '',
 				type: 'text',
-				location: {},
 				swiperList: [{
 					"link": {},
 					"style": 1,
@@ -160,45 +181,32 @@
 					borderRadius: '50rpx',
 					color: '#fff'
 				},
-				actList: [{
-					"shoprightList": [{
-						"isOpenStore": 0,
-						"payTypes": [],
-						"goodsPrice": 1.1,
-						"transactionQueryTypes": [],
-						"name": "测试",
-						"id": "e73e099017ec4b7da28c2d9e0f81afcd",
-						"saleNum": 0,
-						"pics": [],
-						"realPrice": 1.1
-					}],
-					"icon": "service-org-7adc24dc/20211202/34739117b32e4100a9957fb7371ca5d1.png",
-					"acticon": "service-org-7adc24dc/20211202/7d168fe4915042a3b074c15517b0a08a.png",
-					"id": 0
-				}],
 				isAct: true,
-				fixStr: '?x-oss-process=image/resize,m_fill,h_144,w_144&x-image-process=image/resize,m_fill,h_144,w_144', //图片后缀
-				smallFixStr: '', // 小图片后缀
 				bigFixStr: '', //图片后缀
 				themeColor: '',
-				rightCoupon: [],
-				configForm: {},
 				tabCurrentId: 0, // 默认是0 推荐商家
+				current: 1,
+				size: 20
 			}
 		},
 		created() {
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
 			this.bigFixStr = this.$imageFixStr(750, 592)
-			this.smallFixStr = this.$imageFixStr(80, 80)
+			this.getDreamgodenListApi()
 		},
-    mounted() {},
-		computed: {
-			merchant() {
-				return this.merchantTabList[this.merchantTabCurIndex]
-			}
-		},
+    	mounted() {},
+		computed: {},
 		watch: {},
 		methods: {
+			getDreamgodenListApi() {
+				// 获取进行中数据
+				getDreamgodenList(`?current=${this.current}&size=${this.size}`).then(res => {
+					if (res.data.length > 0) {
+						this.cartList = this.cartList.concat(res.data)
+					}
+				})
+			},
+			toShowList() {},
 			init(isShow = false) {
 				if (!isShow) {
 					this.merchantTabCurIndex = 0
@@ -213,13 +221,15 @@
 
 			},
 			async changeTab(e) {
-				console.log(e)
 				this.merchantTabCurIndex = e.target.current
-				this.tabCurrentId = this.merchantTabList[e.target.current].id
-				if (this.merchant.pager.totalPageNum == null) {
-					if (this.tabCurrentId === 2) {
-						this.getPreSettleCalcApi()
-					}
+				// 根据切换的不同处理
+				switch (this.merchantTabCurIndex) {
+					case 0:
+						this.getDreamgodenListApi()
+						break;
+					case 1:
+						this.getDreamgodenListApi()
+						break
 				}
 			}
 		}
@@ -324,11 +334,16 @@
 
 			.mySwripter {
 				width: 100%;
-				// height: 300rpx;
 				height: 592rpx;
-				// margin-left: 2.5%;
-				// position: absolute;
-				// margin-top: 30rpx;
+			}
+		}
+	}
+
+	/*切换栏内容样式*/
+	.swiper-box {
+		.tab-content {
+			.tab-listInfo {
+
 			}
 		}
 	}

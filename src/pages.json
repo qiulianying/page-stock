@@ -7,7 +7,7 @@
 			"path": "pages/index/index",
 			"style": {
 				"navigationBarTitleText": "首页",
-				"enablePullDownRefresh": true,
+				"enablePullDownRefresh": false,
 				"backgroundTextStyle": "light", // 下拉刷新loading小圆点颜色，白底+白色小圆点可以实现“隐藏”原生小圆点哦
 				"navigationStyle": "custom" // 自定义导航栏(不自定义导航栏也可以使用本组件哦，只不过就只能使用原生小圆点样式了，无法自定义下拉刷新样式)
 				// "backgroundColor": "#34A2E8" // 页面背景底色

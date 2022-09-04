@@ -15,7 +15,7 @@
 			<zj-dream-list :list="cartList" @itemClick="toShowList"></zj-dream-list>
 		</view>
 		<zj-empty v-if="cartList.length === 0" :img="`${imgUrl}1639019849000/pic_shoping.png`"
-				  text="暂无梦圆数据~" />
+				  text="暂无数据~" />
 	</view>
 </template>
 

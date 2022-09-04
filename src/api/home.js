@@ -24,4 +24,5 @@ export const getDreamList = (data, option) => http(`dream/page${data}`, data, {m
 export const addDream = (data, option) => http('add/dreamgoden', data, option)
 
 
-/*首页*/
+/*首页金梦列表*/
+export const getDreamgodenList = (data, option) => http('dreamgoden/page', data, {method: 'GET'})
