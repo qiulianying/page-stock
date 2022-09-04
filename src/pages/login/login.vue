@@ -11,7 +11,7 @@
 				@getphonenumber="getPhoneNumber">微信一键登录</button>-->
 			<button class="cu-btn page-box-btn bg-theme" @tap="technological">微信一键登录</button>
 			<button class="cu-btn page-box-btn page-box-btn-mobile"
-					@tap="toView('login/login-mobile')">直接试用</button>
+					@tap="toView('login/login-mobile')">手机号登录</button>
 		</view>
 	</view>
 </template>
@@ -47,12 +47,18 @@
 							uni.getUserProfile({
 								desc: "获取你的昵称、头像、地区及性别",
 								success: res => {
-									console.log('当前用户信息')
-									console.log(res.userInfo)
 									let userAllInfo = res.userInfo
-									userAllInfo.openid = 'oFbPS5dMWc6r0lv7kaq3LU7TqZP8'
+									userAllInfo.openid = uni.getStorageSync('openId')
 									userLogin(userAllInfo).then(res => {
-										uni.setStorageSync('mspToken', res)
+										uni.showToast({
+											title: '登录成功！',
+											icon: 'success'
+										})
+										uni.setStorageSync('mspToken', res.data)
+										// 跳转后续需要跳转的页面
+										uni.redirectTo({
+											url: this.fromurl
+										})
 									})
 								},
 								fail: res => {
@@ -110,6 +116,7 @@
 		},
 		onLoad(option) {
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
+			this.fromurl = decodeURIComponent(option.fromurl)
 		}
 	}
 </script>

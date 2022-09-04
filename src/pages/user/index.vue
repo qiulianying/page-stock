@@ -6,7 +6,7 @@
 		<view class="userInfoTable">
 			<view class="userHeader">
 				<view class="userImg"></view>
-				<view class="userName">用户名</view>
+				<view class="userName">{{formInfo.username || '用户名'}}</view>
 			</view>
 			<form class="cu-myDream">
 				<view class="cu-form-group ">
@@ -23,7 +23,7 @@
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">简介</view>
-					<input placeholder="两字短标题" name="input"></input>
+					<input placeholder="请输入您的简介" name="input" :value="formInfo.introduction"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">地址选择</view>
@@ -47,11 +47,11 @@
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">职业</view>
-					<input placeholder="请输入您的职业" name="input" maxlength="20"></input>
+					<input placeholder="请输入您的职业" name="input" maxlength="20" :value="formInfo.occupation"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">爱好</view>
-					<input placeholder="请输入您的爱好" name="input" maxlength="20"></input>
+					<input placeholder="请输入您的爱好" name="input" maxlength="20" :value="formInfo.hobby"></input>
 				</view>
 				<!--   保存按钮   -->
 				<view class="page-bottom">
@@ -70,11 +70,13 @@
 				gender: 0,
 				// 表单内容数据
 				formInfo: {
+					avatar: '',
 					nickname: '',
-					gender: 1,
+					gender: 0,
 					introduction: '',
 					birthday: '',
 					occupation: '',
+					hobby: ''
 				},
 				themeColor: '',
 				havaContent: true,
@@ -90,10 +92,9 @@
 			wx.hideShareMenu()
 			this.date = this.$util.dateFormat(new Date(), '-')
 			// 获取用户信息
-			getUserInfo({
-				userId: '1566351679659515906'
-			}).then(res => {
-
+			getUserInfo().then(res => {
+				this.formInfo = res.data
+				// 编写相关修改编辑内容
 			})
 		},
 		methods: {

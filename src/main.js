@@ -103,7 +103,7 @@ Vue.prototype.$imageFixStr = (width, height) => {
 Vue.prototype.$isMemmber = () => {
 	let isMember = false
 	try {
-		isMember = uni.getStorageSync('mspIsMember') || false
+		isMember = uni.getStorageSync('mspToken') || false
 	} catch (e) {
 		console.error(e)
 	}
@@ -115,14 +115,17 @@ Vue.prototype.$isMemmber = () => {
 * page：路径
 * isRedirect：是否需要直接跳转或者保存当前路径跳转
 * isPackage：是否分包
+* mustReg：是否需要确保登录后获取了token情况下才能跳转
 * */
-Vue.prototype.$toView = (page, isRedirect = false, isPackage = false) => {
+Vue.prototype.$toView = (page, mustReg = false, isRedirect = false, isPackage = false) => {
 	let url = ''
 	if (!isPackage) {
 		// 如果不是分包里面的路由
-		url = `/pages/${page}`
+		url = mustReg && !Vue.prototype.$isMemmber() ?
+			`/pages/login/login?fromurl=${encodeURIComponent(`/pages/${page}`)}` : `/pages/${page}`
 	} else {
-		url = `${page}`
+		url = mustReg && !Vue.prototype.$isMemmber() ?
+			`/pages/login/login?fromurl=${encodeURIComponent(`${page}`)}` : `${page}`
 	}
 	if (isRedirect) {
 		uni.redirectTo({
@@ -134,7 +137,6 @@ Vue.prototype.$toView = (page, isRedirect = false, isPackage = false) => {
 		})
 	}
 }
-
 App.mpType = 'app'
 
 const app = new Vue({

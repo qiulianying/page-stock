@@ -49,47 +49,32 @@ const http = (url, data = {}, option = {}, apiType) => {
             data: data,
             success: res => {
                 if (!hideLoading) uni.hideLoading()
-                if (res.data.statusCode === 401) {
-                    // #ifndef H5
-                    // 重新调用登录接口获取token
-                    authLogin({
-                        success: res => {
-                            try {
-                                uni.setStorageSync('mspToken', res)
-                                showToast(httpLang.loginSuccessful)
-                                http(url, data, option, apiType).then((res)=>{
-                                    resolve(res) //把队列形态的promise 的resolve的res 在这里完成 两级resolve
-                                }).catch(err => {
-                                    reject(err.errmsg || err.error)
-                                })
-                            } catch (e) {
-                                console.error(e)
-                            }
-                        }
-                    })
+                if (res.data.code === 1) {
+                    // console.log('报错的情况，需要进行额外判断是否是由于没有权限')
+                    // // #ifndef H5
+                    // // 重新调用登录接口获取token
+                    // authLogin({
+                    //     success: res => {
+                    //         try {
+                    //             uni.setStorageSync('mspToken', res)
+                    //             showToast(httpLang.loginSuccessful)
+                    //             http(url, data, option, apiType).then((res)=>{
+                    //                 resolve(res) //把队列形态的promise 的resolve的res 在这里完成 两级resolve
+                    //             }).catch(err => {
+                    //                 reject(err.errmsg || err.error)
+                    //             })
+                    //         } catch (e) {
+                    //             console.error(e)
+                    //         }
+                    //     }
+                    // })
                     // #endif
                 } else if (res.data.code === 0) {
-                    let result = res.data.data
-                    console.log(34234)
-                    console.log(result)
-                    reject(result.errmsg || result.error)
-                    if (!hideMsg) {
-                        if (errorRedirect) {
-                            uni.redirectTo({
-                                url: '/pages/error/error?error=' + encodeURIComponent(result.errmsg || result.error)
-                            })
-                        } else {
-                            if (result.errmsg === '该用户未开户，请检查!') {
-                                // #ifdef MP-WEIXIN
-                                showToast('钱包未开通，请开通钱包!')
-                                // #endif
-                            } else {
-                                showToast(result.errmsg || result.error)
-                            }
-
-                        }
-                    }
+                    // 执行成功的情况
+                    let result = res.data
+                    resolve(result)
                 } else {
+                    // 其他情况默认失败
                     if (!hideMsg) {
                         if (errorRedirect) {
                             uni.redirectTo({

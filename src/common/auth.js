@@ -6,6 +6,7 @@ import {getOpenId} from "../api/platformgouc";
 
 export const authLogin = ({success}) => {
     /*目前uni.login除h5以外均可以支持*/
+    uni.setStorageSync('openId', '111111');
     uni.login({
         success: loginRes => {
             //微信小程序情况下获取微信用户信息
@@ -22,9 +23,7 @@ export const authLogin = ({success}) => {
                 errorRedirect: false
             }).then(res => {
                 //保存注册接口返回信息
-                console.log(324234)
-                console.log(res)
-                uni.setStorageSync('openId', res.toString());
+                uni.setStorageSync('openId', res.data);
             })
         }
     })

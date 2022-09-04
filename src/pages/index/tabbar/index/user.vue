@@ -8,7 +8,7 @@
 				<text :class="'myCuIcon cuIcon-moreandroid'" @tap="toSetting"></text>
 			</view>
 			<view class="index-user-info-box">
-				<image src="/static/images/icon_foods.png" @tap="handleLogin" />
+				<image :src="!this.$isMemmber() ? '/static/images/icon_foods.png' : userInfo.avatar" @tap="handleLogin"/>
 				<view class="index-user-allArray">
 					<view class="index-user-ArrayList" @tap="toTypeList(item)" v-for="(item, index) in ArrayList" :key="index">
 						<view class="listNumber">{{item.number || 0}}</view>
@@ -23,10 +23,10 @@
 		<view class="index-user-dream">
 			<view class="index-user-dreamTite">
 				<view class="index-user-dreamTiteInfo">
-					<view class="name">FATFISHBOY</view>
-					<view class="visitor">访客：200</view>
+					<view class="name">{{userInfo.username || '请点击头像进行登录'}}</view>
+					<view class="visitor" v-if="this.$isMemmber()">访客：{{userInfo.visited}}</view>
 				</view>
-				<view class="myid">id:不吃肉的猫</view>
+				<view class="myid" v-if="this.$isMemmber()">id:{{userInfo.id}}</view>
 			</view>
 			<view class="index-user-dreamList">
 				<view class="flex flex-direction" v-if="cartList.length > 0">
@@ -40,9 +40,7 @@
 </template>
 
 <script>
-	import {
-		mapActions
-	} from 'vuex'
+	import { getUserInfo } from '../../../../api/platformgouc'
 
 	export default {
 		data() {
@@ -115,10 +113,24 @@
 						]
 					}
 				],	// 梦想对应数据
+				userInfo: {}
 			}
 		},
 		computed: {},
-		created() {},
+		created() {
+			// 获取当前用户信息
+			if (!this.$isMemmber()) {
+
+			} else {
+				getUserInfo().then(res => {
+					this.userInfo = res.data
+					this.ArrayList[0].number = res.data.fans
+					this.ArrayList[1].number = res.data.follows
+					this.ArrayList[2].number = res.data.dreamBuilds
+					this.ArrayList[3].number = res.data.dreams
+				})
+			}
+		},
 		mounted() {
 			this.imgUrl = this.$imgUrl
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
@@ -135,7 +147,7 @@
 
 			},
 			handleLogin() {
-				this.$toView('login/login')
+				this.$toView('user/index', true, false, false)
 			},
 			toTypeList(item) {
 				switch (item.name) {

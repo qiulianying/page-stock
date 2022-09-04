@@ -38,50 +38,17 @@
 					value: 'all'
 				},
 				cartList: [
-					{
-						title: '2024 考研成功上岸',
-						time: '2022-10-21',
-						name: '春日回暖衬',
-						headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-						content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-						imagesArray: [
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-						]
-					},
-					{
-						title: '2024 考研成功上岸',
-						time: '2022-10-21',
-						name: '春日回暖衬',
-						headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-						content: '部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-						imagesArray: [
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-						]
-					},
-					{
-						title: '2024 考研成功上岸',
-						time: '2022-10-21',
-						name: '春日回暖衬',
-						headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-						content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-						imagesArray: [
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-						]
-					},
-					{
-						title: '2024 考研成功上岸',
-						time: '2022-10-21',
-						name: '春日回暖衬',
-						headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-						content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-						imagesArray: [
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-						]
-					}
+					// {
+					// 	title: '2024 考研成功上岸',
+					// 	time: '2022-10-21',
+					// 	name: '春日回暖衬',
+					// 	headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
+					// 	content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
+					// 	imagesArray: [
+					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
+					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
+					// 	]
+					// }
 				],	// 梦想对应数据
 				fixStr: '?x-oss-process=image/resize,m_fill,h_144,w_144&x-image-process=image/resize,m_fill,h_144,w_144', //图片后缀
 				merchantNo: '',
@@ -100,13 +67,13 @@
 				handler(val) {
 					// 如果该页面拉取到了底部，则重新调用接口
 					console.log(34234234234)
+					this.current += 1
+					this.toSearchList()
 				}
 			}
 		},
 		created() {
-			getDreamList(`?current=${this.current}&size=${this.size}`).then(res => {
-				console.log(res)
-			})
+			this.toSearchList()
 		},
 		mounted() {
 		  this.imgUrl = this.$imgUrl
@@ -114,6 +81,13 @@
 		  this.customStyle.background = this.themeColor
 		},
 		methods: {
+			toSearchList() {
+				getDreamList(`?current=${this.current}&size=${this.size}`).then(res => {
+					if (res.data.length > 0) {
+						this.cartList = this.cartList.concat(res.data)
+					}
+				})
+			},
 			doSearch() {
 
 			},
@@ -127,6 +101,7 @@
 <style lang="scss" scoped>
 	.myheader-search {
 		background-color: #ffffff;
+		padding-bottom: 20rpx;
 		.search-box {
 			width: 96%;
 			margin: 0 auto;
