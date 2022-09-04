@@ -48,6 +48,12 @@
 			"style": {
 				"navigationBarTitleText": "粉丝"
 			}
+		},
+		{
+			"path": "pages/user/index",
+			"style": {
+				"navigationBarTitleText": "个人信息"
+			}
 		}
 	],
 	"subPackages": [
@@ -112,6 +118,10 @@
 			{
 				"name": "我的筑梦",
 				"path": "myPackageA/pages/dream/dream-detail"
+			},
+			{
+				"name": "个人信息",
+				"path": "pages/user/index"
 			}
 		]
 	}

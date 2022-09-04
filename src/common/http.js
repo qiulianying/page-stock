@@ -49,7 +49,7 @@ const http = (url, data = {}, option = {}, apiType) => {
             data: data,
             success: res => {
                 if (!hideLoading) uni.hideLoading()
-                if (res.statusCode === 401) {
+                if (res.data.statusCode === 401) {
                     // #ifndef H5
                     // 重新调用登录接口获取token
                     authLogin({
@@ -68,8 +68,10 @@ const http = (url, data = {}, option = {}, apiType) => {
                         }
                     })
                     // #endif
-                } else if (res.statusCode === 200) {
-                    let result = res.data
+                } else if (res.data.code === 0) {
+                    let result = res.data.data
+                    console.log(34234)
+                    console.log(result)
                     reject(result.errmsg || result.error)
                     if (!hideMsg) {
                         if (errorRedirect) {

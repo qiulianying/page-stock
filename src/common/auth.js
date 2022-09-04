@@ -2,6 +2,7 @@ import {MP_WECHAT_APPID, PLATFORM_ID, REGION_ID, MP_APPLET_APPID} from './config
 import Cookies from 'js-cookie'
 import consts from './const'
 import Vue from 'vue'
+import {getOpenId} from "../api/platformgouc";
 
 export const authLogin = ({success}) => {
     /*目前uni.login除h5以外均可以支持*/
@@ -11,11 +12,20 @@ export const authLogin = ({success}) => {
             // #ifdef MP-WEIXIN
             uni.getUserInfo({
                 provider: 'weixin',
-                success: function (infoRes) {
-                    console.log(infoRes)
-                }
+                success: function (infoRes) {}
             });
             // #endif
+            // 执行登录并获取code
+            getOpenId({
+                code: loginRes.code,
+            }, {
+                errorRedirect: false
+            }).then(res => {
+                //保存注册接口返回信息
+                console.log(324234)
+                console.log(res)
+                uni.setStorageSync('openId', res.toString());
+            })
         }
     })
 }

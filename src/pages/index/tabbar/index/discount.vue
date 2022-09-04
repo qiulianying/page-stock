@@ -20,6 +20,7 @@
 </template>
 
 <script>
+	import { getDreamPage } from '../../../../api/home'
 	export default {
 		props: {
 			isReachBottom: {
@@ -100,19 +101,28 @@
 				}
 			}
 		},
+		created() {
+			// 获取筑梦列表
+			getDreamPage({}, {
+				method: 'GET'
+			}).then(res => {
+				console.log(res)
+			})
+		},
 		mounted() {
 			this.imgUrl = this.$imgUrl
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
 			this.customStyle.background = this.themeColor
 		},
-		onShow(){
-		},
 		methods: {
 			doSearch() {
 
 			},
+			inputSearch() {
+
+			},
 			toShowList(item) {
-				console.log(item)
+				this.$toView('myPackageA/pages/dream/dream-detail', false, true)
 			}
 		}
 	}

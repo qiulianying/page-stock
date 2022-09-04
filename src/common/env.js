@@ -32,7 +32,6 @@ function getQueryVariable(variable) {
 let ENV_BASE_URL = '',
     ENV_BASE_API = '',
     ENV_REGION_ID = '',
-    ENV_REGION_DRUG = '',
     VUE_APP_PROCESS = 'x-oss-process',
     DOMAIN_NAME = '',       //设置域名
     Software_Park = true    //是否软件园项目 false为否
@@ -103,10 +102,9 @@ if (env === 'release') {
 switch (environment) {
     case "devTest":
         // 开发
-        ENV_BASE_URL = 'https://spdev.51zcm.cc'
-        ENV_BASE_API = '/sp-mate'
+        ENV_BASE_URL = 'https://dream.kaihuaikj.com/api/app'
+        ENV_BASE_API = '/app'
         ENV_REGION_ID = 'DL1306153654495223808'        //软件园渠道固定regionNo
-        ENV_REGION_DRUG = 'DL1407601704370970624'      //医药商城规定regionNo
         VUE_APP_PROCESS = 'x-oss-process'
 
         //上线时，需要强制改为生产环境
@@ -116,10 +114,9 @@ switch (environment) {
         break;
     case "develop":
         // 测试
-        ENV_BASE_URL = 'https://sptest.51zcm.cc'
-        ENV_BASE_API = '/sp-mate'
+        ENV_BASE_URL = 'https://dream.kaihuaikj.com/api/app'
+        ENV_BASE_API = '/app'
         ENV_REGION_ID = 'DL1333225698034458624'
-        ENV_REGION_DRUG = 'DL1407601704370970624'      //医药商城规定regionNo
         VUE_APP_PROCESS = '==prVH2IHeofDf247APPUPLOADTAPROCESSfND=='
 
 
@@ -141,7 +138,6 @@ export {
     ENV_BASE_URL,
     ENV_BASE_API,
     ENV_REGION_ID,
-    ENV_REGION_DRUG,
     ENV_MP_WECHAT_APPID,
     ENV_MP_APPLET_APPID,
     VUE_APP_PROCESS,

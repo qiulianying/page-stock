@@ -1,0 +1,183 @@
+<template>
+	<view>
+		<cu-custom bgColor="bg-white" :isBack="true">
+			<block slot="content">个人信息</block>
+		</cu-custom>
+		<view class="userInfoTable">
+			<view class="userHeader">
+				<view class="userImg"></view>
+				<view class="userName">用户名</view>
+			</view>
+			<form class="cu-myDream">
+				<view class="cu-form-group ">
+					<view class="title">昵称</view>
+					<input placeholder="两字短标题" name="input" :value="formInfo.nickname"></input>
+				</view>
+				<view class="cu-form-group ">
+					<view class="title">性别</view>
+					<picker @change="sexChange" :value="formInfo.gender" :range="sexArray">
+						<view class="picker">
+							{{sexArray[formInfo.gender]}}
+						</view>
+					</picker>
+				</view>
+				<view class="cu-form-group ">
+					<view class="title">简介</view>
+					<input placeholder="两字短标题" name="input"></input>
+				</view>
+				<view class="cu-form-group ">
+					<view class="title">地址选择</view>
+					<picker mode="region" @change="RegionChange" :value="region">
+						<view class="picker">
+							{{region[0]}}，{{region[1]}}，{{region[2]}}
+						</view>
+					</picker>
+				</view>
+				<view class="cu-form-group">
+					<view class="title">生日</view>
+					<picker mode="date" :value="date" start="2015-09-01" end="2024-09-01" @change="DateChange">
+						<view class="picker">
+							{{date}}
+						</view>
+					</picker>
+				</view>
+				<view class="cu-form-group ">
+					<view class="title">学历</view>
+					<input placeholder="请输入您的学历" name="input" maxlength="20"></input>
+				</view>
+				<view class="cu-form-group ">
+					<view class="title">职业</view>
+					<input placeholder="请输入您的职业" name="input" maxlength="20"></input>
+				</view>
+				<view class="cu-form-group ">
+					<view class="title">爱好</view>
+					<input placeholder="请输入您的爱好" name="input" maxlength="20"></input>
+				</view>
+				<!--   保存按钮   -->
+				<view class="page-bottom">
+					<button class="cu-btn bg-theme" :disabled="!havaContent" :style="{background: themeColor}" @tap="saveAddress">编 辑</button>
+				</view>
+			</form>
+		</view>
+	</view>
+</template>
+
+<script>
+	import { getUserInfo } from '../../api/platformgouc'
+	export default {
+		data() {
+			return {
+				gender: 0,
+				// 表单内容数据
+				formInfo: {
+					nickname: '',
+					gender: 1,
+					introduction: '',
+					birthday: '',
+					occupation: '',
+				},
+				themeColor: '',
+				havaContent: true,
+				index: -1,
+				sexArray: ['男', '女'],
+				region: ['广东省', '广州市', '海珠区'],
+				date: ''
+			};
+		},
+		onLoad(options) {
+			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
+			// 屏蔽微信右上角工具栏
+			wx.hideShareMenu()
+			this.date = this.$util.dateFormat(new Date(), '-')
+			// 获取用户信息
+			getUserInfo({
+				userId: '1566351679659515906'
+			}).then(res => {
+
+			})
+		},
+		methods: {
+			sexChange(e) {
+				this.formInfo.gender = e.detail.value
+			},
+			saveAddress() {
+
+			},
+			DateChange(e) {
+				this.date = e.detail.value
+			},
+			RegionChange(e) {
+				this.region = e.detail.value
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	.userInfoTable {
+		background-color: #ffffff;
+		padding-top: 60rpx;
+		.userHeader {
+			margin: 30rpx 0 30rpx 20rpx;
+			.userImg {
+				display: inline-block;
+				vertical-align: middle;
+				width: 72rpx;
+				height: 72rpx;
+				border-radius: 50%;
+				background-color: #ff9700;
+			}
+			.userName {
+				display: inline-block;
+				vertical-align: middle;
+				font-size: 28rpx;
+				font-weight: 600;
+				color: #2A2A2A;
+				padding-left: 20rpx;
+			}
+		}
+
+		.cu-myDream {
+			.cu-form-group {
+				text-align: right;
+				.title {
+					min-width: calc(4em + 15px);
+				}
+
+				.saveAlbum {
+					width: 100%;
+					display: inline-flex;
+					justify-content: space-between;
+					align-items: center;
+					.saveAlbumTitle {
+						margin-right: 10rpx;
+					}
+
+					.checkboxMe {
+						/deep/ .uni-checkbox-input {
+							width: 35rpx;
+							height: 35rpx;
+						}
+					}
+				}
+			}
+
+			.text-theme {
+				margin-right: 15rpx;
+			}
+
+			.page-bottom {
+				button {
+					margin: 64rpx 24rpx 24rpx;
+					border-radius: 47rpx;
+					font-size: 34rpx;
+					color: #FFFFFF;
+					height: 94rpx;
+					line-height: 94rpx;
+					text-align: center;
+					display: block;
+				}
+			}
+		}
+	}
+</style>

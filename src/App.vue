@@ -141,8 +141,6 @@
                     }
                 })
             },
-            // 微信小程序区分不同情况下的跳转
-            weixinAuthLogin(pageType, id, price, takeout) {},
             userLogin(options) {
                 // #ifndef H5
                 //除了h5平台的其他平台编译
@@ -180,18 +178,6 @@
                 } else if (lang.indexOf('zh') === 0) {
                     this.$i18n.locale = 'zh-CN'
                 }
-            },
-            // 获取当前窗口url中param参数的值
-            getQueryVariable(variable, url) {
-                let query = url.split('?')[1]
-                let vars = query.split("&");
-                for (let i = 0; i < vars.length; i++) {
-                    let pair = vars[i].split("=");
-                    if (pair[0] == variable) {
-                        return pair[1];
-                    }
-                }
-                return false;
             }
         }
     }

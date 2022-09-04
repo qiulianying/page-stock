@@ -129,7 +129,7 @@
 				this.$toView('user/user-msg')
 			},
 			toSetting() {
-
+				this.$toView('user/index')
 			},
 			toShowList() {
 

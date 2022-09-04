@@ -20,6 +20,7 @@
 </template>
 
 <script>
+	import { getDreamList } from '../../../../api/home'
 	export default {
 		props: {
 			isReachBottom: {
@@ -89,7 +90,9 @@
 				},
 				themeColor: '',
 				imgUrl: '',
-				isEdit: false
+				isEdit: false,
+				current: 1,
+				size: 20
 			}
 		},
 		watch: {
@@ -100,12 +103,15 @@
 				}
 			}
 		},
+		created() {
+			getDreamList(`?current=${this.current}&size=${this.size}`).then(res => {
+				console.log(res)
+			})
+		},
 		mounted() {
 		  this.imgUrl = this.$imgUrl
 		  this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
 		  this.customStyle.background = this.themeColor
-		},
-		onShow(){
 		},
 		methods: {
 			doSearch() {

@@ -22,6 +22,31 @@
 				</view>
 			</view>
 		</view>
+
+		<view class="detail-row">
+			<view class="detail-rowTitle">规格</view>
+			<view class="detail-Content-all" style="background-color: white;margin-top: 14rpx;border-radius: 20rpx 20rpx 0 0;">
+				<view class="detail-Content">
+					<view class="detail-left">
+						<view class="detail-left-title">
+							今天午饭没吃,我要饿瘦
+						</view>
+						<view>2022-04-13 19:00</view>
+						<view class="detail-left-settting">
+							<view class="zj-dream-informTitle">
+								<text :class="'myCuIcon cuIcon-appreciate'"></text>
+								<text class="cuIcon-Number">20</text>
+							</view>
+							<view class="zj-dream-informTitle">
+								<text :class="'myCuIcon cuIcon-comment'"></text>
+								<text class="cuIcon-Number">20</text>
+							</view>
+						</view>
+					</view>
+					<view class="detail-right"></view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -29,6 +54,23 @@
 	export default {
 		data() {
 			return {
+				infoArrayShow: [{
+					type: 'appreciate',
+					number: 20,
+					text: '点赞'
+				},{
+					type: 'like',
+					number: 20,
+					text: '喜欢'
+				},{
+					type: 'comment',
+					number: 20,
+					text: '评论'
+				},{
+					type: 'forward',
+					number: 20,
+					text: '转发'
+				}],
 				swiperList: [
 					"http://localhost:8082/platform-oss/internal-getfile/service-org-7adc24dc/20210708/6527da911b994bcc9c56027428560c2b.jpeg"
 				],
@@ -44,21 +86,6 @@
 		.goods-detail-info {
 			background: #ffffff;
 			padding: 32rpx 24rpx;
-
-			.goods-num-box {
-				display: flex;
-				align-items: center;
-				position: relative;
-				height: 80rpx;
-				justify-content: space-between;
-
-				.goods-stock {
-					font-size: 34rpx;
-					color: #aaa5a5;
-					margin-bottom: 12rpx;
-					margin-left: 160rpx;
-				}
-			}
 
 			.goods-title {
 				width: 100%;
@@ -79,24 +106,6 @@
 				}
 			}
 
-			.goods-tags {
-				margin: 18rpx 0;
-				height: 40rpx;
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-
-				&-box {
-					padding: 0 10rpx;
-					height: 32rpx;
-					border-radius: 32rpx;
-					font-size: 20rpx;
-					margin-right: 10rpx;
-					display: inline-block;
-				}
-			}
-
-
 			.goods-desc {
 				line-height: 1.2;
 				font-size: 26rpx;
@@ -104,20 +113,77 @@
 				color: #333333;
 			}
 
-			.goods-spec {
-				display: flex;
-				font-size: 26rpx;
-				color: #666666;
-				margin-top: 24rpx;
-				align-items: center;
+			/*点赞以及评论等操作*/
+			.zj-dream-informShow {
+				margin-top: 20rpx;
+				width: 100%;
+				.zj-dream-informTitle {
+					font-size: 24rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #BBBBBB;
+					display: inline-block;
+					vertical-align: middle;
+					margin-right: 80rpx;
+					&:last-child {
+						margin-right: 0;
+					}
 
-				text:nth-child(odd) {
-					margin-right: 8rpx;
-					font-size: 48rpx;
+					.myCuIcon {
+						font-size: 36rpx;
+						display: inline-block;
+						vertical-align: middle;
+					}
+
+					.cuIcon-Number {
+						display: inline-block;
+						vertical-align: middle;
+						margin-left: 10rpx;
+					}
 				}
+			}
+		}
 
-				text:nth-child(even) {
-					margin-right: 32rpx;
+		.detail-row {
+			margin-bottom: 40rpx;
+			.detail-rowTitle {
+				font-size: 26rpx;
+				font-weight: 500;
+				color: #333333;
+				margin: 20rpx 0 20rpx 20rpx;
+			}
+			.detail-Content-all {
+				width: 96%;
+				margin: 0 auto;
+				.detail-Content {
+					padding: 20rpx;
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+					.detail-left {
+						font-size: 20rpx;
+						font-weight: 400;
+						color: #BBBBBB;
+						.detail-left-title {
+							font-size: 24rpx;
+							font-weight: 500;
+							color: #333333;
+						}
+						.detail-left-settting {
+							.zj-dream-informTitle {
+								display: inline-block;
+								vertical-align: middle;
+								font-size: 24rpx;
+								margin-right: 20rpx;
+							}
+						}
+					}
+					.detail-right {
+						width: 128rpx;
+						height: 128rpx;
+						background: #D8D8D8;
+						border-radius: 9rpx;
+					}
 				}
 			}
 		}
