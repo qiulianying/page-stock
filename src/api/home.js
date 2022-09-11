@@ -20,9 +20,5 @@ export const getDreamPage = (data, option) => http(`dreambuild/page${data}`, dat
 // 梦圈列表
 export const getDreamList = (data, option) => http(`dream/page${data}`, data, {method: 'GET'})
 
-/*新增梦想*/
-export const addDream = (data, option) => http('add/dream', data, option)
-
-
 /*首页金梦列表*/
 export const getDreamgodenList = (data, option) => http(`dream/page${data}`, data, {method: 'GET'})

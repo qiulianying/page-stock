@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import { addDream } from '../../../api/home'
+import { addDream } from '../../../api/createdream'
 export default {
   data() {
     return {

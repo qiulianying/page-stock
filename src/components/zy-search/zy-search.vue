@@ -5,10 +5,10 @@
 			<!-- #ifdef APP-PLUS -->
 <!--				<image src="../../static/zy-search/voice.svg" mode="aspectFit" @click="startRecognize()" class="voice-icon"></image>-->
 			<!-- #endif -->
-			<template v-if="isFocus">
+<!--			<template v-if="isFocus">
 				<input maxlength="20" class="mysearchInput" focus type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词" v-model.trim="searchText"/>
-			</template>
-			<template v-else>
+			</template>-->
+			<template>
 				<input maxlength="20" class="mysearchInput" type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词" v-model.trim="searchText"/>
 			</template>
 		</view>
@@ -34,6 +34,7 @@
 </template>
 
 <script>
+	import { getTopic } from '../../api/createdream'
 	export default{
 		name:"zy-search",
 		props:{
@@ -77,9 +78,13 @@
 						icon: 'none',
 						duration: 1000
 					});
-				}else{
-          // 进行历史记录搜索缓存保存
+				} else {
+          			// 进行历史记录搜索缓存保存
 					_this.$emit('getSearchText', _this.searchText);
+					// 根据输入内容进行搜索
+					getTopic(`?name=${_this.searchText}`).then(res => {
+
+					})
 					uni.getStorage({
 						key:'search_cache',
 						success(res){
