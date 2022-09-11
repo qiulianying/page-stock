@@ -113,9 +113,9 @@ Vue.prototype.$isMemmber = () => {
 /*
 * 在uni-app中自定义编写
 * page：路径
+* * mustReg：是否需要确保登录后获取了token情况下才能跳转
 * isRedirect：是否需要直接跳转或者保存当前路径跳转
 * isPackage：是否分包
-* mustReg：是否需要确保登录后获取了token情况下才能跳转
 * */
 Vue.prototype.$toView = (page, mustReg = false, isRedirect = false, isPackage = false) => {
 	let url = ''

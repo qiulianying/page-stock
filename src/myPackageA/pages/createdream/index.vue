@@ -8,7 +8,7 @@
         <input placeholder="写梦想标题更有可能被人关注 (选填)" name="input" maxlength="30"></input>
       </view>
       <view class="cu-form-group">
-        <textarea maxlength="-1" @input="textareaAInput" placeholder="多行文本输入框"></textarea>
+        <textarea maxlength="-1" @input="textareaAInput" placeholder="请输入梦想内容"></textarea>
       </view>
       <view class="cu-bar bg-white">
 <!--        <view class="action">
@@ -33,9 +33,9 @@
       </view>
       <view class="cu-form-group">
         <view class="title">截止时间</view>
-        <picker mode="date" :value="date" start="2015-09-01" end="2024-09-01" @change="DateChange">
+        <picker mode="date" :value="dreamContent.deadLine" start="2015-09-01" end="2024-09-01" @change="DateChange">
           <view class="picker">
-            {{date}}
+            {{dreamContent.deadLine}}
           </view>
         </picker>
       </view>
@@ -45,9 +45,9 @@
           <text class="cuIcon-light text-theme"></text>
           <text>更新频次</text>
         </view>
-        <picker @change="PickerChange" :value="index" :range="picker">
+        <picker @change="PickerChange" :value="dreamContent.updateRate" :range="picker">
           <view class="picker">
-            {{ index>-1? picker[index]:'默认每天打卡'}}
+            {{ picker[dreamContent.updateRate] }}
           </view>
         </picker>
       </view>
@@ -63,14 +63,14 @@
           <text class="cuIcon- zjIcon-address text-theme"></text>
           <text>在哪里</text>
         </view>
-        <input placeholder="点击选择地址" name="input"></input>
+        <input placeholder="点击选择地址" name="input" :value="dreamContent.address"></input>
       </view>
       <view class="cu-form-group">
         <view class="title">
           <text class="cuIcon-form text-theme"></text>
           <text>公开</text>
         </view>
-        <switch @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"></switch>
+        <switch @change="SwitchAChange" :class="dreamContent.isPublic === 1?'checked':''" :checked="dreamContent.isPublic === 1 ? true :false"></switch>
       </view>
       <view class="cu-form-group">
         <view class="saveAlbum">
@@ -80,7 +80,7 @@
       </view>
         <!--   保存按钮   -->
         <view class="page-bottom">
-            <button class="cu-btn bg-theme" :disabled="!havaContent" :style="{background: themeColor}" @tap="saveAddress">保 存</button>
+            <button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveAddress">保 存</button>
         </view>
     </form>
       <!--   弹出层搜索框   -->
@@ -93,33 +93,63 @@
 </template>
 
 <script>
+import { addDream } from '../../../api/home'
 export default {
   data() {
     return {
-        havaContent: false,
-        showInput: false,
-      index: -1,
-      picker: ['每天打卡', '每周打卡', '每月打卡'],
+        dreamContent: {
+            "id": 0,
+            "content": "",
+            "fileGroupId": 0,
+            "deadLine": 0,  // 截止日期
+            "isPublic": 0, // 是否公开
+            "updateRate": 1, // 默认每天打卡
+            "status": 0,    // 状态
+            "topicIds": [   // 话题id列表
+                0
+            ],
+            "longitude": "",
+            "latitude": "",
+            "province": "",
+            "city": "",
+            "address": ""
+        },
+      havaContent: false,
+      showInput: false,
+      picker: ['每小时打卡', '每天打卡', '每周打卡', '每月打卡', '每年打卡'],
       multiIndex: [0, 0, 0],
-      date: '',
       switchA: false,
       checkboxMe: false,
       imgList: [],
-      textareaAValue: '',
       textareaBValue: '',
-      themeColor: ''
+      themeColor: '',
     };
   },
   onLoad(options) {
       this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
     // 屏蔽微信右上角工具栏
     wx.hideShareMenu()
-    this.date = this.$util.dateFormat(new Date(), '-')
+    this.dreamContent.deadLine = this.$util.dateFormat(new Date(), '-')
   },
   methods: {
     // 创建梦
       saveAddress() {
-          this.showInput = true
+          if (!this.dreamContent.content) {
+              uni.showToast({
+                  title: '请填写梦想内容',
+                  icon: 'none',
+                  duration: 2000
+              });
+              return
+          }
+          addDream(this.dreamContent).then(res => {
+              uni.showToast({
+                  title: '梦想创建成功',
+                  icon: 'success',
+                  duration: 2000
+              });
+              this.$toView('index/index', false, true, false)
+          })
       },
     // 话题选择
       topicSelect() {
@@ -127,21 +157,32 @@ export default {
       },
       // 地图选择
     chooseLocation() {
-      uni.chooseLocation({
-        success: data => {
-          this.addressData.addressName = data.name
-          this.addressData.address = data.name
-        }
-      })
+        //对应执行定位
+        this.$plugin.app.getMapInfo({
+            success: data => {
+                console.log(data)
+                this.dreamContent.longitude = data.longitude
+                this.dreamContent.latitude = data.latitude
+                this.dreamContent.province = data.provinceName
+                this.dreamContent.city = data.cityName
+                this.dreamContent.address = data.name
+            }
+        })
+      // uni.chooseLocation({
+      //   success: data => {
+      //     this.addressData.addressName = data.name
+      //     this.addressData.address = data.name
+      //   }
+      // })
     },
     PickerChange(e) {
-      this.index = e.detail.value
+      this.dreamContent.updateRate = e.detail.value
     },
     DateChange(e) {
-      this.date = e.detail.value
+      this.dreamContent.deadLine = e.detail.value
     },
-    SwitchA(e) {
-      this.switchA = e.detail.value
+    SwitchAChange(e) {
+      this.dreamContent.isPublic = e.detail.value ? 1 : 0
     },
     ChooseImage() {
       uni.chooseImage({
@@ -177,7 +218,7 @@ export default {
       })
     },
     textareaAInput(e) {
-      this.textareaAValue = e.detail.value
+      this.dreamContent.content = e.detail.value
     }
   }
 }

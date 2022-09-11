@@ -50,7 +50,11 @@ const http = (url, data = {}, option = {}, apiType) => {
             success: res => {
                 if (!hideLoading) uni.hideLoading()
                 if (res.data.code === 1) {
-                    // console.log('报错的情况，需要进行额外判断是否是由于没有权限')
+                    console.log('报的情错况，需要进行额外判断是否是由于没有权限')
+                    console.log(res)
+                    if (res.data.data && res.data.data.code && res.data.data.code === '') {
+
+                    }
                     // // #ifndef H5
                     // // 重新调用登录接口获取token
                     // authLogin({

@@ -5,7 +5,7 @@
 			<view class="my_header_more">
 				<view class="my_header_top">
 					<!--搜索-->
-					<view class="my_header_top_search"
+<!--					<view class="my_header_top_search"
 						:style="{position:'absolute',height:`${CustomBar}px`,'padding-top':`${StatusBar}px`}">
 						<view class="search-box">
 							<view class="my_header_search_block" @click="goSearch"></view>
@@ -14,25 +14,23 @@
 								:show-action="false" :disabled="true">
 							</u-search>
 						</view>
-					</view>
+					</view>-->
 					<!-- 轮播图 -->
 					<view class="mySwripter">
-						<swiper style="height:592rpx;border-radius:0rpx"
+						<swiper style="height:400rpx;border-radius:0rpx"
 							v-if="swiperList != null && swiperList.length > 0" class="index-home-swiper" autoplay
 							indicator-dots indicator-active-color='#ffffff'>
-							<swiper-item style="height:592rpx" v-for="(item, index) in swiperList" :key="index"
+							<swiper-item style="height:400rpx" v-for="(item, index) in swiperList" :key="index"
 								class="index-home-swiper-item">
-								<!-- :src="fileBaseURL + item.url + bigFixStr" -->
 								<image :src="item.src" class="index-home-swiper-item-img"
-									style="height:592rpx;border-radius:0rpx" mode="aspectFill" :lazy-load="true"
-									@click="toCouponDetail(item.link.id, item.type, item)" />
+									style="height:400rpx;border-radius:0rpx" mode="scaleToFill" :lazy-load="true"/>
 							</swiper-item>
 						</swiper>
 					</view>
 				</view>
 			</view>
 			<!-- 首页tab分类列表 -->
-			<view style="display: flex; justify-content: center;" :class="!isAct ? 'mt36' : 'mt24'">
+			<view style="display: flex; justify-content: center;" class="mt36">
 				<u-tabs v-if="showTab" :list="merchantTabList" :is-scroll="true" :font-size="30"
 					:current="merchantTabCurIndex" @change="tabSelect" :active-color="themeColor"></u-tabs>
 			</view>
@@ -94,71 +92,13 @@
 				keyword: '',
 				type: 'text',
 				swiperList: [{
-					"link": {},
 					"style": 1,
-					"acticon": [],
 					"title": "园区活动",
-					"src": "/static/images/bg_index02.jpg",
-					"type": 0,
-					"url": "service-org-7adc24dc/20220114/eb964cbea5e749bcb1e26aa6d28a4634.jpg",
-					"radio": "1"
+					"src": "/static/images/bg_index02.png"
 				}, {
-					"h5Url": "https://dish.51zcm.cc/mss/webapp/spbH5!index.action?merchantNo=00254946",
-					"link": {
-						"name": "",
-						"id": "",
-						"merchantNo": ""
-					},
-					"src": "/static/images/bg_index04.jpg",
-					"appletUrl": "",
 					"style": 1,
-					"appletAppid": "",
-					"acticon": [{
-						"url": "service-org-7adc24dc/20220308/8dfd6eb689a5445f8a402a8445cc1c20.jpg"
-					}],
-					"title": "悠茶小驿",
-					"type": 4,
-					"isShowButton": true,
-					"url": "service-org-7adc24dc/20220114/c8f9c5dfc53843aeabc9eabedfb85129.jpg",
-					"radio": "2"
-				}, {
-					"h5Url": "",
-					"link": {
-						"name": "",
-						"id": "",
-						"merchantNo": ""
-					},
-					"src": "/static/images/bg_index03.png",
-					"appletUrl": "pages/home/home",
-					"style": 1,
-					"appletAppid": "wxeff36bec97901729",
-					"acticon": [{
-						"url": "service-org-7adc24dc/20220121/7e72ca90d1ea4d8983d70f0bca627207.jpg"
-					}],
-					"title": "顶顶顶搜索",
-					"type": 4,
-					"isShowButton": true,
-					"url": "service-org-7adc24dc/20220121/d1b2d0de5ffc45ae9ec8d2235e9041b6.jpg",
-					"radio": "1"
-				}, {
-					"h5Url": "",
-					"link": {
-						"name": "",
-						"id": "",
-						"merchantNo": ""
-					},
-					"src": "/static/images/bg_index01.png",
-					"appletUrl": "",
-					"style": 1,
-					"appletAppid": "",
-					"acticon": [{
-						"url": "service-org-7adc24dc/20220218/6663df8ffe654112af614cecd2ec29f1.png"
-					}],
-					"title": "嘉年华",
-					"type": 4,
-					"isShowButton": false,
-					"url": "service-org-7adc24dc/20220218/632ce4ebac6e4d029bb81e91e922154f.png",
-					"radio": "1"
+					"title": "园区活动",
+					"src": "/static/images/bg_index03.png"
 				}], //轮播图数据
 				merchantTabCurIndex: 0,
 				// 分类
@@ -181,7 +121,6 @@
 					borderRadius: '50rpx',
 					color: '#fff'
 				},
-				isAct: true,
 				bigFixStr: '', //图片后缀
 				themeColor: '',
 				tabCurrentId: 0, // 默认是0 推荐商家
@@ -191,7 +130,7 @@
 		},
 		created() {
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
-			this.bigFixStr = this.$imageFixStr(750, 592)
+			this.bigFixStr = this.$imageFixStr(750, 400)
 			this.getDreamgodenListApi()
 		},
     	mounted() {},
@@ -260,7 +199,7 @@
 
 	/*顶部搜索栏*/
 	.my_header_more {
-		height: 592rpx;
+		height: 400rpx;
 		// height: 400rpx;
 		margin-bottom: 10rpx;
 
@@ -334,7 +273,7 @@
 
 			.mySwripter {
 				width: 100%;
-				height: 592rpx;
+				height: 400rpx;
 			}
 		}
 	}
@@ -349,10 +288,6 @@
 	}
 
 	.mt36 {
-		margin-top: 36rpx;
-	}
-
-	.mt24 {
 		margin-top: 24rpx;
 	}
 </style>

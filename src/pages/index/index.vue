@@ -5,9 +5,8 @@
 					  :isFresh="tabList[0].isFresh" @changeIsFresh="changeIsFresh"></tab-home>
 			<tab-discount v-if="selectedTap === tabList[1].name" :ref="'tab-' + tabList[1].name"
 						  :isFresh="tabList[1].isFresh" :isReachBottom="isReachBottom"></tab-discount>
-			<!-- 购物车注释 -->
 			<tab-recommend :isReachBottom="isReachBottom" v-if="selectedTap === tabList[3].name" :ref="'tab-' + tabList[3].name"></tab-recommend>
-			<tab-user v-if="selectedTap === tabList[4].name" :ref="'tab-' + tabList[4].name"></tab-user>
+			<tab-user v-if="selectedTap === tabList[4].name" :ref="'tab-' + tabList[4].name" :key="tabUserKey"></tab-user>
 		</view>
 		<!--底部导航组件-->
 		<fhu-tabbar-item :tabList="tabList" :selectedTap="selectedTap" :themeColor="themeColor" @handleChangeTab="handleChangeTab"></fhu-tabbar-item>
@@ -30,6 +29,7 @@
 		},
 		data() {
 			return {
+				tabUserKey: 0,
 				backgroundStyle: {
 					background: `linear-gradient(${-45}deg,#57a1e2,#0d8cfc)`
 				},
@@ -103,14 +103,19 @@
 			}
 		},
 		onLoad(option) {
+			this.tabUserKey += 1
 			this.imgUrl = this.$imgUrl
 			if (option) {
 				this.optionContent = option
 			}
 			this.isLoad = true
-			if (option.tabName) {
+			if (option && option.tabName) {
 				this.selectedIndex = option.tabName
+			} else {
+				this.selectedIndex = 0
 			}
+			// 点击改变
+			console.log('重新执行11111')
 			this.handleChangeTab(this.selectedIndex)
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
 			this.themeShadow = uni.getStorageSync('themeShadow')

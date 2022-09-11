@@ -38,6 +38,7 @@
 		methods: {
 			// 获取用户信息
 			technological() {
+				let _this = this
 				uni.showModal({
 					title: '温馨提示',
 					content: '需要请求您的微信个人信息',
@@ -48,6 +49,8 @@
 								desc: "获取你的昵称、头像、地区及性别",
 								success: res => {
 									let userAllInfo = res.userInfo
+									// 保存微信获取的对应userInfo
+									uni.setStorageSync('userInfo', res.userInfo)
 									userAllInfo.openid = uni.getStorageSync('openId')
 									userLogin(userAllInfo).then(res => {
 										uni.showToast({
@@ -55,10 +58,20 @@
 											icon: 'success'
 										})
 										uni.setStorageSync('mspToken', res.data)
-										// 跳转后续需要跳转的页面
-										uni.redirectTo({
-											url: this.fromurl
-										})
+										// 跳转对应页面或者返回上一页
+										if (_this.fromurl) {
+											uni.redirectTo({
+												url: decodeURIComponent(_this.fromurl)
+											})
+										} else {
+											let pages = getCurrentPages(); // 当前页面
+											let beforePage = pages[pages.length - 2]; // 上一页
+											uni.navigateBack({
+												success: function() {
+													beforePage.onLoad(); // 执行上一页的onLoad方法
+												}
+											});
+										}
 									})
 								},
 								fail: res => {
@@ -116,7 +129,9 @@
 		},
 		onLoad(option) {
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
-			this.fromurl = decodeURIComponent(option.fromurl)
+			if (option.fromurl) {
+				this.fromurl = decodeURIComponent(option.fromurl)
+			}
 		}
 	}
 </script>
