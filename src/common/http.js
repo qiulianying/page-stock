@@ -1,7 +1,6 @@
 // 修改devTest
 import Vue from 'vue'
 import {BASE, BASE_URL, PLATFORM_ID} from './config'
-import {authLogin} from './auth'
 
 const showToast = (title) => {
     uni.showToast({

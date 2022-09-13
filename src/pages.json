@@ -32,12 +32,6 @@
 			}
 		},
 		{
-			"path": "pages/openId-page/index",
-			"style": {
-				"navigationBarTitleText": "获取openId"
-			}
-		},
-		{
 			"path": "pages/user/user-msg",
 			"style": {
 				"navigationBarTitleText": "我的消息"

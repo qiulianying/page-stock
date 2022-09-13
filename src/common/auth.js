@@ -52,15 +52,6 @@ export const authLoginH5 = ({success}, options) => {
         let token = Cookies.get('token') || ''
         console.log('token', token)
         uni.setStorageSync('mspToken', token)
-        uni.redirectTo({
-            url: '/pages/openId-page/index',
-            success: res => {},
-            fail: (res) => {
-                console.log('跳转失败')
-                console.log(res)
-            },
-            complete: () => {}
-        })
         return
     }
 

@@ -17,13 +17,13 @@
 					</view>-->
 					<!-- 轮播图 -->
 					<view class="mySwripter">
-						<swiper style="height:400rpx;border-radius:0rpx"
+						<swiper style="height:480rpx;border-radius:0rpx"
 							v-if="swiperList != null && swiperList.length > 0" class="index-home-swiper" autoplay
 							indicator-dots indicator-active-color='#ffffff'>
-							<swiper-item style="height:400rpx" v-for="(item, index) in swiperList" :key="index"
+							<swiper-item style="height:480rpx" v-for="(item, index) in swiperList" :key="index"
 								class="index-home-swiper-item">
 								<image :src="item.src" class="index-home-swiper-item-img"
-									style="height:400rpx;border-radius:0rpx" mode="scaleToFill" :lazy-load="true"/>
+									style="height:480rpx;border-radius:0rpx" mode="scaleToFill" :lazy-load="true"/>
 							</swiper-item>
 						</swiper>
 					</view>
@@ -130,7 +130,7 @@
 		},
 		created() {
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
-			this.bigFixStr = this.$imageFixStr(750, 400)
+			this.bigFixStr = this.$imageFixStr(750, 480)
 			this.getDreamgodenListApi()
 		},
     	mounted() {},
@@ -199,8 +199,8 @@
 
 	/*顶部搜索栏*/
 	.my_header_more {
-		height: 400rpx;
-		// height: 400rpx;
+		height: 480rpx;
+		// height: 480rpx;
 		margin-bottom: 10rpx;
 
 		.my_header_top {
@@ -273,7 +273,7 @@
 
 			.mySwripter {
 				width: 100%;
-				height: 400rpx;
+				height: 480rpx;
 			}
 		}
 	}

@@ -33,9 +33,9 @@
       </view>
       <view class="cu-form-group">
         <view class="title">截止时间</view>
-        <picker mode="date" :value="dreamContent.deadLine" start="2015-09-01" end="2024-09-01" @change="DateChange">
+        <picker mode="date" :value="lastTime" start="2015-09-01" end="2024-09-01" @change="DateChange">
           <view class="picker">
-            {{dreamContent.deadLine}}
+            {{lastTime}}
           </view>
         </picker>
       </view>
@@ -56,14 +56,14 @@
                 <text class="cuIcon- zjIcon-address text-theme"></text>
                 <text>选话题</text>
             </view>
-            <input placeholder="点击输入或选择话题" name="input"></input>
+            <input readonly placeholder="点击选择或生成话题" name="input"></input>
         </view>
       <view class="cu-form-group" @tap="chooseLocation">
         <view class="title">
           <text class="cuIcon- zjIcon-address text-theme"></text>
           <text>在哪里</text>
         </view>
-        <input placeholder="点击选择地址" name="input" :value="dreamContent.address"></input>
+        <input readonly placeholder="点击选择地址" name="input" :value="dreamContent.address"></input>
       </view>
       <view class="cu-form-group">
         <view class="title">
@@ -72,12 +72,12 @@
         </view>
         <switch @change="SwitchAChange" :class="dreamContent.isPublic === 1?'checked':''" :checked="dreamContent.isPublic === 1 ? true :false"></switch>
       </view>
-      <view class="cu-form-group">
+<!--      <view class="cu-form-group">
         <view class="saveAlbum">
           <text class="saveAlbumTitle">保存相册</text>
           <checkbox class='round blue' :class="checkboxMe?'checked checkboxMe':'checkboxMe'" :checked="checkboxMe?true:false"></checkbox>
         </view>
-      </view>
+      </view>-->
         <!--   保存按钮   -->
         <view class="page-bottom">
             <button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveAddress">保 存</button>
@@ -93,21 +93,18 @@
 </template>
 
 <script>
-import { addDream } from '../../../api/createdream'
+import { addDream, upload } from '../../../api/createdream'
 export default {
   data() {
     return {
         dreamContent: {
-            "id": 0,
+            "id": null,
             "content": "",
-            "fileGroupId": 0,
-            "deadLine": 0,  // 截止日期
+            "fileGroupId": null, // 文件组id
+            "deadLine": '',  // 截止日期
             "isPublic": 0, // 是否公开
             "updateRate": 1, // 默认每天打卡
-            "status": 0,    // 状态
-            "topicIds": [   // 话题id列表
-                0
-            ],
+            "topicIds": [], // 话题id列表
             "longitude": "",
             "latitude": "",
             "province": "",
@@ -123,13 +120,15 @@ export default {
       imgList: [],
       textareaBValue: '',
       themeColor: '',
+        lastTime: '',
     };
   },
   onLoad(options) {
       this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
     // 屏蔽微信右上角工具栏
     wx.hideShareMenu()
-    this.dreamContent.deadLine = this.$util.dateFormat(new Date(), '-')
+    this.lastTime = this.$util.dateFormat(new Date(), '-')
+    this.dreamContent.deadLine = new Date().getTime()
   },
   methods: {
     // 创建梦
@@ -142,14 +141,38 @@ export default {
               });
               return
           }
-          addDream(this.dreamContent).then(res => {
-              uni.showToast({
-                  title: '梦想创建成功',
-                  icon: 'success',
-                  duration: 2000
-              });
-              this.$toView('index/index', false, true, false)
+          uni.showLoading({
+              title: '梦想创建中...',
+              mask: true
           })
+          if (this.imgList.length > 0) {
+              // 使用uni-app方法进行文件流上传
+              this.$upload(this.imgList[0], '', 'https://dream.kaihuaikj.com/api/app/app/').then(res => {
+                  const obj = res.object || {}
+                  frontImgPath = obj.filePath
+              }).catch(err => {
+                  console.error(err)
+                  this.submiting = false
+              })
+
+              // let file = this.imgList[0]
+              // upload({
+              //     file: file
+              // }).then(res => {
+              //     console.log(res)
+              // })
+          } else {
+              // 如果存在图片就先调用图片上传
+              addDream(this.dreamContent).then(res => {
+                  uni.hideLoading()
+                  uni.showToast({
+                      title: '梦想创建成功',
+                      icon: 'success',
+                      duration: 2000
+                  });
+                  this.$toView('index/index', false, true, false)
+              })
+          }
       },
     // 话题选择
       topicSelect() {
@@ -161,8 +184,8 @@ export default {
         this.$plugin.app.getMapInfo({
             success: data => {
                 console.log(data)
-                this.dreamContent.longitude = data.longitude
-                this.dreamContent.latitude = data.latitude
+                this.dreamContent.longitude = data.longitude.toString()
+                this.dreamContent.latitude = data.latitude.toString()
                 this.dreamContent.province = data.provinceName
                 this.dreamContent.city = data.cityName
                 this.dreamContent.address = data.name
@@ -179,7 +202,8 @@ export default {
       this.dreamContent.updateRate = e.detail.value
     },
     DateChange(e) {
-      this.dreamContent.deadLine = e.detail.value
+        this.lastTime = e.detail.value
+        this.dreamContent.deadLine = new Date(e.detail.value).getTime()
     },
     SwitchAChange(e) {
       this.dreamContent.isPublic = e.detail.value ? 1 : 0
@@ -190,6 +214,7 @@ export default {
         sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album'], //从相册选择
         success: (res) => {
+            console.log(res)
           if (this.imgList.length != 0) {
             this.imgList = this.imgList.concat(res.tempFilePaths)
           } else {

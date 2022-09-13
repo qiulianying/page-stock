@@ -8,7 +8,7 @@
 				<text :class="'myCuIcon cuIcon-moreandroid'" @tap="modalName = true"></text>
 			</view>
 			<view class="index-user-info-box">
-				<image :src="this.$isMemmber() && userInfo.avatar && userInfo.avatar !== '' ? userInfo.avatar : '/static/images/icon_foods.png'" @tap="handleLogin"/>
+				<image :src="this.$isMemmber() && userInfo.avatar && userInfo.avatar !== '' ? userInfo.avatar : '/static/images/head.png'" @tap="handleLogin"/>
 				<view class="index-user-allArray">
 					<view class="index-user-ArrayList" @tap="toTypeList(item)" v-for="(item, index) in ArrayList" :key="index">
 						<view class="listNumber">{{item.number || 0}}</view>
@@ -169,7 +169,6 @@
 			// 获取当前用户信息
 			if (!this.$isMemmber()) {
 				console.log('没有当前用户信息')
-				this.$toView('login/login', false, false, false)
 			} else {
 				getUserInfo().then(res => {
 					this.userInfo = res.data
@@ -194,7 +193,11 @@
 			},
 			handleLogin() {
 				// 如果没有登录，先跳转登录页面
-				this.$toView('user/index', true, false, false)
+				if (this.$isMemmber()) {
+					this.$toView('user/index', false, false, false)
+				} else {
+					this.$toView('login/login', false, false, false)
+				}
 			},
 			toTypeList(item) {
 				switch (item.name) {

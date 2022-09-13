@@ -92,13 +92,13 @@
 		},
 		onShareAppMessage(res) {
 			return {
-				title: '福气满满，宝贝多多',
+				title: '助梦行',
 				path: `/pages/index/index?tabName=${0}`
 			}
 		},
 		onShareTimeline() {
 			return {
-				title: '福气满满，宝贝多多',
+				title: '助梦行',
 				path: `/pages/index/index?tabName=${0}`
 			}
 		},

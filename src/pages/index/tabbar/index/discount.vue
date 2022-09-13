@@ -6,7 +6,7 @@
 		<view class="myheader-search">
 			<view class="search-box">
 				<view class="search-box-left">
-					<u-search :placeholder="searchText" v-model="keyword" :focus="true" :show-action="false" @search="inputSearch()">
+					<u-search :placeholder="searchText" v-model="keyword" :focus="false" :show-action="false" @search="inputSearch()">
 					</u-search>
 				</view>
 			</view>
