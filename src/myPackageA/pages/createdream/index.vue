@@ -133,6 +133,7 @@ export default {
   methods: {
     // 创建梦
       saveAddress() {
+          let _this = this
           if (!this.dreamContent.content) {
               uni.showToast({
                   title: '请填写梦想内容',
@@ -146,33 +147,52 @@ export default {
               mask: true
           })
           if (this.imgList.length > 0) {
+              console.log(this.imgList)
               // 使用uni-app方法进行文件流上传
-              this.$upload(this.imgList[0], '', 'https://dream.kaihuaikj.com/api/app/app/').then(res => {
-                  const obj = res.object || {}
-                  frontImgPath = obj.filePath
+              this.$upload(this.imgList[0], 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
+                  isSystem: 0
+              }).then(res => {
+                  if (this.imgList.length === 1) {
+                      if (res.data.length > 0) {
+                          this.createInfo(res.data[0].id)
+                      }
+                  } else {
+                      this.imgList.forEach((item, index) => {
+                          if (index === 0) {
+                              return
+                          }
+                          this.$upload(this.imgList[0], 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
+                              fileGroupId: res.data[0].id,
+                              isSystem: 0
+                          }).then(response => {
+                              if (index === this.imgList.length - 1) {
+                                  _this.createInfo(res.data[0].id)
+                              }
+                          })
+                      })
+                  }
               }).catch(err => {
-                  console.error(err)
-                  this.submiting = false
+                  console.log(err)
               })
-
-              // let file = this.imgList[0]
-              // upload({
-              //     file: file
-              // }).then(res => {
-              //     console.log(res)
-              // })
           } else {
-              // 如果存在图片就先调用图片上传
-              addDream(this.dreamContent).then(res => {
-                  uni.hideLoading()
-                  uni.showToast({
-                      title: '梦想创建成功',
-                      icon: 'success',
-                      duration: 2000
-                  });
-                  this.$toView('index/index', false, true, false)
-              })
+              this.createInfo()
           }
+      },
+      // 最终创建新数据
+      createInfo(fileGroupId) {
+          // 如果存在图片就先调用图片上传
+          if (fileGroupId) {
+              this.dreamContent.fileGroupId = fileGroupId
+          }
+          addDream(this.dreamContent).then(res => {
+              uni.hideLoading()
+              uni.showToast({
+                  title: '梦想创建成功',
+                  icon: 'success',
+                  duration: 2000
+              });
+              // this.$toView('index/index', false, true, false)
+          })
       },
     // 话题选择
       topicSelect() {

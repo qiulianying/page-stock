@@ -10,7 +10,7 @@ const showToast = (title) => {
 }
 
 //图片流调用传递接口
-const upload = (filePath, baseUrl, otherUrl, myName, myFormData) => {
+const upload = (filePath, otherUrl, myName, myFormData) => {
 	let token = ''
 	try {
 		token = uni.getStorageSync('mspToken')
@@ -24,11 +24,8 @@ const upload = (filePath, baseUrl, otherUrl, myName, myFormData) => {
 	return new Promise((resolve, reject) => {
 		const httpLang = Vue.prototype.$t('js.http')
 		let formData = myFormData || {}
-		if (baseUrl != null) {
-			formData.keyurl = baseUrl + '/' + dayjs().format('YYYYMMDD') + '/' + Vue.prototype.$util.getUuid() + filePath.substr(filePath.lastIndexOf("."))
-		}
 		uni.uploadFile({
-			url: otherUrl ? otherUrl : `${SECRETFILE_URL}`,
+			url: otherUrl,
 			filePath: filePath,
 			name: myName ? myName : 'file',
 			header: {
@@ -36,10 +33,12 @@ const upload = (filePath, baseUrl, otherUrl, myName, myFormData) => {
 			},
 			formData,
 			success: res => {
+				console.log('执行成功')
+				console.log(res)
 				uni.hideLoading()
 				if (res.statusCode === 200) {
 					let result = JSON.parse(res.data)
-					if (result.errcode === '0') {
+					if (result.code == '0') {
 						resolve(result)
 						return
 					}
@@ -51,6 +50,7 @@ const upload = (filePath, baseUrl, otherUrl, myName, myFormData) => {
 				}
 			},
 			fail: (err) => {
+				console.log(err)
 				uni.hideLoading()
 				if (err.errMsg != 'request:fail abort') {
 					showToast(httpLang.networkErr)
