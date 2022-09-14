@@ -51,8 +51,11 @@ const http = (url, data = {}, option = {}, apiType) => {
                 if (res.data.code === 1) {
                     console.log('报的情错况，需要进行额外判断是否是由于没有权限')
                     console.log(res)
-                    if (res.data.data && res.data.data.code && res.data.data.code === '') {
-
+                    if (res.data.data && res.data.data.code && res.data.data.code == '100002') {
+                        // 这里直接跳转登录页面让用户进行登录处理
+                        uni.navigateTo({
+                            url: '/pages/login/login'
+                        })
                     }
                     // // #ifndef H5
                     // // 重新调用登录接口获取token

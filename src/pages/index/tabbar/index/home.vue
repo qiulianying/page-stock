@@ -140,12 +140,14 @@
 			getDreamgodenListApi() {
 				// 获取进行中数据
 				getDreamgodenList(`?current=${this.current}&size=${this.size}`).then(res => {
-					if (res.data.length > 0) {
-						this.cartList = this.cartList.concat(res.data)
+					if (res.data && res.data.records) {
+						this.cartList = this.cartList.concat(res.data.records)
 					}
 				})
 			},
-			toShowList() {},
+			toShowList(item) {
+				this.$toView(`myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
+			},
 			init(isShow = false) {
 				if (!isShow) {
 					this.merchantTabCurIndex = 0

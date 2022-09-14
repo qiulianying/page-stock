@@ -191,7 +191,7 @@ export default {
                   icon: 'success',
                   duration: 2000
               });
-              // this.$toView('index/index', false, true, false)
+              this.$toView('index/index', false, true, false)
           })
       },
     // 话题选择

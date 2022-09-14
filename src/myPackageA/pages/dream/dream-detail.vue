@@ -11,10 +11,10 @@
 
 		<view class="goods-detail-info">
 			<view class="goods-title">
-				<span>全闽悦影券豪华版</span>
-				<span class="createTime">2022-10-04 创建</span>
+				<span>{{DetailInfo.title || '暂无标题'}}</span>
+				<span class="createTime">{{$util.dateFormat(new Date(Number(item.createTime)), '-')}} 创建</span>
 			</view>
-			<view class="goods-desc">福建线上约130家，线下约170家，含金逸万达GGV中瑞等主流影城。福建线上约130家，线下约170家，含金逸万达GGV中瑞等主流影城</view>
+			<view class="goods-desc">{{DetailInfo.content}}</view>
 			<view class="zj-dream-informShow">
 				<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShow">
 					<text :class="'myCuIcon cuIcon-' + infoItem.type"></text>
@@ -24,7 +24,7 @@
 		</view>
 
 		<view class="detail-row">
-			<view class="detail-rowTitle">规格</view>
+			<view class="detail-rowTitle">历程</view>
 			<view class="detail-Content-all" style="background-color: white;margin-top: 14rpx;border-radius: 20rpx 20rpx 0 0;">
 				<view class="detail-Content">
 					<view class="detail-left">
@@ -51,32 +51,52 @@
 </template>
 
 <script>
+	import {DreamDetail} from '../../../api/createdream'
 	export default {
 		data() {
 			return {
+				DetailInfo: {},
 				infoArrayShow: [{
 					type: 'appreciate',
-					number: 20,
+					number: 0,
+					name: 'praiseNum',
 					text: '点赞'
 				},{
 					type: 'like',
-					number: 20,
-					text: '喜欢'
+					number: 0,
+					name: 'collectNum',
+					text: '收藏'
 				},{
 					type: 'comment',
-					number: 20,
+					number: 0,
+					name: 'commentNum',
 					text: '评论'
 				},{
 					type: 'forward',
-					number: 20,
-					text: '转发'
+					number: 0,
+					name: 'watcheNum',
+					text: '围观'
 				}],
 				swiperList: [
 					"http://localhost:8082/platform-oss/internal-getfile/service-org-7adc24dc/20210708/6527da911b994bcc9c56027428560c2b.jpeg"
 				],
 			}
 		},
+		onLoad(options) {
+			// 获取详情接口
+			DreamDetail(options.id).then(res => {
+				this.DetailInfo = res.data
+				this.infoArrayShowInfo(res.data)
+				// 进行图片组获取
+			})
+		},
 		methods: {
+			infoArrayShowInfo(content) {
+				this.infoArrayShow.forEach(item => {
+					item.number = content[item.name]
+				})
+				return this.infoArrayShow
+			},
 		}
 	}
 </script>

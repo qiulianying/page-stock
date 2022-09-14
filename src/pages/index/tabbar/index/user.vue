@@ -113,52 +113,7 @@
 					background: "#34A2E8"
 				},
 				imgUrl: '',
-				cartList: [
-					{
-						title: '2024 考研成功上岸',
-						time: '2022-10-21',
-						name: '春日回暖衬',
-						headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-						content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-						imagesArray: [
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-						]
-					},
-					{
-						title: '2024 考研成功上岸',
-						time: '2022-10-21',
-						name: '春日回暖衬',
-						headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-						content: '部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-						imagesArray: [
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-						]
-					},
-					{
-						title: '2024 考研成功上岸',
-						time: '2022-10-21',
-						name: '春日回暖衬',
-						headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-						content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-						imagesArray: [
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-						]
-					},
-					{
-						title: '2024 考研成功上岸',
-						time: '2022-10-21',
-						name: '春日回暖衬',
-						headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-						content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-						imagesArray: [
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-							"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-						]
-					}
-				],	// 梦想对应数据
+				cartList: [],	// 梦想对应数据
 				userInfo: {
 					avatar: ''
 				}
@@ -176,6 +131,7 @@
 					this.ArrayList[1].number = res.data.follows
 					this.ArrayList[2].number = res.data.dreamBuilds
 					this.ArrayList[3].number = res.data.dreams
+					this.cartList = res.data.myDreams
 				})
 			}
 		},

@@ -4,11 +4,11 @@
 			<view v-if="list.length > 0" class="zj-dream-list-item"
 				  v-for="(item,index) in list" :key="index" @tap="itemClick(item)">
 				<view class="zj-dream-header">
-					<image :src="spMatefileBaseURL + item.headerIcon + fixStr" class="zj-dream-headerImg" mode="aspectFill"
+					<image :src="item.createAvatar" class="zj-dream-headerImg" mode="aspectFill"
 						   :lazy-load="true"/>
 					<view class="zj-dream-headerContent">
-						<view>{{item.name}}</view>
-						<view class="zj-dream-headerContentTime">{{item.time}}发布了</view>
+						<view>{{item.createName}}</view>
+						<view class="zj-dream-headerContentTime">{{$util.dateFormat(new Date(Number(item.createTime)), '-')}}发布了</view>
 					</view>
 					<view class="zj-dream-title">{{item.title}}</view>
 					<view class="zj-dream-content">{{item.content}}</view>
@@ -17,7 +17,7 @@
 							   :lazy-load="true"/>
 					</view>
 					<view class="zj-dream-informShow">
-						<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShow">
+						<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShowInfo(item)">
 							<text :class="'myCuIcon cuIcon-' + infoItem.type"></text>
 							<text class="cuIcon-Number">{{infoItem.number}}</text>
 						</view>
@@ -35,20 +35,24 @@
 				fixStr: '?x-oss-process=image/resize,m_fill,h_144,w_144&x-image-process=image/resize,m_fill,h_144,w_144', //图片后缀
 				infoArrayShow: [{
 					type: 'appreciate',
-					number: 20,
+					number: 0,
+					name: 'praiseNum',
 					text: '点赞'
 				},{
 					type: 'like',
-					number: 20,
-					text: '喜欢'
+					number: 0,
+					name: 'collectNum',
+					text: '收藏'
 				},{
 					type: 'comment',
-					number: 20,
+					number: 0,
+					name: 'commentNum',
 					text: '评论'
 				},{
 					type: 'forward',
-					number: 20,
-					text: '转发'
+					number: 0,
+					name: 'watcheNum',
+					text: '围观'
 				}]
 			}
 		},
@@ -63,6 +67,12 @@
 			}
 		},
 		methods: {
+			infoArrayShowInfo(content) {
+				this.infoArrayShow.forEach(item => {
+					item.number = content[item.name]
+				})
+				return this.infoArrayShow
+			},
 			itemClick(id) {
 				this.$emit('itemClick', id)
 			},

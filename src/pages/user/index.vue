@@ -5,7 +5,8 @@
 		</cu-custom>
 		<view class="userInfoTable">
 			<view class="userHeader">
-				<view class="userImg"></view>
+				<image :src="formInfo.avatar" class="userImg" mode="aspectFill"
+					   :lazy-load="true"/>
 				<view class="userName">{{formInfo.username || '用户名'}}</view>
 			</view>
 			<form class="cu-myDream">
@@ -126,7 +127,7 @@
 				width: 72rpx;
 				height: 72rpx;
 				border-radius: 50%;
-				background-color: #ff9700;
+				// background-color: #ff9700;
 			}
 			.userName {
 				display: inline-block;
