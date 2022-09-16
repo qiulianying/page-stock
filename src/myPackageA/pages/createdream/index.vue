@@ -5,10 +5,10 @@
     </cu-custom>
     <form class="cu-myDream">
       <view class="cu-form-group">
-        <input placeholder="写梦想标题更有可能被人关注 (选填)" name="input" maxlength="30"></input>
+        <input placeholder="写梦想标题更有可能被人关注 (选填)" name="input" maxlength="30" @input="titeInput"></input>
       </view>
       <view class="cu-form-group">
-        <textarea maxlength="-1" @input="textareaAInput" placeholder="请输入梦想内容"></textarea>
+        <textarea maxlength="-1" @input="textareaAInput" placeholder="分享你的梦想Plan, 发布状态的图片 视频 影集动态 更有机会获得关注和奖励哦"></textarea>
       </view>
       <view class="cu-bar bg-white">
 <!--        <view class="action">
@@ -98,6 +98,7 @@ export default {
   data() {
     return {
         dreamContent: {
+            title: '', // 标题
             "id": null,
             "content": "",
             "fileGroupId": null, // 文件组id
@@ -134,9 +135,9 @@ export default {
     // 创建梦
       saveAddress() {
           let _this = this
-          if (!this.dreamContent.content) {
+          if (!this.dreamContent.title) {
               uni.showToast({
-                  title: '请填写梦想内容',
+                  title: '请填写梦想标题',
                   icon: 'none',
                   duration: 2000
               });
@@ -262,6 +263,9 @@ export default {
         }
       })
     },
+      titeInput(e) {
+          this.dreamContent.title = e.detail.value
+      },
     textareaAInput(e) {
       this.dreamContent.content = e.detail.value
     }

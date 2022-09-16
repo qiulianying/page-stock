@@ -104,12 +104,12 @@
 				// 分类
 				merchantTabList: [
 					{
-						id: 1,
+						id: 0,
 						name: '进行中',
 						list: []
 					},
 					{
-						id: 2,
+						id: 1,
 						name: '已结束',
 						list: []
 					}
@@ -137,9 +137,10 @@
 		computed: {},
 		watch: {},
 		methods: {
-			getDreamgodenListApi() {
+			getDreamgodenListApi(status) {
 				// 获取进行中数据
-				getDreamgodenList(`?current=${this.current}&size=${this.size}`).then(res => {
+				let statusInfo = status ? status : 0
+				getDreamgodenList(`?current=${this.current}&size=${this.size}&status=${statusInfo}`).then(res => {
 					if (res.data && res.data.records) {
 						this.cartList = this.cartList.concat(res.data.records)
 					}
@@ -157,6 +158,7 @@
 				// this.merchantTabCurIndex = e.currentTarget.dataset.id;
 				this.merchantTabCurIndex = e
 				this.tabCurrentId = this.merchantTabList[e].id
+				// 根据不同情况切换调用接口
 			},
 			getPreSettleCalcApi() {
 
