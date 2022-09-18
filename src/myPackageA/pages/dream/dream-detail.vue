@@ -15,8 +15,11 @@
 			</view>
 			<view class="goods-desc">{{DetailInfo.content}}</view>
 			<view class="zj-dream-informShow">
-				<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShow" @click="toSetInfo(DetailInfo, infoItem)">
-					<text :class="'myCuIcon cuIcon-' + infoItem.type"></text>
+				<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShow"
+					  @click="toSetInfo(DetailInfo, infoItem)">
+					<text :class="'myCuIcon cuIcon-' + infoItem.type" :style="{
+								color: DetailInfo[infoItem.needColor] === 1 ? themeColor : '',
+								fontWeight: DetailInfo[infoItem.needColor] === 1 ? 'bold' : ''}"></text>
 					<text class="cuIcon-Number">{{infoItem.number}}</text>
 				</view>
 			</view>
@@ -59,10 +62,11 @@
 </template>
 
 <script>
-	import {addComment, DreamDetail, putCollect, putPraise, putWatch} from '../../../api/createdream'
+	import {addComment, DreamDetail, putCollect, putPraise, putWatch, getDreamComment} from '../../../api/createdream'
 	export default {
 		data() {
 			return {
+				themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
 				commentcontent: '',	// 评论内容
 				NowItem: {},
 				showComment: false,
@@ -71,12 +75,14 @@
 					type: 'appreciate',
 					number: 0,
 					name: 'praiseNum',
-					text: '点赞'
+					text: '点赞',
+					needColor: 'isPraise'
 				},{
 					type: 'like',
 					number: 0,
 					name: 'collectNum',
-					text: '收藏'
+					text: '收藏',
+					needColor: 'isCollect'
 				},{
 					type: 'comment',
 					number: 0,
@@ -86,37 +92,47 @@
 					type: 'forward',
 					number: 0,
 					name: 'watcheNum',
-					text: '围观'
+					text: '围观',
+					needColor: 'isWatched'
 				}],
 				swiperList: []
 			}
 		},
 		onLoad(options) {
-			// 获取详情接口
-			DreamDetail(options.id).then(res => {
-				this.DetailInfo = res.data
-				this.infoArrayShowInfo(res.data)
-				// 进行图片组获取
-				if (res.data.files && res.data.files.length > 0) {
-					res.data.files.forEach(item => {
-						this.swiperList.push({
-							image: item.url,
-							title: item.fileName
-						})
-					})
-				}
-			})
+			this.id = options.id
+			this.DreamDetailFun()
+			this.getDreamComment()
 		},
 		methods: {
+			getDreamComment() {
+				getDreamComment(this.id).then(res => {
+					console.log(res)
+				})
+			},
+			DreamDetailFun() {
+				// 获取详情接口
+				DreamDetail(this.id).then(res => {
+					this.DetailInfo = res.data
+					this.infoArrayShowInfo(res.data)
+					// 进行图片组获取
+					if (res.data.files && res.data.files.length > 0) {
+						res.data.files.forEach(item => {
+							this.swiperList.push({
+								image: item.url,
+								title: item.fileName
+							})
+						})
+					}
+				})
+			},
 			confirm() {
 				// 添加评论
 				addComment({
-					id: this.NowItem.id,
 					content: this.commentcontent,
 					parentId: 0,
-					businessId: 0,
+					businessId: this.NowItem.id,
 					type: 0,
-					"level": 0,
+					level: 0,
 				}).then(res => {
 					this.showComment = false;
 				})
@@ -137,7 +153,8 @@
 						putPraise({
 							id: item.id
 						}).then(res => {
-
+							this.DetailInfo[infoItem.needColor] = this.DetailInfo[infoItem.needColor] === 1 ? 0 : 1
+							this.DreamDetailFun()
 						})
 						break;
 						// 收藏
@@ -145,7 +162,8 @@
 						putCollect({
 							id: item.id
 						}).then(res => {
-
+							this.DetailInfo[infoItem.needColor] = this.DetailInfo[infoItem.needColor] === 1 ? 0 : 1
+							this.DreamDetailFun()
 						})
 						break;
 						// 围观
@@ -153,7 +171,8 @@
 						putWatch({
 							id: item.id
 						}).then(res => {
-
+							this.DetailInfo[infoItem.needColor] = this.DetailInfo[infoItem.needColor] === 1 ? 0 : 1
+							this.DreamDetailFun()
 						})
 						break;
 				}

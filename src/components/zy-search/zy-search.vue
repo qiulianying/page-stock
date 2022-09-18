@@ -65,6 +65,9 @@
 			};
 		},
 		methods: {
+			clearInfo() {
+				this.searchText = ''
+			},
 			searchStart: function() {	//触发搜索
 				let _this = this;
 				if (_this.searchText == '') {
@@ -86,7 +89,7 @@
 									topicName: _this.searchText
 								}).then(response => {
 									// 创建完成直接关闭并返回填写
-									// this.$emit('mySearchInfo', item)
+									this.$emit('mySearchInfo', response.data)
 								})
 							}
 						}

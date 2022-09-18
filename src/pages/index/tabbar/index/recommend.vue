@@ -1,122 +1,149 @@
 <template>
-	<view :class="isEdit ? 'pb200': 'pb100'" style="background-color: #F5F5F5;">
+	<view class="user-user-msg-page">
 		<cu-custom bgColor="bg-white">
-			<block slot="backText" class="text-black">梦圈</block>
+			<block slot="backText" class="text-black">我的消息</block>
 		</cu-custom>
-		<view class="myheader-search">
-			<view class="search-box">
-				<view class="search-box-left">
-					<u-search :placeholder="searchText" v-model="keyword" :focus="false" :show-action="false" @search="inputSearch()">
-					</u-search>
+		<view class="msg-box">
+			<view class="msg-item" v-for="(item, index) in list" :key="index">
+				<view class="msg-item-left" :style="{
+					'background-color': icon[item.type-1].bgColor
+				}">
+					<text class="cuIcon-notificationfill"></text>
+				</view>
+				<view class="msg-item-center">
+					<view class="msg-item-center-top">
+						<text>{{item.title}}</text>
+						<text>{{item.time}}</text>
+					</view>
+					<text class="msg-item-center-bottom">{{item.msg}}</text>
 				</view>
 			</view>
 		</view>
-		<view class="mall-cart-list flex flex-direction" v-if="cartList.length > 0">
-			<zj-dream-list :list="cartList" @itemClick="toShowList"></zj-dream-list>
-		</view>
-		<zj-empty v-if="cartList.length === 0" :img="`${imgUrl}1639019849000/pic_shoping.png`"
-		 text="暂无数据~" />
 	</view>
 </template>
 
 <script>
-	import { getDreamList } from '../../../../api/home'
 	export default {
-		props: {
-			isReachBottom: {
-				// 该页面是否拉到底部
-				type: Number,
-				default: 0
-			}
-		},
 		data() {
 			return {
-				searchText: '搜索您感兴趣的梦想',
-				keyword: '',
-				allFlag: {
-					checked: false,
-					value: 'all'
-				},
-				cartList: [
-					// {
-					// 	title: '2024 考研成功上岸',
-					// 	time: '2022-10-21',
-					// 	name: '春日回暖衬',
-					// 	headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-					// 	content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-					// 	imagesArray: [
-					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-					// 	]
-					// }
-				],	// 梦想对应数据
-				fixStr: '?x-oss-process=image/resize,m_fill,h_144,w_144&x-image-process=image/resize,m_fill,h_144,w_144', //图片后缀
-				merchantNo: '',
-				customStyle:{
-				  background: "#34A2E8"
-				},
-				themeColor: '',
-				imgUrl: '',
-				isEdit: false,
-				current: 1,
-				size: 20
+				icon: [{
+					bgColor: '#5ec39d'
+				}, {
+					bgColor: '#e5392d'
+				}, {
+					bgColor: '#65cce2'
+				}, {
+					bgColor: '#e97a26'
+				}, {
+					bgColor: '#60c962'
+				}],
+				list: [{
+					type: 1,
+					title: '订单通知',
+					msg: '您有待支付订单，请及时处理。',
+					time: '08:48'
+				}, {
+					type: 2,
+					title: '交易通知',
+					msg: '您成功充值 100.00 元。',
+					time: '昨天 08:48'
+				}, {
+					type: 3,
+					title: '取餐通知',
+					msg: '您有订餐已出餐，请及时领取。',
+					time: '周五 08:48'
+				}, {
+					type: 4,
+					title: '物流通知',
+					msg: '你购买的宝贝物流有变动，请及时关注。',
+					time: '11-01 08:48'
+				}, {
+					type: 5,
+					title: '服务通知',
+					msg: '您在 2019-01-02 10:10:10 进行密码修改，如非本人操作，请及时修改密码。',
+					time: '2019-01-02 08:48'
+				}]
 			}
-		},
-		watch: {
-			isReachBottom: {
-				handler(val) {
-					// 如果该页面拉取到了底部，则重新调用接口
-					console.log(34234234234)
-					this.current += 1
-					this.toSearchList()
-				}
-			}
-		},
-		created() {
-			this.toSearchList()
-		},
-		mounted() {
-		  this.imgUrl = this.$imgUrl
-		  this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
-		  this.customStyle.background = this.themeColor
 		},
 		methods: {
-			toSearchList() {
-				getDreamList(`?current=${this.current}&size=${this.size}`).then(res => {
-					if (res.data.length > 0) {
-						this.cartList = this.cartList.concat(res.data)
-					}
-				})
-			},
-			doSearch() {
-
-			},
-			toShowList(item) {
-				console.log(item)
-			}
 		}
 	}
 </script>
 
-<style lang="scss" scoped>
-	.myheader-search {
-		background-color: #ffffff;
-		padding-bottom: 20rpx;
-		.search-box {
-			width: 96%;
-			margin: 0 auto;
+<style lang="scss">
+	.user-user-msg-page {
+		.msg-box {
+			background: #FFFFFF;
+			.msg-item {
+				padding: 32rpx;
+				position: relative;
+				display: -webkit-box;
+				display: -webkit-flex;
+				display: flex;
+				-webkit-box-align: center;
+				-webkit-align-items: center;
+				align-items: center;
+				&:not(:last-child):before {
+					content: '';
+					position: absolute;
+					z-index: 2;
+					bottom: 0;
+					left: 32rpx;
+					right: 0;
+					height: 1px;
+					border-bottom: 1px solid #EEEEEE;
+					-webkit-transform: scaleY(0.5);
+					transform: scaleY(0.5);
+					-webkit-transform-origin: 0 100%;
+					transform-origin: 0 100%;
+				}
+				&-left {
+					margin-right: 24rpx;
+					width: 96rpx;
+					height: 96rpx;
+					line-height: 96rpx;
+					text-align: center;
+					background: #fff;
+					border-radius: 50%;
+					text {
+						font-size: 64rpx;
+						color: #FFFFFF;
+					}
+				}
+				&-center {
+					-webkit-box-flex: 1;
+					-webkit-flex: 1;
+					flex: 1;
+					min-width: 0;
+					&-top {
+						display: flex;
+						text {
+							&:first-child {
+								font-weight: 500;
+								font-size: 32rpx;
+								color: #333;
+								flex: 1;
+							}
+							&:last-child {
+								text-align: right;
+								font-size: 26rpx;
+								color: #8c8c8c;
+							}
+						}
+					}
+					&-bottom {
+						color: #848689;
+						font-size: 26rpx;
+						line-height: 1.2;
+						overflow: hidden;
+						margin-top: 16rpx;
+						text-overflow: ellipsis;
+						display: -webkit-box;
+						-webkit-box-orient: vertical;
+						-webkit-line-clamp: 1;
+					}
+				}
+			}
 		}
-	}
-	.pb100 {
-		padding-bottom: 100rpx;
-	}
-
-	.pb200 {
-		padding-bottom: 200rpx;
-	}
-
-	.mall-cart-list {
-		background: #ffffff;
-		padding-bottom: 30rpx;
 	}
 </style>

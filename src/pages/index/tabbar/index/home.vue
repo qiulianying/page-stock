@@ -37,7 +37,7 @@
 		</view>
 		<div class="swiper-box" style="margin-bottom:100rpx">
 			<div v-if="cartList.length > 0" style="width: 100%;background-color: #ffffff">
-				<zj-dream-list :list="cartList" @itemClick="toShowList" @addcommnt="addcommnt"></zj-dream-list>
+				<zj-dream-list :key="myKey" :list="cartList" @itemClick="toShowList" @addcommnt="addcommnt" @relodLast="getDreamgodenListApi"></zj-dream-list>
 			</div>
 			<zj-empty v-else :img="`${imgUrl}1639019849000/pic_shoping.png`" :shortWindows="true"
 					  text="暂无数据~" />
@@ -69,22 +69,11 @@
 		},
 		data() {
 			return {
+				myKey: 0,
 				commentcontent: '',	// 评论内容
 				NowItem: {},
 				showComment: false,
-				cartList: [
-					// {
-					// 	title: '2024 考研成功上岸',
-					// 	time: '2022-10-21',
-					// 	name: '春日回暖衬',
-					// 	headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-					// 	content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-					// 	imagesArray: [
-					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-					// 	]
-					// }
-				],
+				cartList: [],
 				searchText: '搜索梦想....',
 				StatusBar: this.StatusBar,
 				CustomBar: this.CustomBar,
@@ -163,8 +152,10 @@
 					if (res.data && res.data.records) {
 						if (change) {
 							this.cartList = res.data.records
+							this.myKey += 1
 						} else {
 							this.cartList = this.cartList.concat(res.data.records)
+							this.myKey += 1
 						}
 					}
 				})

@@ -86,7 +86,7 @@
       <!--   弹出层搜索框   -->
       <u-popup v-model="showInput" mode="bottom" :closeable="true">
           <view class="mySearch">
-              <zy-search :isFocus="true" :theme="'circle'" :showWant="true" @mySearchInfo="mySearchInfo"></zy-search>
+              <zy-search :isFocus="true" :theme="'circle'" ref="zysearchInfo" :showWant="true" @mySearchInfo="mySearchInfo"></zy-search>
           </view>
       </u-popup>
   </view>
@@ -97,7 +97,7 @@ import { addDream, upload } from '../../../api/createdream'
 export default {
   data() {
     return {
-        titleInfo: '话题内容',
+        titleInfo: '',
         dreamContent: {
             title: '', // 标题
             "id": null,
@@ -205,6 +205,7 @@ export default {
     // 话题选择
       topicSelect() {
           this.showInput = true
+          this.$refs.zysearchInfo.clearInfo()
       },
       // 地图选择
     chooseLocation() {

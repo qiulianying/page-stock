@@ -48,9 +48,9 @@
 			downFile(type) {
 				let url = ''
 				if (type === 'user') {
-					url = 'https://example.com/somefile.pdf'
+					url = 'https://dream.kaihuaikj.com/userProtocol.pdf'
 				} else {
-					url = 'https://example.com/somefile.pdf'
+					url = 'https://dream.kaihuaikj.com/privateProtocol.pdf'
 				}
 				uni.downloadFile({
 					url: url,

@@ -20,8 +20,26 @@
 					</view>
 					<!--点赞喜欢等操作-->
 					<view class="zj-dream-informShow">
-						<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShowInfo(item)" @click="toSetInfo(item, infoItem)">
-							<text :class="'myCuIcon cuIcon-' + infoItem.type"></text>
+						<view class="zj-dream-informTitle" @click="toSetInfo(item, 'appreciate')">
+							<text :class="'myCuIcon cuIcon-appreciate'" :style="{
+								color: item.isPraise === 1 ? themeColor : '',
+								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
+							<text class="cuIcon-Number">{{item.praiseNum}}</text>
+						</view>
+						<view class="zj-dream-informTitle" @click="toSetInfo(item, 'like')">
+							<text :class="'myCuIcon cuIcon-like'" :style="{
+								color: item.isCollect === 1 ? themeColor : '',
+								fontWeight: item.isCollect === 1 ? 'bold' : ''}"></text>
+							<text class="cuIcon-Number">{{infoItem.number}}</text>
+						</view>
+						<view class="zj-dream-informTitle" @click="toSetInfo(item, 'comment')">
+							<text :class="'myCuIcon cuIcon-comment'"></text>
+							<text class="cuIcon-Number">{{infoItem.number}}</text>
+						</view>
+						<view class="zj-dream-informTitle" @click="toSetInfo(item, 'forward')">
+							<text :class="'myCuIcon cuIcon-forward'" :style="{
+								color: item.isWatched === 1 ? themeColor : '',
+								fontWeight: item.isWatched === 1 ? 'bold' : ''}"></text>
 							<text class="cuIcon-Number">{{infoItem.number}}</text>
 						</view>
 					</view>
@@ -32,34 +50,17 @@
 </template>
 
 <script>
-	import { putPraise, addComment, putCollect, putWatch } from '../../api/createdream'
+	import { putPraise, putCollect, putWatch } from '../../api/createdream'
 	export default {
 		data() {
 			return {
+				appreciate: '',
+				like: '',
+				forward: '',
+				themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
 				commentcontent: '',	// 评论内容
 				NowItem: {},
-				showComment: false,
-				infoArrayShow: [{
-					type: 'appreciate',
-					number: 0,
-					name: 'praiseNum',
-					text: '点赞'
-				},{
-					type: 'like',
-					number: 0,
-					name: 'collectNum',
-					text: '收藏'
-				},{
-					type: 'comment',
-					number: 0,
-					name: 'commentNum',
-					text: '评论'
-				},{
-					type: 'forward',
-					number: 0,
-					name: 'watcheNum',
-					text: '围观'
-				}]
+				showComment: false
 			}
 		},
 		props: {
@@ -74,42 +75,39 @@
 		},
 		methods: {
 			toSetInfo(item, infoItem) {
-				switch (infoItem.type) {
-					// 评论
+				switch (infoItem) {
+						// 评论
 					case 'comment':
 						this.$emit('addcommnt', item)
 						break;
-					// 点赞
+						// 点赞
 					case 'appreciate':
 						putPraise({
-							id: item.id
+							id: item.id,
+							description: 1
 						}).then(res => {
-
+							this.$emit('relodLast')
 						})
 						break;
-					// 收藏
+						// 收藏
 					case 'like':
 						putCollect({
-							id: item.id
+							id: item.id,
+							description: 1
 						}).then(res => {
-
+							this.$emit('relodLast')
 						})
 						break;
 						// 围观
 					case 'forward':
 						putWatch({
-							id: item.id
+							id: item.id,
+							description: 1
 						}).then(res => {
-
+							this.$emit('relodLast')
 						})
 						break;
 				}
-			},
-			infoArrayShowInfo(content) {
-				this.infoArrayShow.forEach(item => {
-					item.number = content[item.name]
-				})
-				return this.infoArrayShow
 			},
 			itemClick(id) {
 				this.$emit('itemClick', id)

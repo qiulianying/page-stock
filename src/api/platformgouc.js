@@ -12,3 +12,5 @@ export const getUserInfo = (data, option) => http('user/info', data, {method: 'G
 
 // 获取微信小程序openid
 export const getOpenId = (data, option) => http('login/openid', data, {method: 'GET'})
+
+/*我的消息*/

@@ -66,7 +66,7 @@
 					{
 						name: 'recommend',
 						icon: 'item02',
-						title: '梦圈',
+						title: '消息',
 						barColor: 'black',
 						visible: true,
 						isFresh: false

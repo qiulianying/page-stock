@@ -15,16 +15,19 @@ export const getTopic = (data, option) => http(`topic/query${data}`, data, {meth
 export const CreateTopic = (data, option) => http(`topic`, data, option)
 
 /*梦想点赞*/
-export const putPraise = (data, option) => http(`dream/praise`, data, {method: 'PUT'})
+export const putPraise = (data, option) => http(`dream/praise?id=${data.id}&description=${data.description}`, data, {method: 'PUT'})
 
 /*梦想收藏*/
-export const putCollect = (data, option) => http(`dream/collect`, data, {method: 'PUT'})
+export const putCollect = (data, option) => http(`dream/collect?id=${data.id}&description=${data.description}`, data, {method: 'PUT'})
 
 /*梦想围观*/
-export const putWatch = (data, option) => http(`dream/watch`, data, {method: 'PUT'})
+export const putWatch = (data, option) => http(`dream/watch?id=${data.id}&description=${data.description}`, data, {method: 'PUT', contentType: ''})
 
 /*新增评论*/
 export const addComment = (data, option) => http(`comment`, data, option)
+
+/*梦想评论查询*/
+export const getDreamComment = (id, option) => http(`comment/dream/${id}`, id, {method: 'GET'})
 
 /*文件上传*/
 export const upload = (data, option) => http('file/upload', data, option)
