@@ -13,6 +13,11 @@
 			<button class="cu-btn page-box-btn page-box-btn-mobile"
 					@tap="toView('login/login-mobile')">手机号登录</button>
 		</view>
+		<!--隐私条款-->
+		<view class="readInfo">
+			<u-checkbox @change="checkboxChange" v-model="checkboxThis"></u-checkbox>
+			已阅读并同意<span @tap="downFile('user')">《用户协议》</span>于<span @tap="downFile('Privacy')">隐私策略</span>
+		</view>
 	</view>
 </template>
 
@@ -22,6 +27,7 @@
 	export default {
 		data() {
 			return {
+				checkboxThis: true,
 				fromurl: null,
 				themeColor: '',
 				merchantNo: '',
@@ -36,8 +42,39 @@
 			}
 		},
 		methods: {
+			checkboxChange(e) {
+				this.checkboxThis = e.value
+			},
+			downFile(type) {
+				let url = ''
+				if (type === 'user') {
+					url = 'https://example.com/somefile.pdf'
+				} else {
+					url = 'https://example.com/somefile.pdf'
+				}
+				uni.downloadFile({
+					url: url,
+					success: function (res) {
+						var filePath = res.tempFilePath;
+						uni.openDocument({
+							filePath: filePath,
+							showMenu: true,
+							success: function (res) {
+								console.log('打开文档成功');
+							}
+						});
+					}
+				});
+			},
 			// 获取用户信息
 			technological() {
+				if (!this.checkboxThis) {
+					uni.showToast({
+						title: '请阅读并同意用户协议！',
+						icon: 'none'
+					})
+					return
+				}
 				let _this = this
 				uni.showModal({
 					title: '温馨提示',
@@ -94,6 +131,13 @@
 				});
 			},
 			toView(page) {
+				if (!this.checkboxThis) {
+					uni.showToast({
+						title: '请阅读并同意用户协议！',
+						icon: 'none'
+					})
+					return
+				}
 				let url = `/pages/${page}`
 				if (this.$util.strIsNotEmpty(this.fromurl)) {
 					url += `?fromurl=${encodeURIComponent(`${this.fromurl}`)}`
@@ -194,6 +238,20 @@
 
 			.login-logo {
 				width: 228rpx;
+			}
+		}
+
+		.readInfo {
+			font-size: 24rpx;
+			font-weight: 400;
+			color: #adadad;
+			text-align: center;
+			width: 100%;
+			position: fixed;
+			bottom: 60rpx;
+			span {
+				font-size: 26rpx;
+				color: #333333;
 			}
 		}
 	}

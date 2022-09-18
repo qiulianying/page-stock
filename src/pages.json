@@ -116,6 +116,10 @@
 			{
 				"name": "个人信息",
 				"path": "pages/user/index"
+			},
+			{
+				"path": "pages/login/login",
+				"name": "登录"
 			}
 		]
 	}

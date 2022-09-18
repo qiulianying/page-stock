@@ -234,7 +234,7 @@
 				position: absolute;
 				bottom: 0;
 				left: 0;
-				background: linear-gradient(180deg, #FFFFFF 0%, rgba(255,255,255,0) 100%);
+				background: #ffffff;
 				box-shadow: 0px -6px 40px 0px rgba(98,119,192,0.07);
 				backdrop-filter: blur(9px);
 				height: 80rpx;

@@ -26,6 +26,7 @@ const http = (url, data = {}, option = {}, apiType) => {
             mask: true
         })
     }
+    console.log(data)
     return new Promise((resolve, reject) => {
         const httpLang = Vue.prototype.$t('js.http')
         let myurl

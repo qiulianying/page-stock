@@ -12,7 +12,7 @@
 				<input maxlength="20" class="mysearchInput" type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词" v-model.trim="searchText"/>
 			</template>
 		</view>
-		<view :class="'s-' + theme" v-if="hList.length > 0">
+<!--		<view :class="'s-' + theme" v-if="hList.length > 0">
 			<view class="header">
 				历史记录
         <text class="cuIcon-delete text-theme imageIcon" @click="delhistory"></text>
@@ -20,11 +20,11 @@
 			<view class="list">
 				<view v-for="(item,index) in hList" :key="index" @click="keywordsClick(item)">{{item}}</view>
 			</view>
-		</view>
+		</view>-->
 		<view :class="'wanted-' + theme" v-if="showWant">
-			<view class="header">猜你想搜的</view>
+			<view class="header">猜你想要的</view>
 			<view class="list">
-				<view v-for="(item,index) in hotList" :key="index" @click="keywordsClick(item)">{{item}}</view>
+				<view v-for="(item,index) in hotList" :key="index" @click="keywordsClick(item)">{{item.topicName}}</view>
 			</view>
 		</view>
 <!--  删除历史记录  -->
@@ -34,7 +34,7 @@
 </template>
 
 <script>
-	import { getTopic } from '../../api/createdream'
+	import { getTopic, CreateTopic } from '../../api/createdream'
 	export default{
 		name:"zy-search",
 		props:{
@@ -50,12 +50,6 @@
 				type: Boolean,
 				default: false
 			},
-			hotList: { //推荐列表数据
-				type: Array,
-				default () {
-					return []
-				}
-			},
 			speechEngine: { //语音引擎=>讯飞:iFly,百度:'baidu'
 				type: String,
 				default: 'baidu'
@@ -63,10 +57,11 @@
 		},
 		data() {
 			return {
-        showDeleteHistory: false,
-        content: '该操作将删除之前的历史记录，请确认是否继续',
+        		showDeleteHistory: false,
+        		content: '该操作将删除之前的历史记录，请确认是否继续',
 				searchText:'',								//搜索关键词
-				hList:uni.getStorageSync('search_cache')		//历史记录
+				hList:uni.getStorageSync('search_cache'),		//历史记录
+				hotList: []
 			};
 		},
 		methods: {
@@ -81,9 +76,20 @@
 				} else {
           			// 进行历史记录搜索缓存保存
 					_this.$emit('getSearchText', _this.searchText);
-					// 根据输入内容进行搜索
+					// 根据输入内容进行搜索，如果没有内容就直接创建并关闭
 					getTopic(`?name=${_this.searchText}`).then(res => {
-
+						if (res.code == '0' && res.data) {
+							if (res.data.length > 0) {
+								this.hotList = res.data
+							} else {
+								CreateTopic({
+									topicName: _this.searchText
+								}).then(response => {
+									// 创建完成直接关闭并返回填写
+									// this.$emit('mySearchInfo', item)
+								})
+							}
+						}
 					})
 					uni.getStorage({
 						key:'search_cache',
@@ -125,7 +131,8 @@
 			},
 			keywordsClick (item) {	//关键词搜索与历史搜索
 				this.searchText = item;
-				this.searchStart();
+				// this.searchStart();
+				this.$emit('mySearchInfo', item)
 			},
 			delhistory () {		//清空历史记录
 				this.hList = [];

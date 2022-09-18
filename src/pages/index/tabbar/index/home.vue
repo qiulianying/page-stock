@@ -37,26 +37,25 @@
 		</view>
 		<div class="swiper-box" style="margin-bottom:100rpx">
 			<div v-if="cartList.length > 0" style="width: 100%;background-color: #ffffff">
-				<zj-dream-list :list="cartList" @itemClick="toShowList"></zj-dream-list>
+				<zj-dream-list :list="cartList" @itemClick="toShowList" @addcommnt="addcommnt"></zj-dream-list>
 			</div>
 			<zj-empty v-else :img="`${imgUrl}1639019849000/pic_shoping.png`" :shortWindows="true"
-					  text="暂无梦圆数据~" />
+					  text="暂无数据~" />
 		</div>
-<!--		<swiper :current="merchantTabCurIndex" class="swiper-box" duration="300" @change="changeTab"
-			style="margin-bottom:100rpx">
-			<swiper-item class="tab-content" v-for="(tabItem, tabIndex) in merchantTabList" :key="tabIndex">
-				<div v-if="cartList.length > 0">
-					<zj-dream-list :list="cartList" @itemClick="toShowList"></zj-dream-list>
-				</div>
-				<zj-empty v-else :img="`${imgUrl}1639019849000/pic_shoping.png`"
-						  text="暂无梦圆数据~" />
-			</swiper-item>
-		</swiper>-->
+		<!--输入评论弹窗-->
+		<u-modal v-model="showComment" @confirm="confirm" :async-close="true" :title="'请输入您的评论内容'" :show-cancel-button="true">
+			<view class="slot-content">
+				<view class="comment-content">
+					<textarea class="comment-textarea" :focus="true" maxlength="200" @input="textareaAInput" placeholder="分享你的评论, 更有机会获得关注和奖励哦"></textarea>
+				</view>
+			</view>
+		</u-modal>
 	</view>
 </template>
 
 <script>
 	import { getDreamgodenList } from '../../../../api/home'
+	import {addComment} from "../../../../api/createdream";
 	export default {
 		props: {
 			isFresh: { // 是否刷新
@@ -70,6 +69,9 @@
 		},
 		data() {
 			return {
+				commentcontent: '',	// 评论内容
+				NowItem: {},
+				showComment: false,
 				cartList: [
 					// {
 					// 	title: '2024 考研成功上岸',
@@ -123,7 +125,7 @@
 				},
 				bigFixStr: '', //图片后缀
 				themeColor: '',
-				tabCurrentId: 0, // 默认是0 推荐商家
+				tabCurrentId: 0, // 默认是0 进行中状态
 				current: 1,
 				size: 20
 			}
@@ -137,12 +139,33 @@
 		computed: {},
 		watch: {},
 		methods: {
-			getDreamgodenListApi(status) {
-				// 获取进行中数据
-				let statusInfo = status ? status : 0
-				getDreamgodenList(`?current=${this.current}&size=${this.size}&status=${statusInfo}`).then(res => {
+			confirm() {
+				// 添加评论
+				addComment({
+					content: this.commentcontent,
+					businessId: this.NowItem.id,
+					type: 0,
+					level: 0,
+				}).then(res => {
+					this.showComment = false;
+				})
+			},
+			addcommnt(item) {
+				this.commentcontent = ''
+				this.NowItem = item
+				this.showComment = true
+			},
+			textareaAInput(e) {
+				this.commentcontent = e.detail.value
+			},
+			getDreamgodenListApi(change) {
+				getDreamgodenList(`?current=${this.current}&size=${this.size}&status=${this.tabCurrentId}`).then(res => {
 					if (res.data && res.data.records) {
-						this.cartList = this.cartList.concat(res.data.records)
+						if (change) {
+							this.cartList = res.data.records
+						} else {
+							this.cartList = this.cartList.concat(res.data.records)
+						}
 					}
 				})
 			},
@@ -159,6 +182,7 @@
 				this.merchantTabCurIndex = e
 				this.tabCurrentId = this.merchantTabList[e].id
 				// 根据不同情况切换调用接口
+				this.getDreamgodenListApi(true)
 			},
 			getPreSettleCalcApi() {
 
@@ -293,5 +317,17 @@
 
 	.mt36 {
 		margin-top: 24rpx;
+	}
+
+	.comment-content {
+		width: 80%;
+		margin: 0 auto;
+
+		.comment-textarea {
+			width: 100%;
+			height: 360rpx;
+			margin-top: 20rpx;
+			margin-bottom: 20rpx;
+		}
 	}
 </style>

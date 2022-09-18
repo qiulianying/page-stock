@@ -42,14 +42,14 @@
 					{
 						name: 'home',
 						icon: 'item01',
-						title: '首页',
+						title: '金梦',
 						barColor: 'white',
 						visible: true,
 						isFresh: false //是否刷新数据
 					}, {
 						name: 'shop',
-						icon: 'item02',
-						title: '筑梦',
+						icon: 'item04',
+						title: '梦圈',
 						barColor: 'white',
 						visible: true,
 						isFresh: false
@@ -65,7 +65,7 @@
 					},
 					{
 						name: 'recommend',
-						icon: 'item04',
+						icon: 'item02',
 						title: '梦圈',
 						barColor: 'black',
 						visible: true,

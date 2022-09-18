@@ -31,7 +31,7 @@ const upload = (filePath, otherUrl, myName, myFormData) => {
 			header: {
 				token: token
 			},
-			formData,
+			formData: formData,
 			success: res => {
 				console.log('执行成功')
 				console.log(res)

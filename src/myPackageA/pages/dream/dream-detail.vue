@@ -5,18 +5,17 @@
 		</cu-custom>
 
 		<view style="width:100%;height:750rpx;margin:0 auto;align:center">
-			<u-swiper :list="swiperList" height="750" class="detail-swiper">
-			</u-swiper>
+			<u-swiper :list="swiperList" height="750" class="detail-swiper"></u-swiper>
 		</view>
 
 		<view class="goods-detail-info">
 			<view class="goods-title">
 				<span>{{DetailInfo.title || '暂无标题'}}</span>
-				<span class="createTime">{{$util.dateFormat(new Date(Number(item.createTime)), '-')}} 创建</span>
+				<span class="createTime">{{$util.dateFormat(new Date(Number(DetailInfo.createTime)), '-')}} 创建</span>
 			</view>
 			<view class="goods-desc">{{DetailInfo.content}}</view>
 			<view class="zj-dream-informShow">
-				<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShow">
+				<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShow" @click="toSetInfo(DetailInfo, infoItem)">
 					<text :class="'myCuIcon cuIcon-' + infoItem.type"></text>
 					<text class="cuIcon-Number">{{infoItem.number}}</text>
 				</view>
@@ -47,14 +46,26 @@
 				</view>
 			</view>
 		</view>
+
+		<!--输入评论弹窗-->
+		<u-modal v-model="showComment" @confirm="confirm" :async-close="true" :title="'请输入您的评论内容'" :show-cancel-button="true">
+			<view class="slot-content">
+				<view class="comment-content">
+					<textarea class="comment-textarea" :focus="true" maxlength="200" @input="textareaAInput" placeholder="分享你的评论, 更有机会获得关注和奖励哦"></textarea>
+				</view>
+			</view>
+		</u-modal>
 	</view>
 </template>
 
 <script>
-	import {DreamDetail} from '../../../api/createdream'
+	import {addComment, DreamDetail, putCollect, putPraise, putWatch} from '../../../api/createdream'
 	export default {
 		data() {
 			return {
+				commentcontent: '',	// 评论内容
+				NowItem: {},
+				showComment: false,
 				DetailInfo: {},
 				infoArrayShow: [{
 					type: 'appreciate',
@@ -77,9 +88,7 @@
 					name: 'watcheNum',
 					text: '围观'
 				}],
-				swiperList: [
-					"http://localhost:8082/platform-oss/internal-getfile/service-org-7adc24dc/20210708/6527da911b994bcc9c56027428560c2b.jpeg"
-				],
+				swiperList: []
 			}
 		},
 		onLoad(options) {
@@ -88,9 +97,67 @@
 				this.DetailInfo = res.data
 				this.infoArrayShowInfo(res.data)
 				// 进行图片组获取
+				if (res.data.files && res.data.files.length > 0) {
+					res.data.files.forEach(item => {
+						this.swiperList.push({
+							image: item.url,
+							title: item.fileName
+						})
+					})
+				}
 			})
 		},
 		methods: {
+			confirm() {
+				// 添加评论
+				addComment({
+					id: this.NowItem.id,
+					content: this.commentcontent,
+					parentId: 0,
+					businessId: 0,
+					type: 0,
+					"level": 0,
+				}).then(res => {
+					this.showComment = false;
+				})
+			},
+			textareaAInput(e) {
+				this.commentcontent = e.detail.value
+			},
+			toSetInfo(item, infoItem) {
+				switch (infoItem.type) {
+						// 评论
+					case 'comment':
+						this.commentcontent = ''
+						this.showComment = true
+						this.NowItem = item
+						break;
+						// 点赞
+					case 'appreciate':
+						putPraise({
+							id: item.id
+						}).then(res => {
+
+						})
+						break;
+						// 收藏
+					case 'like':
+						putCollect({
+							id: item.id
+						}).then(res => {
+
+						})
+						break;
+						// 围观
+					case 'forward':
+						putWatch({
+							id: item.id
+						}).then(res => {
+
+						})
+						break;
+				}
+			},
 			infoArrayShowInfo(content) {
 				this.infoArrayShow.forEach(item => {
 					item.number = content[item.name]
@@ -206,6 +273,18 @@
 					}
 				}
 			}
+		}
+	}
+
+	.comment-content {
+		width: 80%;
+		margin: 0 auto;
+
+		.comment-textarea {
+			width: 100%;
+			height: 360rpx;
+			margin-top: 20rpx;
+			margin-bottom: 20rpx;
 		}
 	}
 </style>

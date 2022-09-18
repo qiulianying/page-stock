@@ -1,7 +1,7 @@
 <template>
 	<view :class="isEdit ? 'pb200': 'pb100'" style="background-color: #F5F5F5;">
 		<cu-custom bgColor="bg-white">
-			<block slot="backText" class="text-black">筑梦</block>
+			<block slot="backText" class="text-black">梦圈</block>
 		</cu-custom>
 		<view class="myheader-search">
 			<view class="search-box">
@@ -20,7 +20,7 @@
 </template>
 
 <script>
-	import { getDreamPage } from '../../../../api/home'
+	import { getDreamList } from '../../../../api/home'
 	export default {
 		props: {
 			isReachBottom: {
@@ -37,7 +37,19 @@
 					checked: false,
 					value: 'all'
 				},
-				cartList: [],	// 梦想对应数据
+				cartList: [
+					// {
+					// 	title: '2024 考研成功上岸',
+					// 	time: '2022-10-21',
+					// 	name: '春日回暖衬',
+					// 	headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
+					// 	content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
+					// 	imagesArray: [
+					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
+					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
+					// 	]
+					// }
+				],	// 梦想对应数据
 				fixStr: '?x-oss-process=image/resize,m_fill,h_144,w_144&x-image-process=image/resize,m_fill,h_144,w_144', //图片后缀
 				merchantNo: '',
 				customStyle:{
@@ -70,7 +82,7 @@
 		},
 		methods: {
 			toSearchList() {
-				getDreamPage(`?current=${this.current}&size=${this.size}`).then(res => {
+				getDreamList(`?current=${this.current}&size=${this.size}`).then(res => {
 					if (res.data.length > 0) {
 						this.cartList = this.cartList.concat(res.data)
 					}
@@ -79,11 +91,8 @@
 			doSearch() {
 
 			},
-			inputSearch() {
-
-			},
 			toShowList(item) {
-				this.$toView('myPackageA/pages/dream/dream-detail', false, true)
+				console.log(item)
 			}
 		}
 	}

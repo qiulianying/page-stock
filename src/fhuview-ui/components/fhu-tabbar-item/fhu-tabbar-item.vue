@@ -8,10 +8,10 @@
                 <view class="cuIcon-" style="width: auto;">
                     <view class="bot-code-box">
                         <view class="bot-code" :style="{background: `linear-gradient(-45deg, ${themeColor}, ${themeShadow})`}">
-                            <view class="image-box">
+<!--                            <view class="image-box">
                                 <image mode="widthFix" :src="item.otherImage"></image>
-                            </view>
-                            <view class="bot-code-note">{{ item.title }}</view>
+                            </view>-->
+<!--                            <view class="bot-code-note">{{ item.title }}</view>-->
                         </view>
                     </view>
                 </view>

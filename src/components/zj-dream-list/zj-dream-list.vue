@@ -2,22 +2,25 @@
 	<view>
 		<scroll-view scroll-x class="zj-dream-list-data" @scrolltolower="lower">
 			<view v-if="list.length > 0" class="zj-dream-list-item"
-				  v-for="(item,index) in list" :key="index" @tap="itemClick(item)">
+				  v-for="(item,index) in list" :key="index">
 				<view class="zj-dream-header">
-					<image :src="item.createAvatar" class="zj-dream-headerImg" mode="aspectFill"
-						   :lazy-load="true"/>
-					<view class="zj-dream-headerContent">
-						<view>{{item.createName}}</view>
-						<view class="zj-dream-headerContentTime">{{$util.dateFormat(new Date(Number(item.createTime)), '-')}}发布了</view>
-					</view>
-					<view class="zj-dream-title">{{item.title}}</view>
-					<view class="zj-dream-content">{{item.content}}</view>
-					<view v-for="itemImg in item.imagesArray" class="zj-dream-imgArray" v-if="item.imagesArray && item.imagesArray.length > 0">
-						<image :src="spMatefileBaseURL + itemImg + fixStr" class="zj-dream-imgArrayList" mode="aspectFill"
+					<view @tap="itemClick(item)">
+						<image :src="item.createAvatar" class="zj-dream-headerImg" mode="aspectFill"
 							   :lazy-load="true"/>
+						<view class="zj-dream-headerContent">
+							<view>{{item.createName}}</view>
+							<view class="zj-dream-headerContentTime">{{$util.dateFormat(new Date(Number(item.createTime)), '-')}}发布了</view>
+						</view>
+						<view class="zj-dream-title">{{item.title}}</view>
+						<view class="zj-dream-content">{{item.content}}</view>
+						<view v-for="itemImg in item.files" class="zj-dream-imgArray" v-if="item.files && item.files.length > 0">
+							<image :src="itemImg.url" class="zj-dream-imgArrayList" mode="aspectFill"
+								   :lazy-load="true"/>
+						</view>
 					</view>
+					<!--点赞喜欢等操作-->
 					<view class="zj-dream-informShow">
-						<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShowInfo(item)">
+						<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShowInfo(item)" @click="toSetInfo(item, infoItem)">
 							<text :class="'myCuIcon cuIcon-' + infoItem.type"></text>
 							<text class="cuIcon-Number">{{infoItem.number}}</text>
 						</view>
@@ -29,10 +32,13 @@
 </template>
 
 <script>
+	import { putPraise, addComment, putCollect, putWatch } from '../../api/createdream'
 	export default {
 		data() {
 			return {
-				fixStr: '?x-oss-process=image/resize,m_fill,h_144,w_144&x-image-process=image/resize,m_fill,h_144,w_144', //图片后缀
+				commentcontent: '',	// 评论内容
+				NowItem: {},
+				showComment: false,
 				infoArrayShow: [{
 					type: 'appreciate',
 					number: 0,
@@ -67,6 +73,38 @@
 			}
 		},
 		methods: {
+			toSetInfo(item, infoItem) {
+				switch (infoItem.type) {
+					// 评论
+					case 'comment':
+						this.$emit('addcommnt', item)
+						break;
+					// 点赞
+					case 'appreciate':
+						putPraise({
+							id: item.id
+						}).then(res => {
+
+						})
+						break;
+					// 收藏
+					case 'like':
+						putCollect({
+							id: item.id
+						}).then(res => {
+
+						})
+						break;
+						// 围观
+					case 'forward':
+						putWatch({
+							id: item.id
+						}).then(res => {
+
+						})
+						break;
+				}
+			},
 			infoArrayShowInfo(content) {
 				this.infoArrayShow.forEach(item => {
 					item.number = content[item.name]
