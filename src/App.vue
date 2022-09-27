@@ -103,8 +103,8 @@
             if (options.scene === 1011) {
                 store.dispatch('changeSetNowLoading', true)
             }
-            //调用登录接口
-            // this.userLogin(options)
+            // 调用登录接口
+            this.userLogin(options)
             // #endif
         },
         onHide: function() {
