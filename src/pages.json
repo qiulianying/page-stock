@@ -48,6 +48,12 @@
 			"style": {
 				"navigationBarTitleText": "个人信息"
 			}
+		},
+		{
+			"path": "pages/user/otherUser",
+			"style": {
+				"navigationBarTitleText": "他人信息"
+			}
 		}
 	],
 	"subPackages": [

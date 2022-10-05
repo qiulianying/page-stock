@@ -92,11 +92,13 @@
 				lastParams: {
 					province: '',
 					city: ''
-				}
+				},
+				id: ''
 			};
 		},
 		onLoad(options) {
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
+			this.id = options.id
 			// 屏蔽微信右上角工具栏
 			wx.hideShareMenu()
 			this.date = this.$util.dateFormat(new Date(), '-')

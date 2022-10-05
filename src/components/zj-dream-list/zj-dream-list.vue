@@ -3,18 +3,22 @@
 		<view v-if="testIndex.length > 0" class="zj-dream-list-item"
 			  v-for="(item,index) in testIndex" :key="index">
 			<view class="zj-dream-header">
-				<view @tap="itemClick(item)">
-					<image :src="item.createAvatar" class="zj-dream-headerImg" mode="aspectFill"
+				<view>
+					<image :src="item.createAvatar"
+						   @tap="itemToDetailInfo(item)"
+						   class="zj-dream-headerImg" mode="aspectFill"
 						   :lazy-load="true"/>
-					<view class="zj-dream-headerContent">
+					<view class="zj-dream-headerContent" @tap="itemClick(item)">
 						<view>{{item.createName}}</view>
 						<view class="zj-dream-headerContentTime">{{$util.dateFormat(new Date(Number(item.createTime)), '-')}}发布了</view>
 					</view>
-					<view class="zj-dream-title">{{item.title}}</view>
-					<view class="zj-dream-content">{{item.content}}</view>
-					<view v-for="itemImg in item.files" class="zj-dream-imgArray" v-if="item.files && item.files.length > 0">
-						<image :src="itemImg.url" class="zj-dream-imgArrayList" mode="aspectFill"
-							   :lazy-load="true"/>
+					<view @tap="itemClick(item)">
+						<view class="zj-dream-title">{{item.title}}</view>
+						<view class="zj-dream-content">{{item.content}}</view>
+						<view v-for="itemImg in item.files" class="zj-dream-imgArray" v-if="item.files && item.files.length > 0">
+							<image :src="itemImg.url" class="zj-dream-imgArrayList" mode="aspectFill"
+								   :lazy-load="true"/>
+						</view>
 					</view>
 				</view>
 				<!--点赞喜欢等操作-->
@@ -84,6 +88,11 @@
 			list: {
 				type: Array,
 				default: () => []
+			},
+			// 该值传入将不处理跳转个人详情
+			headerNo: {
+				type: Boolean,
+				default: false
 			}
 		},
 		methods: {
@@ -144,6 +153,18 @@
 						break;
 				}
 			},
+			itemToDetailInfo(item) {
+				if (this.headerNo) {
+					this.itemClick(item)
+				} else {
+					// 跳转不同的详情页面
+					if (item.createBy == uni.getStorageSync('userId')) {
+						this.$toView(`index/index?tabName=4`, false, true, false)
+					} else {
+						this.$toView(`user/otherUser?id=${item.createBy}`, false, false, false)
+					}
+				}
+			},
 			itemClick(id) {
 				this.$emit('itemClick', id)
 			},
@@ -162,8 +183,8 @@
 
 		.zj-dream-header {
 			.zj-dream-headerImg {
-				width: 66rpx;
-				height: 66rpx;
+				width: 72rpx;
+				height: 72rpx;
 				display: inline-block;
 				vertical-align: middle;
 				border: 1px solid #D8D8D8;

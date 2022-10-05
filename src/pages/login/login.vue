@@ -24,6 +24,7 @@
 <script>
 	import myLoginSrc from '../../static/images/dream.png'
 	import {userLogin} from "../../api/platformgouc";
+	import { getUserInfo } from '../../api/platformgouc'
 	export default {
 		data() {
 			return {
@@ -102,6 +103,10 @@
 										uni.showToast({
 											title: '登录成功！',
 											icon: 'success'
+										})
+										// 保存当前的用户id
+										getUserInfo().then(res => {
+											uni.setStorageSync('userId', res.data.id);
 										})
 
 										// if (_this.fromurl) {
