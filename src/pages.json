@@ -34,7 +34,7 @@
 		{
 			"path": "pages/user/user-msg",
 			"style": {
-				"navigationBarTitleText": "我的消息"
+				"navigationBarTitleText": "我的关注"
 			}
 		},
 		{
@@ -76,7 +76,13 @@
 				{
 					"path": "pages/dream/dream-detail",
 					"style": {
-						"navigationBarTitleText": "我的筑梦"
+						"navigationBarTitleText": "梦想详情"
+					}
+				},
+				{
+					"path": "pages/dream/builddetail",
+					"style": {
+						"navigationBarTitleText": "我的筑梦历程"
 					}
 				},
 				{

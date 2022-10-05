@@ -12,19 +12,23 @@
 			<form class="cu-myDream">
 				<view class="cu-form-group ">
 					<view class="title">昵称</view>
-					<input placeholder="两字短标题" name="input" :value="formInfo.nickname"></input>
+					<input placeholder="两字短标题" name="input" v-model="formInfo.nickname"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">性别</view>
-					<picker @change="sexChange" :value="formInfo.gender" :range="sexArray">
+					<picker @change="sexChange" v-model="formInfo.gender" :range="sexArray">
 						<view class="picker">
 							{{sexArray[formInfo.gender]}}
 						</view>
 					</picker>
 				</view>
 				<view class="cu-form-group ">
+					<view class="title">手机号码</view>
+					<input placeholder="请输入您的手机号码" name="input" v-model="formInfo.phone" maxlength="11"></input>
+				</view>
+				<view class="cu-form-group ">
 					<view class="title">简介</view>
-					<input placeholder="请输入您的简介" name="input" :value="formInfo.introduction"></input>
+					<input placeholder="请输入您的简介" name="input" v-model="formInfo.introduction" maxlength="15"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">地址选择</view>
@@ -44,15 +48,15 @@
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">学历</view>
-					<input placeholder="请输入您的学历" name="input" maxlength="20"></input>
+					<input placeholder="请输入您的学历" name="input" maxlength="15"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">职业</view>
-					<input placeholder="请输入您的职业" name="input" maxlength="20" :value="formInfo.occupation"></input>
+					<input placeholder="请输入您的职业" name="input" maxlength="20" v-model="formInfo.occupation"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">爱好</view>
-					<input placeholder="请输入您的爱好" name="input" maxlength="20" :value="formInfo.hobby"></input>
+					<input placeholder="请输入您的爱好" name="input" maxlength="15" v-model="formInfo.hobby"></input>
 				</view>
 				<!--   保存按钮   -->
 				<view class="page-bottom">
@@ -64,7 +68,7 @@
 </template>
 
 <script>
-	import { getUserInfo } from '../../api/platformgouc'
+	import { getUserInfo, userInfoSet } from '../../api/platformgouc'
 	export default {
 		data() {
 			return {
@@ -84,7 +88,11 @@
 				index: -1,
 				sexArray: ['男', '女'],
 				region: ['广东省', '广州市', '海珠区'],
-				date: ''
+				date: '',
+				lastParams: {
+					province: '',
+					city: ''
+				}
 			};
 		},
 		onLoad(options) {
@@ -103,13 +111,33 @@
 				this.formInfo.gender = e.detail.value
 			},
 			saveAddress() {
-
+				let lastParams = {
+					id: this.formInfo.id,
+					nickname: this.formInfo.nickname,
+					gender: this.formInfo.gender,
+					introduction: this.formInfo.introduction,
+					occupation: this.formInfo.occupation,
+					hobby: this.formInfo.hobby,
+					province: this.lastTime.province,
+					city: this.lastTime.city,
+				}
+				userInfoSet(lastParams).then(res => {
+					if (res) {
+						uni.showToast({
+							title: '用户信息更新成功!',
+							icon: 'success',
+							duration: 2000
+						})
+					}
+				})
 			},
 			DateChange(e) {
 				this.date = e.detail.value
 			},
 			RegionChange(e) {
 				this.region = e.detail.value
+				this.lastParams.province = this.region[0]
+				this.lastParams.city = this.region[1]
 			}
 		}
 	}
@@ -118,7 +146,7 @@
 <style lang="scss">
 	.userInfoTable {
 		background-color: #ffffff;
-		padding-top: 60rpx;
+		padding-top: 30rpx;
 		.userHeader {
 			margin: 30rpx 0 30rpx 20rpx;
 			.userImg {

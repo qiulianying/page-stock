@@ -198,6 +198,9 @@
 					case '粉丝':
 						this.$toView('user/user-fans')
 						break
+					case '关注':
+						this.$toView('user/user-msg')
+						break
 					default:
 						break
 				}

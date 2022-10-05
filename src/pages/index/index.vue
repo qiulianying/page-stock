@@ -202,32 +202,4 @@
 			margin: 0 auto;
 		}
 	}
-	.bot-code-box{
-		width: 140rpx;
-		height: 140rpx;
-		border-radius: 140rpx;
-		background: #fff;
-		margin: -8rpx auto 0;
-		overflow: hidden;
-		.bot-code{
-			width: 116rpx;
-			height: 116rpx;
-			border-radius: 116rpx;
-			margin: 12rpx auto;
-			overflow: hidden;
-			.image-box{
-				width: 38rpx;
-				height: 36rpx;
-				margin: 20rpx auto 0;
-				image{
-					width: 38rpx;
-				}
-			}
-			.bot-code-note{
-				font-size: 18rpx;
-				margin-top: 20rpx;
-				color: #fff;
-			}
-		}
-	}
 </style>

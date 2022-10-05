@@ -7,7 +7,7 @@
                   style="background: transparent; margin-top: -16rpx;">
                 <view class="cuIcon-" style="width: auto;">
                     <view class="bot-code-box">
-                        <view class="bot-code" :style="{background: `linear-gradient(-45deg, ${themeColor}, ${themeShadow})`}">
+                        <view class="bot-code">
 <!--                            <view class="image-box">
                                 <image mode="widthFix" :src="item.otherImage"></image>
                             </view>-->
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+    import addImg from '../../img/add.jpeg'
     /**
      * @author: 冯耀华
      * @Date: 2022/03/01 15:20
@@ -34,7 +35,9 @@
     export default {
         name: 'fhu-tabbar-item',
         data() {
-            return {}
+            return {
+                addImg: addImg
+            }
         },
         props: {
             // 底部导航内容
@@ -103,6 +106,8 @@
             border-radius: 116rpx;
             margin: 12rpx auto;
             overflow: hidden;
+            background: url("../../img/add.jpeg") center center no-repeat;
+            background-size: contain;
             .image-box{
                 width: 38rpx;
                 height: 36rpx;

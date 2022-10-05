@@ -1,9 +1,9 @@
 <template>
 	<view class="user-user-msg-page">
 		<cu-custom bgColor="bg-white" is-back>
-			<block slot="backText" class="text-black">我的消息</block>
+			<block slot="backText" class="text-black">关注</block>
 		</cu-custom>
-		<view class="msg-box">
+		<view class="msg-box" v-if="list.length > 0">
 			<view class="msg-item" v-for="(item, index) in list" :key="index">
 				<view class="msg-item-left" :style="{
 					'background-color': icon[item.type-1].bgColor
@@ -12,17 +12,19 @@
 				</view>
 				<view class="msg-item-center">
 					<view class="msg-item-center-top">
-						<text>{{item.title}}</text>
-						<text>{{item.time}}</text>
+						<text class="mylistTitle">{{item.title}}</text>
+						<text class="follow">关注</text>
 					</view>
-					<text class="msg-item-center-bottom">{{item.msg}}</text>
 				</view>
 			</view>
 		</view>
+		<zj-empty v-if="list.length === 0" :img="`${imgUrl}1639019849000/pic_shoping.png`"
+				  text="暂无消息通知~" />
 	</view>
 </template>
 
 <script>
+	import { myFollow } from '../../api/platformgouc'
 	export default {
 		data() {
 			return {
@@ -37,33 +39,47 @@
 				}, {
 					bgColor: '#60c962'
 				}],
-				list: [{
-					type: 1,
-					title: '订单通知',
-					msg: '您有待支付订单，请及时处理。',
-					time: '08:48'
-				}, {
-					type: 2,
-					title: '交易通知',
-					msg: '您成功充值 100.00 元。',
-					time: '昨天 08:48'
-				}, {
-					type: 3,
-					title: '取餐通知',
-					msg: '您有订餐已出餐，请及时领取。',
-					time: '周五 08:48'
-				}, {
-					type: 4,
-					title: '物流通知',
-					msg: '你购买的宝贝物流有变动，请及时关注。',
-					time: '11-01 08:48'
-				}, {
-					type: 5,
-					title: '服务通知',
-					msg: '您在 2019-01-02 10:10:10 进行密码修改，如非本人操作，请及时修改密码。',
-					time: '2019-01-02 08:48'
-				}]
+				list: [
+					// 		{
+					// 	type: 1,
+					// 	title: '订单通知',
+					// 	msg: '您有待支付订单，请及时处理。',
+					// 	time: '08:48'
+					// }, {
+					// 	type: 2,
+					// 	title: '交易通知',
+					// 	msg: '您成功充值 100.00 元。',
+					// 	time: '昨天 08:48'
+					// }, {
+					// 	type: 3,
+					// 	title: '取餐通知',
+					// 	msg: '您有订餐已出餐，请及时领取。',
+					// 	time: '周五 08:48'
+					// }, {
+					// 	type: 4,
+					// 	title: '物流通知',
+					// 	msg: '你购买的宝贝物流有变动，请及时关注。',
+					// 	time: '11-01 08:48'
+					// }, {
+					// 	type: 5,
+					// 	title: '服务通知',
+					// 	msg: '您在 2019-01-02 10:10:10 进行密码修改，如非本人操作，请及时修改密码。',
+					// 	time: '2019-01-02 08:48'
+					// }
+				],
+				params: {
+					size: 30,
+					current: 1
+				},
+				imgUrl: '',
+				themeColor: uni.getStorageSync('themeColor') || '#34A2E8'
 			}
+		},
+		onLoad() {
+			this.imgUrl = this.$imgUrl
+			myFollow(this.params).then(res => {
+				this.list = res.data
+			})
 		},
 		methods: {
 		}
@@ -117,18 +133,22 @@
 					min-width: 0;
 					&-top {
 						display: flex;
-						text {
-							&:first-child {
-								font-weight: 500;
-								font-size: 32rpx;
-								color: #333;
-								flex: 1;
-							}
-							&:last-child {
-								text-align: right;
-								font-size: 26rpx;
-								color: #8c8c8c;
-							}
+						.mylistTitle {
+							font-weight: 500;
+							font-size: 32rpx;
+							color: #333;
+							flex: 1;
+						}
+
+						.follow {
+							text-align: center;
+							font-size: 22rpx;
+							color: #8c8c8c;
+							width: 95rpx;
+							height: 50rpx;
+							border-radius: 26rpx;
+							line-height: 46rpx;
+							border: 2px solid #FFD15A;
 						}
 					}
 					&-bottom {

@@ -4,7 +4,7 @@
 			<block slot="backText" class="text-black my-testBlack">
 				<image :src="DetailInfo.createAvatar" class="userImg" mode="aspectFill"
 					   :lazy-load="true"/>
-				<span>{{DetailInfo.createName || '梦想详情'}}</span>
+				<span>{{DetailInfo.createName || '我的筑梦历程'}}</span>
 			</block>
 		</cu-custom>
 
@@ -29,36 +29,6 @@
 			</view>
 		</view>
 
-		<!--详情其他内容-->
-		<view class="detail-row" v-if="DetailInfo.dreamBuilds && DetailInfo.dreamBuilds.length > 0">
-			<view class="detail-rowTitle">历程</view>
-			<view class="detail-Content-all" style="background-color: white;margin-top: 14rpx;border-radius: 20rpx;">
-				<view class="detail-Content"
-					  @tap="toBuildsDetail(item)"
-					  v-for="(item, index) in DetailInfo.dreamBuilds" :key="index">
-					<view class="detail-left">
-						<view class="detail-left-title">
-							{{item.content || '暂无数据'}}
-						</view>
-						<view>{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
-						<view class="detail-left-settting">
-							<view class="zj-dream-informTitle" @tap.stop="toSetBuilds(item, 'appreciate')">
-								<text :class="'myCuIcon cuIcon-appreciate'" :style="{
-								color: item.isPraise === 1 ? themeColor : '',
-								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
-								<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praiseNum || 0}}</text>
-							</view>
-							<view class="zj-dream-informTitle" @tap.stop="toSetBuilds(item, 'comment')">
-								<text :class="'myCuIcon cuIcon-comment'"></text>
-								<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.commentNum || 0}}</text>
-							</view>
-						</view>
-					</view>
-					<view class="detail-right"></view>
-				</view>
-			</view>
-		</view>
-
 		<!--详情相关评论-->
 		<view class="detail-row" v-if="commentArray.length > 0">
 			<view class="detail-rowTitle">热评论</view>
@@ -73,11 +43,6 @@
 					</view>
 				</view>
 			</view>
-		</view>
-
-		<!--更新状态-->
-		<view class="page-bottom" v-if="DetailInfo.isAuthor === 1">
-			<button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveCourse">更新状态</button>
 		</view>
 
 		<!--输入评论弹窗-->
@@ -139,24 +104,6 @@
 			this.getDreamComment()
 		},
 		methods: {
-			toBuildsDetail(item) {
-				this.$toView(`/myPackageA/pages/dream/builddetail?id=${item.id}`, false, false, true)
-			},
-			toSetBuilds(item, type) {
-				if (type === 'appreciate') {
-					// 点赞
-					praise({id: item.id}).then(res => {
-						this.DreamDetailFun()
-					})
-				} else {
-					// 进行评论
-					this.showComment = true
-					this.nowUserIs = item
-				}
-			},
-			saveCourse() {
-				this.$toView(`/myPackageA/pages/createdream/addcourse?title=${this.DetailInfo.title}&id=${this.DetailInfo.id}`, false, false, true)
-			},
 			getDreamComment() {
 				getDreamComment(this.id).then(res => {
 					this.commentArray = res.data
@@ -340,10 +287,6 @@
 					display: flex;
 					justify-content: space-between;
 					align-items: flex-start;
-					border-bottom: 1px solid #cdcdcd;
-					&:last-child {
-						border-bottom: none;
-					}
 					.detail-left {
 						font-size: 20rpx;
 						font-weight: 400;
