@@ -30,13 +30,12 @@
 			</view>
 			<view class="index-user-dreamList">
 				<view class="flex flex-direction" v-if="cartList.length > 0">
-					<zj-dream-list :list="cartList" @itemClick="toShowList"></zj-dream-list>
+					<zj-dream-list :list="cartList" :key="myKey" @itemClick="toShowList" @addcommnt="addcommnt"></zj-dream-list>
 				</view>
 				<zj-empty v-if="cartList.length === 0" :img="`${imgUrl}1639019849000/pic_shoping.png`"
 						  text="暂无梦圆数据~" />
 			</view>
 		</view>
-
 		<!--底部弹窗-->
 		<view class="cu-modal bottom-modal" :class="modalName ? 'show' : ''">
 			<view class="cu-dialog">
@@ -58,16 +57,29 @@
 				</view>
 			</view>
 		</view>
+		<!--输入评论弹窗-->
+		<u-modal v-model="showComment" @confirm="confirm" :async-close="true" :title="'请输入您的评论内容'" :show-cancel-button="true">
+			<view class="slot-content">
+				<view class="comment-content">
+					<textarea class="comment-textarea" :focus="true" maxlength="200" @input="textareaAInput" placeholder="分享你的评论, 更有机会获得关注和奖励哦"></textarea>
+				</view>
+			</view>
+		</u-modal>
 	</view>
 </template>
 
 <script>
 	import { getUserInfo } from '../../../../api/platformgouc'
+	import {addComment} from "../../../../api/createdream";
 
 	export default {
 		data() {
 			return {
+				commentcontent: '',	// 评论内容
+				NowItem: {},
+				showComment: false,
 				switchA: false,
+				myKey: 0,
 				modalArrayInfo: [
 					{
 						routerUrl: '',
@@ -125,14 +137,7 @@
 			if (!this.$isMemmber()) {
 				console.log('没有当前用户信息')
 			} else {
-				getUserInfo().then(res => {
-					this.userInfo = res.data
-					this.ArrayList[0].number = res.data.fans
-					this.ArrayList[1].number = res.data.follows
-					this.ArrayList[2].number = res.data.dreamBuilds
-					this.ArrayList[3].number = res.data.dreams
-					this.cartList = res.data.myDreams
-				})
+				this.getUserInfoApi()
 			}
 		},
 		mounted() {
@@ -141,11 +146,44 @@
 			this.customStyle.background = this.themeColor
 		},
 		methods: {
+			confirm() {
+				// 添加评论
+				addComment({
+					content: this.commentcontent,
+					businessId: this.NowItem.id,
+					type: 0,
+					level: 0,
+				}).then(res => {
+					this.showComment = false;
+					this.commentcontent = ''
+					this.getUserInfoApi()
+				})
+			},
+			addcommnt(item) {
+				this.commentcontent = ''
+				this.NowItem = item
+				this.showComment = true
+			},
+			textareaAInput(e) {
+				this.commentcontent = e.detail.value
+			},
+			getUserInfoApi() {
+				// 获取个人详细信息
+				getUserInfo().then(res => {
+					this.userInfo = res.data
+					this.ArrayList[0].number = res.data.fans
+					this.ArrayList[1].number = res.data.follows
+					this.ArrayList[2].number = res.data.dreamBuilds
+					this.ArrayList[3].number = res.data.dreams
+					this.cartList = res.data.myDreams
+					this.myKey += 1
+				})
+			},
 			toNews() {
 				this.$toView('user/user-msg')
 			},
-			toShowList() {
-
+			toShowList(item) {
+				this.$toView(`myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
 			},
 			handleLogin() {
 				// 如果没有登录，先跳转登录页面
@@ -294,6 +332,18 @@
 					align-items: center;
 				}
 			}
+		}
+	}
+
+	.comment-content {
+		width: 80%;
+		margin: 0 auto;
+
+		.comment-textarea {
+			width: 100%;
+			height: 360rpx;
+			margin-top: 20rpx;
+			margin-bottom: 20rpx;
 		}
 	}
 </style>

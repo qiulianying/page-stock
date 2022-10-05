@@ -1,7 +1,11 @@
 <template>
 	<view class="user-user-msg-page">
 		<cu-custom bgColor="bg-white" is-back>
-			<block slot="backText" class="text-black">我的筑梦</block>
+			<block slot="backText" class="text-black my-testBlack">
+				<image :src="DetailInfo.createAvatar" class="userImg" mode="aspectFill"
+					   :lazy-load="true"/>
+				<span>{{DetailInfo.createName || '我的筑梦'}}</span>
+			</block>
 		</cu-custom>
 
 		<view style="width:100%;height:750rpx;margin:0 auto;align:center">
@@ -25,6 +29,7 @@
 			</view>
 		</view>
 
+		<!--详情其他内容-->
 		<view class="detail-row">
 			<view class="detail-rowTitle">历程</view>
 			<view class="detail-Content-all" style="background-color: white;margin-top: 14rpx;border-radius: 20rpx 20rpx 0 0;">
@@ -50,6 +55,22 @@
 			</view>
 		</view>
 
+		<!--详情相关评论-->
+		<view class="detail-row">
+			<view class="detail-rowTitle">热评论</view>
+			<view class="commentInfo">
+				<view class="commentHeader" v-for="(item, index) in commentArray" :key="index">
+					<image :src="item.createAvatar" class="userImg" mode="aspectFill"
+						   :lazy-load="true"/>
+					<view class="headerRight">
+						<view class="name">{{item.createName || '暂无数据'}}</view>
+						<view class="time">{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
+						<view class="commentShow">{{item.content || '暂无评论'}}</view>
+					</view>
+				</view>
+			</view>
+		</view>
+
 		<!--输入评论弹窗-->
 		<u-modal v-model="showComment" @confirm="confirm" :async-close="true" :title="'请输入您的评论内容'" :show-cancel-button="true">
 			<view class="slot-content">
@@ -69,6 +90,7 @@
 				themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
 				commentcontent: '',	// 评论内容
 				NowItem: {},
+				commentArray: [], // 评论列表
 				showComment: false,
 				DetailInfo: {},
 				infoArrayShow: [{
@@ -106,7 +128,9 @@
 		methods: {
 			getDreamComment() {
 				getDreamComment(this.id).then(res => {
-					console.log(res)
+					console.log(23423423)
+					console.log(res.data)
+					this.commentArray = res.data
 				})
 			},
 			DreamDetailFun() {
@@ -135,6 +159,9 @@
 					level: 0,
 				}).then(res => {
 					this.showComment = false;
+					this.commentcontent = ''
+					this.DreamDetailFun()
+					this.getDreamComment()
 				})
 			},
 			textareaAInput(e) {
@@ -188,6 +215,18 @@
 </script>
 
 <style lang="scss">
+	/*头部样式*/
+	.my-testBlack {
+		.userImg {
+			display: inline-block;
+			vertical-align: middle;
+			width: 66rpx;
+			height: 66rpx;
+			border-radius: 50%;
+			margin-right: 20rpx;
+		}
+	}
+
 	.user-user-msg-page {
 		.goods-detail-info {
 			background: #ffffff;
@@ -289,6 +328,40 @@
 						height: 128rpx;
 						background: #D8D8D8;
 						border-radius: 9rpx;
+					}
+				}
+			}
+
+			/*评论*/
+			.commentInfo {
+				margin: 20rpx 0 20rpx 20rpx;
+				.commentHeader {
+					margin-bottom: 30rpx;
+					.userImg {
+						display: inline-block;
+						vertical-align: top;
+						width: 80rpx;
+						height: 80rpx;
+						border-radius: 50%;
+						margin-right: 20rpx;
+						background-color: #f06060;
+					}
+					.headerRight {
+						display: inline-block;
+						vertical-align: top;
+						font-size: 28rpx;
+						color: #999999;
+						width: 80%;
+
+						.time {
+							font-size: 22rpx;
+						}
+
+						.commentShow {
+							font-size: 30rpx;
+							color: #333333;
+							margin-top: 10rpx;
+						}
 					}
 				}
 			}

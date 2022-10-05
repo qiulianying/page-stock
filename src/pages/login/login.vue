@@ -10,7 +10,7 @@
 <!--			<button class="cu-btn page-box-btn bg-theme" open-type="getPhoneNumber"
 				@getphonenumber="getPhoneNumber">微信一键登录</button>-->
 			<button class="cu-btn page-box-btn bg-theme" @tap="technological">微信一键登录</button>
-			<button class="cu-btn page-box-btn page-box-btn-mobile"
+			<button class="cu-btn page-box-btn page-box-btn-mobile" v-if="false"
 					@tap="toView('login/login-mobile')">手机号登录</button>
 		</view>
 		<!--隐私条款-->

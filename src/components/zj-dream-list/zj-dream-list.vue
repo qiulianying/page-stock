@@ -1,51 +1,49 @@
 <template>
 	<view>
-		<scroll-view scroll-x class="zj-dream-list-data" @scrolltolower="lower">
-			<view v-if="list.length > 0" class="zj-dream-list-item"
-				  v-for="(item,index) in list" :key="index">
-				<view class="zj-dream-header">
-					<view @tap="itemClick(item)">
-						<image :src="item.createAvatar" class="zj-dream-headerImg" mode="aspectFill"
-							   :lazy-load="true"/>
-						<view class="zj-dream-headerContent">
-							<view>{{item.createName}}</view>
-							<view class="zj-dream-headerContentTime">{{$util.dateFormat(new Date(Number(item.createTime)), '-')}}发布了</view>
-						</view>
-						<view class="zj-dream-title">{{item.title}}</view>
-						<view class="zj-dream-content">{{item.content}}</view>
-						<view v-for="itemImg in item.files" class="zj-dream-imgArray" v-if="item.files && item.files.length > 0">
-							<image :src="itemImg.url" class="zj-dream-imgArrayList" mode="aspectFill"
-								   :lazy-load="true"/>
-						</view>
+		<view v-if="testIndex.length > 0" class="zj-dream-list-item"
+			  v-for="(item,index) in testIndex" :key="index">
+			<view class="zj-dream-header">
+				<view @tap="itemClick(item)">
+					<image :src="item.createAvatar" class="zj-dream-headerImg" mode="aspectFill"
+						   :lazy-load="true"/>
+					<view class="zj-dream-headerContent">
+						<view>{{item.createName}}</view>
+						<view class="zj-dream-headerContentTime">{{$util.dateFormat(new Date(Number(item.createTime)), '-')}}发布了</view>
 					</view>
-					<!--点赞喜欢等操作-->
-					<view class="zj-dream-informShow">
-						<view class="zj-dream-informTitle" @click="toSetInfo(item, 'appreciate')">
-							<text :class="'myCuIcon cuIcon-appreciate'" :style="{
+					<view class="zj-dream-title">{{item.title}}</view>
+					<view class="zj-dream-content">{{item.content}}</view>
+					<view v-for="itemImg in item.files" class="zj-dream-imgArray" v-if="item.files && item.files.length > 0">
+						<image :src="itemImg.url" class="zj-dream-imgArrayList" mode="aspectFill"
+							   :lazy-load="true"/>
+					</view>
+				</view>
+				<!--点赞喜欢等操作-->
+				<view class="zj-dream-informShow">
+					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'appreciate', index)">
+						<text :class="'myCuIcon cuIcon-appreciate'" :style="{
 								color: item.isPraise === 1 ? themeColor : '',
 								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
-							<text class="cuIcon-Number">{{item.praiseNum}}</text>
-						</view>
-						<view class="zj-dream-informTitle" @click="toSetInfo(item, 'like')">
-							<text :class="'myCuIcon cuIcon-like'" :style="{
+						<text class="cuIcon-Number">{{item.praiseNum}}</text>
+					</view>
+					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'like')">
+						<text :class="'myCuIcon cuIcon-like'" :style="{
 								color: item.isCollect === 1 ? themeColor : '',
 								fontWeight: item.isCollect === 1 ? 'bold' : ''}"></text>
-							<text class="cuIcon-Number">{{infoItem.number}}</text>
-						</view>
-						<view class="zj-dream-informTitle" @click="toSetInfo(item, 'comment')">
-							<text :class="'myCuIcon cuIcon-comment'"></text>
-							<text class="cuIcon-Number">{{infoItem.number}}</text>
-						</view>
-						<view class="zj-dream-informTitle" @click="toSetInfo(item, 'forward')">
-							<text :class="'myCuIcon cuIcon-forward'" :style="{
+						<text class="cuIcon-Number">{{item.collectNum}}</text>
+					</view>
+					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'comment')">
+						<text :class="'myCuIcon cuIcon-comment'"></text>
+						<text class="cuIcon-Number">{{item.commentNum}}</text>
+					</view>
+					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'forward')">
+						<text :class="'myCuIcon cuIcon-forward'" :style="{
 								color: item.isWatched === 1 ? themeColor : '',
 								fontWeight: item.isWatched === 1 ? 'bold' : ''}"></text>
-							<text class="cuIcon-Number">{{infoItem.number}}</text>
-						</view>
+						<text class="cuIcon-Number">{{item.watcheNum}}</text>
 					</view>
 				</view>
 			</view>
-		</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -60,7 +58,22 @@
 				themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
 				commentcontent: '',	// 评论内容
 				NowItem: {},
-				showComment: false
+				showComment: false,
+				myNeedKey: 0,
+				testIndex: []
+			}
+		},
+		created() {
+			this.testIndex = this.list
+			console.log(this.testIndex)
+		},
+		watch: {
+			list: {
+				handler(val) {
+					console.log(val)
+					this.testIndex = val
+				},
+				deep: true
 			}
 		},
 		props: {
@@ -74,7 +87,7 @@
 			}
 		},
 		methods: {
-			toSetInfo(item, infoItem) {
+			toSetInfo(item, infoItem, index) {
 				switch (infoItem) {
 						// 评论
 					case 'comment':
@@ -86,7 +99,14 @@
 							id: item.id,
 							description: 1
 						}).then(res => {
-							this.$emit('relodLast')
+							if (item.isPraise === 1) {
+								item.isPraise = 0
+								item.praiseNum = parseInt(item.praiseNum) - 1
+							} else {
+								item.isPraise = 1
+								item.praiseNum = parseInt(item.praiseNum) + 1
+							}
+							// this.$emit('relodLast', true)
 						})
 						break;
 						// 收藏
@@ -95,7 +115,15 @@
 							id: item.id,
 							description: 1
 						}).then(res => {
-							this.$emit('relodLast')
+							console.log(item)
+							if (item.isCollect === 1) {
+								item.isCollect = 0
+								item.collectNum = parseInt(item.collectNum) - 1
+							} else {
+								item.isCollect = 1
+								item.collectNum = parseInt(item.collectNum) + 1
+							}
+							// this.$emit('relodLast', true)
 						})
 						break;
 						// 围观
@@ -104,7 +132,14 @@
 							id: item.id,
 							description: 1
 						}).then(res => {
-							this.$emit('relodLast')
+							if (item.isWatched === 1) {
+								item.isWatched = 0
+								item.watcheNum = parseInt(item.watcheNum) - 1
+							} else {
+								item.isWatched = 1
+								item.watcheNum = parseInt(item.watcheNum) + 1
+							}
+							// this.$emit('relodLast', true)
 						})
 						break;
 				}
@@ -121,99 +156,97 @@
 </script>
 
 <style lang="scss">
-	.zj-dream-list-data {
-		.zj-dream-list-item {
-			width: 100%;
-			padding: 30rpx 32rpx;
+	.zj-dream-list-item {
+		width: 100%;
+		padding: 30rpx 32rpx;
 
-			.zj-dream-header {
-				.zj-dream-headerImg {
-					width: 66rpx;
-					height: 66rpx;
-					display: inline-block;
-					vertical-align: middle;
-					border: 1px solid #D8D8D8;
-					border-radius: 10rpx;
-				}
+		.zj-dream-header {
+			.zj-dream-headerImg {
+				width: 66rpx;
+				height: 66rpx;
+				display: inline-block;
+				vertical-align: middle;
+				border: 1px solid #D8D8D8;
+				border-radius: 10rpx;
+			}
 
-				.zj-dream-headerContent {
-					display: inline-block;
-					vertical-align: middle;
-					font-size: 24rpx;
-					font-family: PingFangSC-Medium, PingFang SC;
-					font-weight: bold;
-					color: #333333;
-					margin-left: 12rpx;
+			.zj-dream-headerContent {
+				display: inline-block;
+				vertical-align: middle;
+				font-size: 24rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: bold;
+				color: #333333;
+				margin-left: 12rpx;
 
-					.zj-dream-headerContentTime {
-						font-size: 20rpx;
-						font-family: PingFangSC-Regular, PingFang SC;
-						font-weight: 400;
-						color: #BBBBBB;
-					}
-				}
-
-				.zj-dream-title {
-					margin: 15rpx 0;
-					font-size: 28rpx;
-					font-weight: 600;
-					color: #333333;
-				}
-
-				.zj-dream-content {
-					width: 100%;
-					font-size: 26rpx;
+				.zj-dream-headerContentTime {
+					font-size: 20rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
-					color: #333333;
-					margin-bottom: 15rpx;
-					display: -webkit-box;
-					-moz-box-orient: vertical;
-					-webkit-box-orient: vertical;
-					-webkit-line-clamp: 3;
-					overflow: hidden;
+					color: #BBBBBB;
 				}
+			}
 
-				.zj-dream-imgArray {
-					display: inline-block;
-					vertical-align: middle;
-					margin-right: 24rpx;
-					.zj-dream-imgArrayList {
-						width: 180rpx;
-						height: 180rpx;
-						background: #D8D8D8;
-						border-radius: 9rpx;
-					}
+			.zj-dream-title {
+				margin: 15rpx 0;
+				font-size: 28rpx;
+				font-weight: 600;
+				color: #333333;
+			}
+
+			.zj-dream-content {
+				width: 100%;
+				font-size: 26rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #333333;
+				margin-bottom: 15rpx;
+				display: -webkit-box;
+				-moz-box-orient: vertical;
+				-webkit-box-orient: vertical;
+				-webkit-line-clamp: 3;
+				overflow: hidden;
+			}
+
+			.zj-dream-imgArray {
+				display: inline-block;
+				vertical-align: middle;
+				margin-right: 24rpx;
+				.zj-dream-imgArrayList {
+					width: 180rpx;
+					height: 180rpx;
+					background: #D8D8D8;
+					border-radius: 9rpx;
 				}
 			}
 		}
+	}
 
-		/*点赞以及评论等操作*/
-		.zj-dream-informShow {
-			width: 100%;
-			.zj-dream-informTitle {
-				font-size: 24rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
-				color: #BBBBBB;
+	/*点赞以及评论等操作*/
+	.zj-dream-informShow {
+		width: 100%;
+		.zj-dream-informTitle {
+			font-size: 24rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #BBBBBB;
+			display: inline-block;
+			vertical-align: middle;
+			margin-right: 80rpx;
+			&:last-child {
+				margin-right: 0;
+			}
+
+			.myCuIcon {
+				font-size: 36rpx;
 				display: inline-block;
 				vertical-align: middle;
-				margin-right: 80rpx;
-				&:last-child {
-					margin-right: 0;
-				}
+			}
 
-				.myCuIcon {
-					font-size: 36rpx;
-					display: inline-block;
-					vertical-align: middle;
-				}
-
-				.cuIcon-Number {
-					display: inline-block;
-					vertical-align: middle;
-					margin-left: 10rpx;
-				}
+			.cuIcon-Number {
+				display: inline-block;
+				vertical-align: middle;
+				margin-left: 10rpx;
 			}
 		}
 	}

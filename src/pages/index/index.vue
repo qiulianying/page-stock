@@ -4,7 +4,7 @@
 			<tab-home v-if="selectedTap === tabList[0].name" :ref="'tab-' + tabList[0].name"
 					  :isFresh="tabList[0].isFresh" @changeIsFresh="changeIsFresh"></tab-home>
 			<tab-discount v-if="selectedTap === tabList[1].name" :ref="'tab-' + tabList[1].name"
-						  :isFresh="tabList[1].isFresh" :isReachBottom="isReachBottom"></tab-discount>
+						  :isFresh="tabList[1].isFresh"></tab-discount>
 			<tab-recommend :isReachBottom="isReachBottom" v-if="selectedTap === tabList[3].name" :ref="'tab-' + tabList[3].name"></tab-recommend>
 			<tab-user v-if="selectedTap === tabList[4].name" :ref="'tab-' + tabList[4].name" :key="tabUserKey"></tab-user>
 		</view>

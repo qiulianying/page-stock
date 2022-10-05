@@ -12,44 +12,42 @@
 			</view>
 		</view>
 		<view class="mall-cart-list flex flex-direction" v-if="cartList.length > 0">
-			<zj-dream-list :list="cartList" @itemClick="toShowList"></zj-dream-list>
+			<scroll-view scroll-y class="zj-dream-list-data" @scrolltolower="lower">
+				<zj-dream-list :list="cartList" :key="myKey" @itemClick="toShowList" @addcommnt="addcommnt" @relodLast="toSearchList"></zj-dream-list>
+			</scroll-view>
 		</view>
 		<zj-empty v-if="cartList.length === 0" :img="`${imgUrl}1639019849000/pic_shoping.png`"
 				  text="暂无数据~" />
+
+		<!--输入评论弹窗-->
+		<u-modal v-model="showComment" @confirm="confirm" :async-close="true" :title="'请输入您的评论内容'" :show-cancel-button="true">
+			<view class="slot-content">
+				<view class="comment-content">
+					<textarea class="comment-textarea" :focus="true" maxlength="200" @input="textareaAInput" placeholder="分享你的评论, 更有机会获得关注和奖励哦"></textarea>
+				</view>
+			</view>
+		</u-modal>
 	</view>
 </template>
 
 <script>
-	import { getDreamList } from '../../../../api/home'
+	import { getDreamgodenList } from '../../../../api/home'
+	import {addComment} from "../../../../api/createdream";
 	export default {
-		props: {
-			isReachBottom: {
-				// 该页面是否拉到底部
-				type: Number,
-				default: 0
-			}
-		},
+		props: {},
 		data() {
 			return {
+				commentcontent: '',	// 评论内容
+				NowItem: {},
+				showComment: false,
+				myKey: 0,
 				searchText: '搜索您感兴趣的梦想',
 				keyword: '',
 				allFlag: {
 					checked: false,
 					value: 'all'
 				},
-				cartList: [
-					// {
-					// 	title: '2024 考研成功上岸',
-					// 	time: '2022-10-21',
-					// 	name: '春日回暖衬',
-					// 	headerIcon: "service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-					// 	content: '中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处中国外交部、文旅部、阿拉伯国家联盟秘书处',
-					// 	imagesArray: [
-					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg",
-					// 		"service-org-7adc24dc/20220120/589a86e3767e40cd9dcdd013137c1274.jpg"
-					// 	]
-					// }
-				],	// 梦想对应数据
+				cartList: [],	// 梦想对应数据
 				fixStr: '?x-oss-process=image/resize,m_fill,h_144,w_144&x-image-process=image/resize,m_fill,h_144,w_144', //图片后缀
 				merchantNo: '',
 				customStyle:{
@@ -59,19 +57,11 @@
 				imgUrl: '',
 				isEdit: false,
 				current: 1,
-				size: 20
+				size: 20,
+				total: 0, // 总数
 			}
 		},
-		watch: {
-			isReachBottom: {
-				handler(val) {
-					// 如果该页面拉取到了底部，则重新调用接口
-					console.log(34234234234)
-					this.current += 1
-					this.toSearchList()
-				}
-			}
-		},
+		watch: {},
 		created() {
 			this.toSearchList()
 		},
@@ -81,10 +71,52 @@
 			this.customStyle.background = this.themeColor
 		},
 		methods: {
-			toSearchList() {
-				getDreamList(`?current=${this.current}&size=${this.size}`).then(res => {
-					if (res.data.length > 0) {
-						this.cartList = this.cartList.concat(res.data)
+			lower() {
+				if (this.total > this.cartList.length) {
+					this.current += 1
+					this.toSearchList()
+				}
+			},
+			confirm() {
+				// 添加评论
+				addComment({
+					content: this.commentcontent,
+					businessId: this.NowItem.id,
+					type: 0,
+					level: 0,
+				}).then(res => {
+					this.showComment = false;
+					this.commentcontent = ''
+					this.toSearchList(true)
+				})
+			},
+			addcommnt(item) {
+				this.commentcontent = ''
+				this.NowItem = item
+				this.showComment = true
+			},
+			textareaAInput(e) {
+				this.commentcontent = e.detail.value
+			},
+			inputSearch() {
+				this.toSearchList(true)
+			},
+			toSearchList(change) {
+				let params = {current: this.current, size: this.size}
+				if (this.keyword) {
+					params.title = this.keyword
+				}
+				getDreamgodenList(params).then(res => {
+					if (res.data && res.data.records) {
+						if (change) {
+							this.cartList = res.data.records
+							this.total = res.data.total
+							this.myKey += 1
+						} else {
+							this.cartList = this.cartList.concat(res.data.records)
+							this.total = res.data.total
+							this.myKey += 1
+						}
 					}
 				})
 			},
@@ -92,8 +124,8 @@
 
 			},
 			toShowList(item) {
-				console.log(item)
-			}
+				this.$toView(`myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
+			},
 		}
 	}
 </script>
@@ -116,7 +148,25 @@
 	}
 
 	.mall-cart-list {
+		width: 96%;
+		margin: 20rpx auto 20rpx;
 		background: #ffffff;
 		padding-bottom: 30rpx;
+	}
+
+	.comment-content {
+		width: 80%;
+		margin: 0 auto;
+
+		.comment-textarea {
+			width: 100%;
+			height: 360rpx;
+			margin-top: 20rpx;
+			margin-bottom: 20rpx;
+		}
+	}
+
+	.zj-dream-list-data {
+		height: calc(100vh - 378rpx);
 	}
 </style>

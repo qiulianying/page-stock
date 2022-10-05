@@ -21,4 +21,7 @@ export const getDreamPage = (data, option) => http(`dreambuild/page${data}`, dat
 export const getDreamList = (data, option) => http(`dream/page${data}`, data, {method: 'GET'})
 
 /*首页金梦列表*/
-export const getDreamgodenList = (data, option) => http(`dream/page${data}`, data, {method: 'GET'})
+export const getDreamgodenList = (data, option) => http(`dream/page`, data, {method: 'GET'})
+
+/*首页梦圈列表*/
+export const getGoldList = (data, option) => http(`dream/page/gold${data}`, data, {method: 'GET'})
