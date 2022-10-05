@@ -31,3 +31,6 @@ export const getDreamComment = (id, option) => http(`comment/dream/${id}`, id, {
 
 /*文件上传*/
 export const upload = (data, option) => http('file/upload', data, option)
+
+// 新增筑梦
+export const dreambuild = (data, option) => http('dreambuild', data, option)

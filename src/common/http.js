@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import {BASE, BASE_URL, PLATFORM_ID} from './config'
 
-const showToast = (title) => {
+const showToast = (title, duration) => {
     uni.showToast({
         title: title,
         icon: 'none',
@@ -57,6 +57,12 @@ const http = (url, data = {}, option = {}, apiType) => {
                         uni.navigateTo({
                             url: '/pages/login/login'
                         })
+                    } else {
+                        if (res.data.data.msg) {
+                            showToast(`${res.data.data.msg}：${res.data.data.code}`, 2000)
+                        } else {
+                            showToast('服务错误!', 2000)
+                        }
                     }
                     // // #ifndef H5
                     // // 重新调用登录接口获取token

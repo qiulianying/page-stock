@@ -30,23 +30,23 @@
 		</view>
 
 		<!--详情其他内容-->
-		<view class="detail-row">
+		<view class="detail-row" v-if="DetailInfo.dreamBuilds && DetailInfo.dreamBuilds.length > 0">
 			<view class="detail-rowTitle">历程</view>
-			<view class="detail-Content-all" style="background-color: white;margin-top: 14rpx;border-radius: 20rpx 20rpx 0 0;">
-				<view class="detail-Content">
+			<view class="detail-Content-all" style="background-color: white;margin-top: 14rpx;border-radius: 20rpx;">
+				<view class="detail-Content" v-for="(item, index) in DetailInfo.dreamBuilds" :key="index">
 					<view class="detail-left">
 						<view class="detail-left-title">
-							今天午饭没吃,我要饿瘦
+							{{item.content || '暂无数据'}}
 						</view>
-						<view>2022-04-13 19:00</view>
+						<view>{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
 						<view class="detail-left-settting">
 							<view class="zj-dream-informTitle">
 								<text :class="'myCuIcon cuIcon-appreciate'"></text>
-								<text class="cuIcon-Number">20</text>
+								<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praiseNum || 0}}</text>
 							</view>
 							<view class="zj-dream-informTitle">
 								<text :class="'myCuIcon cuIcon-comment'"></text>
-								<text class="cuIcon-Number">20</text>
+								<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.commentNum || 0}}</text>
 							</view>
 						</view>
 					</view>
@@ -56,7 +56,7 @@
 		</view>
 
 		<!--详情相关评论-->
-		<view class="detail-row">
+		<view class="detail-row" v-if="commentArray.length > 0">
 			<view class="detail-rowTitle">热评论</view>
 			<view class="commentInfo">
 				<view class="commentHeader" v-for="(item, index) in commentArray" :key="index">
@@ -69,6 +69,11 @@
 					</view>
 				</view>
 			</view>
+		</view>
+
+		<!--更新状态-->
+		<view class="page-bottom" v-if="DetailInfo.isAuthor === 1">
+			<button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveCourse">更新状态</button>
 		</view>
 
 		<!--输入评论弹窗-->
@@ -122,14 +127,17 @@
 		},
 		onLoad(options) {
 			this.id = options.id
+		},
+		onShow() {
 			this.DreamDetailFun()
 			this.getDreamComment()
 		},
 		methods: {
+			saveCourse() {
+				this.$toView(`/myPackageA/pages/createdream/addcourse?title=${this.DetailInfo.title}&id=${this.DetailInfo.id}`, false, false, true)
+			},
 			getDreamComment() {
 				getDreamComment(this.id).then(res => {
-					console.log(23423423)
-					console.log(res.data)
 					this.commentArray = res.data
 				})
 			},
@@ -283,7 +291,6 @@
 					.cuIcon-Number {
 						display: inline-block;
 						vertical-align: middle;
-						margin-left: 10rpx;
 					}
 				}
 			}
@@ -304,22 +311,24 @@
 					padding: 20rpx;
 					display: flex;
 					justify-content: space-between;
-					align-items: center;
+					align-items: flex-start;
 					.detail-left {
 						font-size: 20rpx;
 						font-weight: 400;
 						color: #BBBBBB;
+						width: calc(100% - 150rpx);
 						.detail-left-title {
 							font-size: 24rpx;
 							font-weight: 500;
 							color: #333333;
 						}
 						.detail-left-settting {
+							margin-top: 20rpx;
 							.zj-dream-informTitle {
 								display: inline-block;
 								vertical-align: middle;
 								font-size: 24rpx;
-								margin-right: 20rpx;
+								margin-right: 40rpx;
 							}
 						}
 					}
@@ -377,6 +386,19 @@
 			height: 360rpx;
 			margin-top: 20rpx;
 			margin-bottom: 20rpx;
+		}
+	}
+
+	.page-bottom {
+		button {
+			margin: 60rpx 24rpx 20rpx;
+			border-radius: 47rpx;
+			font-size: 34rpx;
+			color: #FFFFFF;
+			height: 84rpx;
+			line-height: 84rpx;
+			text-align: center;
+			display: block;
 		}
 	}
 </style>

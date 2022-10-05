@@ -5,9 +5,6 @@ import consts from '../common/const'
 // 筑梦点赞
 export const praise = (data, option) => http('dreambuild/praise', data, option)
 
-// 新增筑梦
-export const dreambuild = (data, option) => http('dreambuild', data, option)
-
 // 通过id查询
 export const getDreambuild = (data, option) => http('dreambuild', data, option)
 
