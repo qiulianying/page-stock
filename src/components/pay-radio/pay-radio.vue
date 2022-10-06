@@ -6,14 +6,8 @@
 					<!--钱包-->
 					<image v-if="cardItem.type === 'wallet'"
 						:src="!cardItem.disabled ? '/static/images/pay/4.png' : '/static/images/pay/icon_pay_gray.png'" />
-					<!--银行卡-->
-					<image v-if="cardItem.type === 'card'" :src="`/static/images/bank/${cardItem.bankTp}.png`" />
 					<!--微信支付-->
 					<image v-if="cardItem.type === 'WECHAT'" :src="'/static/images/pay/1.png'" />
-					<!--支付宝支付-->
-					<image v-if="cardItem.type === 'ALIPAY'" :src="'/static/images/pay/2.png'" />
-					<!--云闪付支付-->
-					<image v-if="cardItem.type === 'UNIONPAY'" :src="'/static/images/pay/4.png'" />
 					<view class="con">
 						<view class="tit">
 							<text v-if="cardItem.type === 'wallet' && cardItem.cardId">{{cardItem.name}}</text>
