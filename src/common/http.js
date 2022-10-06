@@ -6,7 +6,7 @@ const showToast = (title, duration) => {
     uni.showToast({
         title: title,
         icon: 'none',
-        duration: 5000
+        duration: duration || 5000
     })
 }
 const http = (url, data = {}, option = {}, apiType) => {
@@ -53,12 +53,13 @@ const http = (url, data = {}, option = {}, apiType) => {
                     console.log('报的情错况，需要进行额外判断是否是由于没有权限')
                     console.log(res)
                     if (res.data.data && res.data.data.code && (res.data.data.code == '100002' || res.data.data.code == '100003')) {
+                        showToast(`${res.data.data.msg}：${res.data.data.code}`)
                         // 这里直接跳转登录页面让用户进行登录处理
                         uni.navigateTo({
                             url: '/pages/login/login'
                         })
                     } else {
-                        if (res.data.data.msg) {
+                        if (res.data.data && res.data.data.msg) {
                             showToast(`${res.data.data.msg}：${res.data.data.code}`, 2000)
                         } else {
                             showToast('服务错误!', 2000)
@@ -102,18 +103,18 @@ const http = (url, data = {}, option = {}, apiType) => {
             },
             fail: (err) => {
                 if (!hideLoading) uni.hideLoading()
-                if (err.errMsg != 'request:fail abort') {
-                    if (!hideMsg) {
-                        if (errorRedirect) {
-                            uni.redirectTo({
-                                url: '/pages/error/error?error=' + encodeURIComponent(httpLang.networkErr)
-                            })
-                        } else {
-                            showToast(httpLang.networkErr)
-                        }
-                    }
-                    reject(httpLang.networkErr)
-                }
+                console.log(234234234)
+                showToast(httpLang.networkErr)
+                // if (!hideMsg) {
+                //     if (errorRedirect) {
+                //         uni.redirectTo({
+                //             url: '/pages/error/error?error=' + encodeURIComponent(httpLang.networkErr)
+                //         })
+                //     } else {
+                //         showToast(httpLang.networkErr)
+                //     }
+                // }
+                reject(httpLang.networkErr)
             }
         })
     })

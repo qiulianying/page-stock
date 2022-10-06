@@ -67,7 +67,20 @@
 					<image :src="item.createAvatar" class="userImg" mode="aspectFill"
 						   :lazy-load="true"/>
 					<view class="headerRight">
-						<view class="name">{{item.createName || '暂无数据'}}</view>
+						<view class="name">
+							<view>
+								{{item.createName || '暂无数据'}}
+							</view>
+							<!--点赞或者其他类型操作-->
+							<view>
+								<view class="zj-dream-informTitle" @tap="builderAppreciate(item)">
+									<text :class="'myCuIcon cuIcon-appreciate'" :style="{
+								color: item.isPraise === 1 ? themeColor : '',
+								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
+									<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praiseNum || 0}}</text>
+								</view>
+							</view>
+						</view>
 						<view class="time">{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
 						<view class="commentShow">{{item.content || '暂无评论'}}</view>
 					</view>
@@ -76,8 +89,8 @@
 		</view>
 
 		<!--更新状态-->
-		<view class="page-bottom" v-if="DetailInfo.isAuthor === 1">
-			<button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveCourse">更新状态</button>
+		<view class="page-bottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
+			<button class="cu-btn bg-theme" :style="{background: themeColor}">更新状态</button>
 		</view>
 
 		<!--输入评论弹窗-->
@@ -93,6 +106,7 @@
 
 <script>
 	import {addComment, DreamDetail, putCollect, putPraise, putWatch, getDreamComment} from '../../../api/createdream'
+	import { dreambuildPraise } from '../../../api/home'
 	import { praise } from '../../../api/home'
 	export default {
 		data() {
@@ -139,6 +153,11 @@
 			this.getDreamComment()
 		},
 		methods: {
+			builderAppreciate(item) {
+				dreambuildPraise({id: item.item}).then(res => {
+					this.getDreamComment()
+				})
+			},
 			toBuildsDetail(item) {
 				this.$toView(`/myPackageA/pages/dream/builddetail?id=${item.id}`, false, false, true)
 			},
@@ -336,11 +355,12 @@
 				width: 96%;
 				margin: 0 auto;
 				.detail-Content {
-					padding: 20rpx;
-					display: flex;
-					justify-content: space-between;
-					align-items: flex-start;
-					border-bottom: 1px solid #cdcdcd;
+                    padding: 20rpx 0;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    border-bottom: 1px solid #BBBBBB;
+                    margin: 0 20rpx;
 					&:last-child {
 						border-bottom: none;
 					}
@@ -392,7 +412,13 @@
 						vertical-align: top;
 						font-size: 28rpx;
 						color: #999999;
-						width: 80%;
+						width: 84%;
+
+						.name {
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+						}
 
 						.time {
 							font-size: 22rpx;

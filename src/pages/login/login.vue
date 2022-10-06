@@ -93,13 +93,15 @@
 									userLogin(userAllInfo).then(res => {
 										uni.setStorageSync('mspToken', res.data)
 										// 跳转对应页面或者返回上一页
-										let pages = getCurrentPages(); // 当前页面
-										let beforePage = pages[pages.length - 2]; // 上一页
-										uni.navigateBack({
-											success: function() {
-												beforePage.onLoad(); // 执行上一页的onLoad方法
-											}
-										});
+										// let pages = getCurrentPages(); // 当前页面
+										// let beforePage = pages[pages.length - 2]; // 上一页
+										// uni.navigateBack({
+										// 	success: function() {
+										// 		beforePage.onLoad(); // 执行上一页的onLoad方法
+										// 	}
+										// });
+										// 强制跳转回首页
+										_this.$toView('index/index', false, true, false)
 										uni.showToast({
 											title: '登录成功！',
 											icon: 'success'

@@ -7,10 +7,10 @@
 			<view class="index-user-info">
 				<image class="image-bg" src="/static/images/my-bg.png" />
 				<!--消息以及相关设置-->
-<!--				<view class="userSetting">
-					<text :class="'myCuIcon cuIcon-comment'" @tap="toNews"></text>
+				<view class="userSetting">
+<!--					<text :class="'myCuIcon cuIcon-comment'" @tap="toNews"></text>-->
 					<text :class="'myCuIcon cuIcon-moreandroid'" @tap="modalName = true"></text>
-				</view>-->
+				</view>
 				<view class="index-user-info-box">
 					<image :src="this.$isMemmber() && userInfo.avatar && userInfo.avatar !== '' ? userInfo.avatar : '/static/images/head.png'" @tap="handleLogin"/>
 					<view class="index-user-allArray">
@@ -28,9 +28,11 @@
 				<view class="index-user-dreamTite">
 					<view class="index-user-dreamTiteInfo">
 						<view class="name">{{userInfo.username || '请点击头像进行登录'}}</view>
-						<view class="visitor" v-if="this.$isMemmber()">访客：{{userInfo.visited || 0}}</view>
+						<!--关注按钮-->
+						<view class="followButton" @click="toFollow">+ 关注</view>
+						<!--<view class="visitor" v-if="this.$isMemmber()">访客：{{userInfo.visited || 0}}</view>-->
 					</view>
-					<view class="myid" v-if="this.$isMemmber()">id:{{userInfo.id || '' }}</view>
+					<view class="myid">id:{{userInfo.id || '' }}</view>
 				</view>
 				<view class="index-user-dreamList">
 					<view class="flex flex-direction" v-if="cartList.length > 0">
@@ -45,7 +47,7 @@
 </template>
 
 <script>
-	import { getUserInfo } from '../../api/platformgouc'
+	import { getUserInfo, follow } from '../../api/platformgouc'
 	import {addComment} from "../../api/createdream";
 
 	export default {
@@ -136,6 +138,11 @@
 			toNews() {
 				this.$toView('user/user-msg')
 			},
+			toFollow() {
+				follow().then(res => {
+
+				})
+			},
 			toShowList(item) {
 				this.$toView(`myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
 			},
@@ -169,7 +176,7 @@
 			.userSetting {
 				position: absolute;
 				right: 40rpx;
-				top: 160rpx;
+				top: 80rpx;
 				color: #ffffff;
 				.cuIcon-comment {
 					margin-right: 60rpx;
@@ -241,6 +248,7 @@
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
+					position: relative;
 					.name {
 						margin-bottom: 10rpx;
 						font-size: 32rpx;
@@ -248,6 +256,21 @@
 						font-weight: 600;
 						color: #2A2A2A;
 						line-height: 36rpx;
+					}
+
+					.followButton {
+						position: absolute;
+						top: -20rpx;
+						right: 0;
+						font-size: 26rpx;
+						font-weight: 500;
+						color: #2A2A2A;
+						width: 140rpx;
+						height: 54rpx;
+						background: #FFD15A;
+						border-radius: 10px;
+						line-height: 54rpx;
+						text-align: center;
 					}
 
 					.visitor {
@@ -267,7 +290,7 @@
 			}
 
 			.index-user-dreamList {
-				height: calc(100vh - 630rpx);
+				height: calc(100vh - 500rpx - 130upx);
 				overflow-y: auto;
 			}
 		}

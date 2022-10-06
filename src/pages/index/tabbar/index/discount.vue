@@ -167,6 +167,6 @@
 	}
 
 	.zj-dream-list-data {
-		height: calc(100vh - 378rpx);
+		height: calc(100vh - 400rpx);
 	}
 </style>

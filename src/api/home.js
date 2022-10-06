@@ -3,7 +3,7 @@ import consts from '../common/const'
 
 /*筑梦*/
 // 筑梦点赞
-export const praise = (data, option) => http('dreambuild/praise', data, option)
+export const dreambuildPraise = (data, option) => http('dreambuild/praise', data, option)
 
 // 通过id查询
 export const getDreambuild = (data, option) => http('dreambuild', data, option)

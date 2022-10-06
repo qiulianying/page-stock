@@ -3,16 +3,16 @@
 		<view v-if="testIndex.length > 0" class="zj-dream-list-item"
 			  v-for="(item,index) in testIndex" :key="index">
 			<view class="zj-dream-header">
-				<view>
+				<view @tap="itemClick(item)">
 					<image :src="item.createAvatar"
-						   @tap="itemToDetailInfo(item)"
+						   @tap.stop="itemToDetailInfo(item)"
 						   class="zj-dream-headerImg" mode="aspectFill"
 						   :lazy-load="true"/>
-					<view class="zj-dream-headerContent" @tap="itemClick(item)">
+					<view class="zj-dream-headerContent">
 						<view>{{item.createName}}</view>
 						<view class="zj-dream-headerContentTime">{{$util.dateFormat(new Date(Number(item.createTime)), '-')}}发布了</view>
 					</view>
-					<view @tap="itemClick(item)">
+					<view>
 						<view class="zj-dream-title">{{item.title}}</view>
 						<view class="zj-dream-content">{{item.content}}</view>
 						<view v-for="itemImg in item.files" class="zj-dream-imgArray" v-if="item.files && item.files.length > 0">
