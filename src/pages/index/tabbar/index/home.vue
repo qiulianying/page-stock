@@ -53,7 +53,8 @@
 					  text="暂无数据~" />
 		</view>
 		<!--输入评论弹窗-->
-		<u-modal v-model="showComment" @confirm="confirm" :async-close="true" :title="'请输入您的评论内容'" :show-cancel-button="true">
+		<u-modal v-model="showComment" v-if="showComment"
+				 @confirm="confirm" :async-close="true" :title="'请输入您的评论内容'" :show-cancel-button="true">
 			<view class="slot-content">
 				<view class="comment-content">
 					<textarea class="comment-textarea" :focus="true" maxlength="200" @input="textareaAInput" placeholder="分享你的评论, 更有机会获得关注和奖励哦"></textarea>
@@ -356,6 +357,6 @@
 	}
 
 	.zj-dream-list-data {
-		height: calc(100vh - 470rpx - 130upx);
+		height: calc(100vh - 490rpx - 130upx);
 	}
 </style>

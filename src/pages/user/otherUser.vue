@@ -9,7 +9,7 @@
 				<!--消息以及相关设置-->
 				<view class="userSetting">
 <!--					<text :class="'myCuIcon cuIcon-comment'" @tap="toNews"></text>-->
-					<text :class="'myCuIcon cuIcon-moreandroid'" @tap="modalName = true"></text>
+					<text :class="'myCuIcon cuIcon-moreandroid'" @tap="toPayMoney"></text>
 				</view>
 				<view class="index-user-info-box">
 					<image :src="this.$isMemmber() && userInfo.avatar && userInfo.avatar !== '' ? userInfo.avatar : '/static/images/head.png'" @tap="handleLogin"/>
@@ -114,6 +114,9 @@
 			this.getUserInfoApi(option.id)
 		},
 		methods: {
+			toPayMoney() {
+				this.$toView('shop/shop-check', false, false, false)
+			},
 			addcommnt(item) {
 				this.commentcontent = ''
 				this.NowItem = item

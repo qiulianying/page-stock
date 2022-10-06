@@ -54,7 +54,7 @@
 			totalMoney: {
 				// 总支付金额
 				type: Number,
-				default: 11
+				default: 0
 			},
 			// color: {
 			//   // 主题颜色
@@ -71,14 +71,17 @@
 		data() {
 			return {
 				wallet: 0.01, //钱包余额
-				cardList: [{
-					"cardId": 90,
-					"balance": "0",
-					"type": "wallet",
-					"name": "钱包(剩余 ¥0.01)",
-					"disabled": false,
-					"payType": 16
-				}, {
+				cardList: [
+				// {
+				// 	"cardId": 90,
+				// 	"balance": "0",
+				// 	"type": "wallet",
+				// 	"name": "钱包(剩余 ¥ 0)",
+				// 	"disabled": true,
+				// 	"payType": 16,
+				// 	'show': false
+				// },
+					{
 					"type": "WECHAT",
 					"cardId": "WECHAT",
 					"name": "微信支付",
@@ -99,49 +102,12 @@
 			};
 		},
 		watch: {
-			totalMoney: {
-				handler() {
-					if (this.cardList.length > 0) {
-						// 监听实付总金额，根据金额判断支付方式
-						if (this.isOpenPurse === 0) {
-							// 如果开通了钱包
-							if (this.selectedCard) {
-								if (this.selectedCard.type && this.selectedCard.type === 'wallet') {
-									// 如果选择的是钱包
-									if (parseFloat(this.totalMoney) <= parseFloat(this.wallet / 100)) {
-										// 如果余额大于需支付金额，则默认使用钱包
-										this.selectedCard = this.cardList[0]
-										this.$emit('getSelectCard', this.selectedCard)
-
-									} else {
-										this.selectedCard = this.cardList[1]
-										this.cardList[0].disabled = true
-										this.$emit('getSelectCard', this.selectedCard)
-									}
-								} else {
-									// 如果不是钱包支付，则只需要判断钱包是否可以支付即可
-									if (parseFloat(this.totalMoney) <= parseFloat(this.wallet / 100)) {
-										// 如果余额大于需支付金额，则默认使用钱包
-										this.cardList[0].disabled = false
-									} else {
-										this.cardList[0].disabled = true
-									}
-								}
-							}
-
-						}
-
-					}
-
-				},
-				deep: true
-
-			}
 		},
 		computed: {},
 		created() {
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
-
+			this.selectedCard = this.cardList[0]
+			this.$emit('getSelectCard', this.selectedCard)
 		},
 		beforeDestroy() {},
 		methods: {
@@ -150,7 +116,7 @@
 				this.$emit('selectShow', false)
 			},
 			changeCardType(card) {
-
+				this.$emit('getSelectCard', card)
 			},
 		}
 	};

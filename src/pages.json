@@ -54,6 +54,12 @@
 			"style": {
 				"navigationBarTitleText": "他人信息"
 			}
+		},
+		{
+			"path": "pages/shop/shop-check",
+			"style": {
+				"navigationBarTitleText": "助梦金支付"
+			}
 		}
 	],
 	"subPackages": [

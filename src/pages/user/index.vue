@@ -149,6 +149,7 @@
 	.userInfoTable {
 		background-color: #ffffff;
 		padding-top: 30rpx;
+		padding-bottom: 20rpx;
 		.userHeader {
 			margin: 30rpx 0 30rpx 20rpx;
 			.userImg {

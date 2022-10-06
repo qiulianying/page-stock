@@ -91,6 +91,8 @@
 									uni.setStorageSync('userInfo', res.userInfo)
 									userAllInfo.openid = uni.getStorageSync('openId')
 									userLogin(userAllInfo).then(res => {
+										// 强制跳转回首页
+										_this.$toView('index/index', false, true, false)
 										uni.setStorageSync('mspToken', res.data)
 										// 跳转对应页面或者返回上一页
 										// let pages = getCurrentPages(); // 当前页面
@@ -100,8 +102,6 @@
 										// 		beforePage.onLoad(); // 执行上一页的onLoad方法
 										// 	}
 										// });
-										// 强制跳转回首页
-										_this.$toView('index/index', false, true, false)
 										uni.showToast({
 											title: '登录成功！',
 											icon: 'success'
