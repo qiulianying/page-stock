@@ -24,7 +24,7 @@
 					<text :class="'myCuIcon cuIcon-' + infoItem.type" :style="{
 								color: DetailInfo[infoItem.needColor] === 1 ? themeColor : '',
 								fontWeight: DetailInfo[infoItem.needColor] === 1 ? 'bold' : ''}"></text>
-					<text class="cuIcon-Number">{{infoItem.number}}</text>
+					<text class="cuIcon-Number" v-if="infoItem.numberShow">{{infoItem.number}}</text>
 				</view>
 			</view>
 		</view>
@@ -126,24 +126,34 @@
 					number: 0,
 					name: 'praiseNum',
 					text: '点赞',
-					needColor: 'isPraise'
+					needColor: 'isPraise',
+					numberShow: true
 				},{
 					type: 'like',
 					number: 0,
 					name: 'collectNum',
 					text: '收藏',
-					needColor: 'isCollect'
+					needColor: 'isCollect',
+					numberShow: true
 				},{
 					type: 'comment',
 					number: 0,
 					name: 'commentNum',
-					text: '评论'
+					text: '评论',
+					numberShow: true
 				},{
-					type: 'forward',
+					type: 'camera',
 					number: 0,
 					name: 'watcheNum',
 					text: '围观',
-					needColor: 'isWatched'
+					needColor: 'isWatched',
+					numberShow: true
+				},{
+					type: 'recharge',
+					number: 0,
+					name: '',
+					text: '助梦',
+					needColor: ''
 				}],
 				swiperList: []
 			}
@@ -169,11 +179,12 @@
 				})
 			},
 			toBuildsDetail(item) {
+				uni.setStorageSync('dreamBuildContent', item)
 				this.$toView(`/myPackageA/pages/dream/builddetail?id=${item.id}`, false, false, true)
 			},
 			toSetBuilds(item, type) {
 				if (type === 'appreciate') {
-					// 助梦点赞
+					// 筑梦点赞
 					dreambuildPraise(`?id=${item.id}`).then(res => {
 						this.DreamDetailFun()
 					})
@@ -259,7 +270,7 @@
 						})
 						break;
 						// 围观
-					case 'forward':
+					case 'camera':
 						putWatch({
 							id: item.id
 						}).then(res => {

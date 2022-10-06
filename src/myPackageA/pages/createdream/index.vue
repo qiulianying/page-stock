@@ -139,17 +139,9 @@ export default {
           this.titleInfo = item.topicName
           this.dreamContent.topicIds.push(item.id)
       },
-    // 创建梦
+      // 创建梦
       saveAddress() {
           let _this = this
-          if (!this.dreamContent.title) {
-              uni.showToast({
-                  title: '请填写梦想标题',
-                  icon: 'none',
-                  duration: 2000
-              });
-              return
-          }
           uni.showLoading({
               title: '梦想创建中...',
               mask: true
@@ -162,19 +154,19 @@ export default {
               }).then(res => {
                   if (this.imgList.length === 1) {
                       if (res.data.length > 0) {
-                          this.createInfo(res.data[0].id)
+                          this.createInfo(res.data[0].fileGroupId)
                       }
                   } else {
                       this.imgList.forEach((item, index) => {
                           if (index === 0) {
                               return
                           }
-                          this.$upload(this.imgList[0], 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
-                              fileGroupId: res.data[0].id,
+                          this.$upload(item, 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
+                              fileGroupId: res.data[0].fileGroupId,
                               isSystem: 0
                           }).then(response => {
                               if (index === this.imgList.length - 1) {
-                                  _this.createInfo(res.data[0].id)
+                                  _this.createInfo(res.data[0].fileGroupId)
                               }
                           })
                       })

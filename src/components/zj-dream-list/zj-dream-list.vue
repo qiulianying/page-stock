@@ -40,10 +40,13 @@
 						<text class="cuIcon-Number">{{item.commentNum}}</text>
 					</view>
 					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'forward')">
-						<text :class="'myCuIcon cuIcon-forward'" :style="{
+						<text :class="'myCuIcon cuIcon-camera'" :style="{
 								color: item.isWatched === 1 ? themeColor : '',
 								fontWeight: item.isWatched === 1 ? 'bold' : ''}"></text>
 						<text class="cuIcon-Number">{{item.watcheNum}}</text>
+					</view>
+					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'money')">
+						<text :class="'myCuIcon cuIcon-recharge'"></text>
 					</view>
 				</view>
 			</view>
@@ -98,6 +101,10 @@
 		methods: {
 			toSetInfo(item, infoItem, index) {
 				switch (infoItem) {
+					//给钱
+						case 'money':
+							this.$toView(`shop/shop-check?id=${item.item}`, false, false, false)
+							break;
 						// 评论
 					case 'comment':
 						this.$emit('addcommnt', item)

@@ -62,44 +62,44 @@ export default {
   },
   methods: {
     // 创建梦
-      saveAddress() {
-          let _this = this
-          uni.showLoading({
-              title: '梦想创建中...',
-              mask: true
-          })
-          if (this.imgList.length > 0) {
-              console.log(this.imgList)
-              // 使用uni-app方法进行文件流上传
-              this.$upload(this.imgList[0], 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
-                  isSystem: 0
-              }).then(res => {
-                  if (this.imgList.length === 1) {
-                      if (res.data.length > 0) {
-                          this.createInfo(res.data[0].id)
-                      }
-                  } else {
-                      this.imgList.forEach((item, index) => {
-                          if (index === 0) {
-                              return
-                          }
-                          this.$upload(this.imgList[0], 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
-                              fileGroupId: res.data[0].fileGroupId,
-                              isSystem: 0
-                          }).then(response => {
-                              if (index === this.imgList.length - 1) {
-                                  _this.createInfo(res.data[0].fileGroupId)
-                              }
-                          })
-                      })
-                  }
-              }).catch(err => {
-                  console.log(err)
-              })
+    saveAddress() {
+      let _this = this
+      uni.showLoading({
+        title: '梦想创建中...',
+        mask: true
+      })
+      if (this.imgList.length > 0) {
+        console.log(this.imgList)
+        // 使用uni-app方法进行文件流上传
+        this.$upload(this.imgList[0], 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
+          isSystem: 0
+        }).then(res => {
+          if (this.imgList.length === 1) {
+            if (res.data.length > 0) {
+              this.createInfo(res.data[0].fileGroupId)
+            }
           } else {
-              this.createInfo()
+            this.imgList.forEach((item, index) => {
+              if (index === 0) {
+                return
+              }
+              this.$upload(item, 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
+                fileGroupId: res.data[0].fileGroupId,
+                isSystem: 0
+              }).then(response => {
+                if (index === this.imgList.length - 1) {
+                  _this.createInfo(res.data[0].fileGroupId)
+                }
+              })
+            })
           }
-      },
+        }).catch(err => {
+          console.log(err)
+        })
+      } else {
+        this.createInfo()
+      }
+    },
       // 最终创建新数据
       createInfo(fileGroupId) {
           // 如果存在图片就先调用图片上传

@@ -37,7 +37,20 @@
 					<image :src="item.createAvatar" class="userImg" mode="aspectFill"
 						   :lazy-load="true"/>
 					<view class="headerRight">
-						<view class="name">{{item.createName || '暂无数据'}}</view>
+						<view class="name">
+							<view>
+								{{item.createName || '暂无数据'}}
+							</view>
+							<!--点赞或者其他类型操作-->
+							<view>
+								<view class="zj-dream-informTitle" @tap="builderAppreciate(item)">
+									<text :class="'myCuIcon cuIcon-appreciate'" :style="{
+								color: item.isPraise === 1 ? themeColor : '',
+								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
+									<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praise || 0}}</text>
+								</view>
+							</view>
+						</view>
 						<view class="time">{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
 						<view class="commentShow">{{item.content || '暂无评论'}}</view>
 					</view>
@@ -57,8 +70,8 @@
 </template>
 
 <script>
-	import {addComment, DreamDetail, putCollect, putPraise, putWatch, getDreamComment} from '../../../api/createdream'
-	import { praise } from '../../../api/home'
+	import {addComment, getDreamBuildComment, praiseComment} from '../../../api/createdream'
+	import {dreambuildPraise} from '../../../api/home'
 	export default {
 		data() {
 			return {
@@ -76,53 +89,43 @@
 					text: '点赞',
 					needColor: 'isPraise'
 				},{
-					type: 'like',
-					number: 0,
-					name: 'collectNum',
-					text: '收藏',
-					needColor: 'isCollect'
-				},{
 					type: 'comment',
 					number: 0,
 					name: 'commentNum',
 					text: '评论'
-				},{
-					type: 'forward',
-					number: 0,
-					name: 'watcheNum',
-					text: '围观',
-					needColor: 'isWatched'
 				}],
 				swiperList: []
 			}
 		},
 		onLoad(options) {
+			// 在缓存中获取筑梦信息
+			this.DetailInfo = uni.getStorageSync('dreamBuildContent')
+			this.infoArrayShowInfo(this.DetailInfo)
+			// 进行图片组获取
+			if (this.DetailInfo.files && this.DetailInfo.files.length > 0) {
+				this.DetailInfo.files.forEach(item => {
+					this.swiperList.push({
+						image: item.url,
+						title: item.fileName
+					})
+				})
+			}
 			this.id = options.id
 		},
 		onShow() {
-			this.DreamDetailFun()
-			this.getDreamComment()
+			this.getDreamBuildComment()
 		},
 		methods: {
-			getDreamComment() {
-				getDreamComment(this.id).then(res => {
-					this.commentArray = res.data
+			builderAppreciate(item) {
+				// 评论点赞
+				praiseComment(`?id=${item.id}`).then(res => {
+					this.getDreamBuildComment()
 				})
 			},
-			DreamDetailFun() {
-				// 获取详情接口
-				DreamDetail(this.id).then(res => {
-					this.DetailInfo = res.data
-					this.infoArrayShowInfo(res.data)
-					// 进行图片组获取
-					if (res.data.files && res.data.files.length > 0) {
-						res.data.files.forEach(item => {
-							this.swiperList.push({
-								image: item.url,
-								title: item.fileName
-							})
-						})
-					}
+			// 获取筑梦评论
+			getDreamBuildComment() {
+				getDreamBuildComment(this.id).then(res => {
+					this.commentArray = res.data
 				})
 			},
 			confirm() {
@@ -142,8 +145,7 @@
 				addComment(params).then(res => {
 					this.showComment = false;
 					this.commentcontent = ''
-					this.DreamDetailFun()
-					this.getDreamComment()
+					this.getDreamBuildComment()
 					this.nowUserIs = 'detail'
 				})
 			},
@@ -160,29 +162,8 @@
 						break;
 						// 点赞
 					case 'appreciate':
-						putPraise({
-							id: item.id
-						}).then(res => {
+						dreambuildPraise(`?id=${item.id}`).then(res => {
 							this.DetailInfo[infoItem.needColor] = this.DetailInfo[infoItem.needColor] === 1 ? 0 : 1
-							this.DreamDetailFun()
-						})
-						break;
-						// 收藏
-					case 'like':
-						putCollect({
-							id: item.id
-						}).then(res => {
-							this.DetailInfo[infoItem.needColor] = this.DetailInfo[infoItem.needColor] === 1 ? 0 : 1
-							this.DreamDetailFun()
-						})
-						break;
-						// 围观
-					case 'forward':
-						putWatch({
-							id: item.id
-						}).then(res => {
-							this.DetailInfo[infoItem.needColor] = this.DetailInfo[infoItem.needColor] === 1 ? 0 : 1
-							this.DreamDetailFun()
 						})
 						break;
 				}
@@ -283,10 +264,15 @@
 				width: 96%;
 				margin: 0 auto;
 				.detail-Content {
-					padding: 20rpx;
+					padding: 20rpx 0;
 					display: flex;
 					justify-content: space-between;
 					align-items: flex-start;
+					border-bottom: 1px solid #BBBBBB;
+					margin: 0 20rpx;
+					&:last-child {
+						border-bottom: none;
+					}
 					.detail-left {
 						font-size: 20rpx;
 						font-weight: 400;
@@ -310,8 +296,17 @@
 					.detail-right {
 						width: 128rpx;
 						height: 128rpx;
-						background: #D8D8D8;
-						border-radius: 9rpx;
+						img {
+							border-radius: 20rpx;
+							width: 100%;
+							height: 100%;
+						}
+					}
+				}
+
+				.detailShowMore {
+					.detail-left {
+						width: 98%;
 					}
 				}
 			}
@@ -335,7 +330,13 @@
 						vertical-align: top;
 						font-size: 28rpx;
 						color: #999999;
-						width: 80%;
+						width: 84%;
+
+						.name {
+							display: flex;
+							justify-content: space-between;
+							align-items: center;
+						}
 
 						.time {
 							font-size: 22rpx;

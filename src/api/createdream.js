@@ -32,6 +32,9 @@ export const praiseComment = (data, option) => http(`comment/praise${data}`, dat
 /*梦想评论查询*/
 export const getDreamComment = (id, option) => http(`comment/dream/${id}`, id, {method: 'GET'})
 
+/*获取筑梦评论查询*/
+export const getDreamBuildComment = (id, option) => http(`comment/dreamBuild/${id}`, id, {method: 'GET'})
+
 /*文件上传*/
 export const upload = (data, option) => http('file/upload', data, option)
 
