@@ -3,7 +3,7 @@
 		<cu-custom bgColor="bg-white" :isBack="true">
 			<block slot="content">个人信息</block>
 		</cu-custom>
-		<view class="index-user-page" style="padding-bottom: 110rpx;">
+		<view class="index-user-page">
 			<view class="index-user-info">
 				<image class="image-bg" src="/static/images/my-bg.png" />
 				<!--消息以及相关设置-->
@@ -128,7 +128,6 @@
 			getUserInfoApi(id) {
 				// 获取个人详细信息
 				getUserInfo({id: id}).then(res => {
-					uni.setStorageSync('userId', res.data.id);
 					this.userInfo = res.data
 					this.ArrayList[0].number = res.data.fans
 					this.ArrayList[1].number = res.data.follows
@@ -150,7 +149,7 @@
 				this.$toView(`myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
 			},
 			handleLogin() {
-				this.$toView(`user/index?id=${this.id}`, false, false, false)
+				this.$toView(`user/index?id=${this.id}&needdisabled=1`, false, false, false)
 			},
 			toTypeList(item) {
 				switch (item.name) {
@@ -235,8 +234,6 @@
 				bottom: 0;
 				left: 0;
 				background: #ffffff;
-				box-shadow: 0px -6px 40px 0px rgba(98,119,192,0.07);
-				backdrop-filter: blur(9px);
 				height: 80rpx;
 				border-radius: 20rpx 20rpx 0 0;
 			}

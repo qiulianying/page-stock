@@ -84,11 +84,11 @@ export default {
                               return
                           }
                           this.$upload(this.imgList[0], 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
-                              fileGroupId: res.data[0].id,
+                              fileGroupId: res.data[0].fileGroupId,
                               isSystem: 0
                           }).then(response => {
                               if (index === this.imgList.length - 1) {
-                                  _this.createInfo(res.data[0].id)
+                                  _this.createInfo(res.data[0].fileGroupId)
                               }
                           })
                       })

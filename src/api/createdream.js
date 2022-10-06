@@ -26,6 +26,9 @@ export const putWatch = (data, option) => http(`dream/watch?id=${data.id}&descri
 /*新增评论*/
 export const addComment = (data, option) => http(`comment`, data, option)
 
+/*评论点赞*/
+export const praiseComment = (data, option) => http(`comment/praise${data}`, data, {method: 'PUT'})
+
 /*梦想评论查询*/
 export const getDreamComment = (id, option) => http(`comment/dream/${id}`, id, {method: 'GET'})
 

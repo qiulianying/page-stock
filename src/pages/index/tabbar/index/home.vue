@@ -1,5 +1,5 @@
 <template>
-	<view class="home-page" style="padding-bottom: 20rpx;">
+	<view class="home-page">
 		<cu-custom bgColor="bg-white">
 			<block slot="backText" class="text-black" style="margin-top: 20rpx">
 				<view style="display: flex; justify-content: center;">

@@ -1,5 +1,5 @@
 <template>
-	<view class="index-user-page" style="padding-bottom: 110rpx;">
+	<view class="index-user-page">
 		<view class="index-user-info">
 			<image class="image-bg" src="/static/images/my-bg.png" />
 			<!--消息以及相关设置-->

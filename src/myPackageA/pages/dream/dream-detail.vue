@@ -32,8 +32,9 @@
 		<!--详情其他内容-->
 		<view class="detail-row" v-if="DetailInfo.dreamBuilds && DetailInfo.dreamBuilds.length > 0">
 			<view class="detail-rowTitle">历程</view>
-			<view class="detail-Content-all" style="background-color: white;margin-top: 14rpx;border-radius: 20rpx;">
-				<view class="detail-Content"
+			<view class="detail-Content-all"
+				  style="background-color: white;margin-top: 14rpx;border-radius: 20rpx;">
+				<view :class="item.files && item.files.length > 0 ? 'detail-Content' : 'detail-Content detailShowMore'"
 					  @tap="toBuildsDetail(item)"
 					  v-for="(item, index) in DetailInfo.dreamBuilds" :key="index">
 					<view class="detail-left">
@@ -54,7 +55,10 @@
 							</view>
 						</view>
 					</view>
-					<view class="detail-right"></view>
+					<!--图片-->
+					<view class="detail-right" v-if="item.files && item.files.length > 0">
+						<img :src="item.files[0].url" alt="">
+					</view>
 				</view>
 			</view>
 		</view>
@@ -77,7 +81,7 @@
 									<text :class="'myCuIcon cuIcon-appreciate'" :style="{
 								color: item.isPraise === 1 ? themeColor : '',
 								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
-									<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praiseNum || 0}}</text>
+									<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praise || 0}}</text>
 								</view>
 							</view>
 						</view>
@@ -105,9 +109,8 @@
 </template>
 
 <script>
-	import {addComment, DreamDetail, putCollect, putPraise, putWatch, getDreamComment} from '../../../api/createdream'
+	import {addComment, DreamDetail, putCollect, putPraise, putWatch, getDreamComment, praiseComment} from '../../../api/createdream'
 	import { dreambuildPraise } from '../../../api/home'
-	import { praise } from '../../../api/home'
 	export default {
 		data() {
 			return {
@@ -145,6 +148,12 @@
 				swiperList: []
 			}
 		},
+		onUnload() {
+
+		},
+		onHide() {
+
+		},
 		onLoad(options) {
 			this.id = options.id
 		},
@@ -154,7 +163,8 @@
 		},
 		methods: {
 			builderAppreciate(item) {
-				dreambuildPraise({id: item.item}).then(res => {
+				// 评论点赞
+				praiseComment(`?id=${item.id}`).then(res => {
 					this.getDreamComment()
 				})
 			},
@@ -163,8 +173,8 @@
 			},
 			toSetBuilds(item, type) {
 				if (type === 'appreciate') {
-					// 点赞
-					praise({id: item.id}).then(res => {
+					// 助梦点赞
+					dreambuildPraise(`?id=${item.id}`).then(res => {
 						this.DreamDetailFun()
 					})
 				} else {
@@ -387,8 +397,17 @@
 					.detail-right {
 						width: 128rpx;
 						height: 128rpx;
-						background: #D8D8D8;
-						border-radius: 9rpx;
+						img {
+							border-radius: 20rpx;
+							width: 100%;
+							height: 100%;
+						}
+					}
+				}
+
+				.detailShowMore {
+					.detail-left {
+						width: 98%;
 					}
 				}
 			}

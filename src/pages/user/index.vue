@@ -12,11 +12,11 @@
 			<form class="cu-myDream">
 				<view class="cu-form-group ">
 					<view class="title">昵称</view>
-					<input placeholder="两字短标题" name="input" v-model="formInfo.nickname"></input>
+					<input placeholder="两字短标题" :disabled="needdisabled == '1'" name="input" v-model="formInfo.nickname"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">性别</view>
-					<picker @change="sexChange" v-model="formInfo.gender" :range="sexArray">
+					<picker @change="sexChange" :disabled="needdisabled == '1'" v-model="formInfo.gender" :range="sexArray">
 						<view class="picker">
 							{{sexArray[formInfo.gender]}}
 						</view>
@@ -24,11 +24,11 @@
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">手机号码</view>
-					<input placeholder="请输入您的手机号码" name="input" v-model="formInfo.phone" maxlength="11"></input>
+					<input placeholder="请输入您的手机号码" :disabled="needdisabled == '1'" name="input" v-model="formInfo.phone" maxlength="11"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">简介</view>
-					<input placeholder="请输入您的简介" name="input" v-model="formInfo.introduction" maxlength="15"></input>
+					<input placeholder="请输入您的简介" :disabled="needdisabled == '1'" name="input" v-model="formInfo.introduction" maxlength="15"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">地址选择</view>
@@ -40,7 +40,7 @@
 				</view>
 				<view class="cu-form-group">
 					<view class="title">生日</view>
-					<picker mode="date" :value="date" start="2015-09-01" end="2024-09-01" @change="DateChange">
+					<picker mode="date" :value="date" :disabled="needdisabled == '1'" start="2015-09-01" end="2024-09-01" @change="DateChange">
 						<view class="picker">
 							{{date}}
 						</view>
@@ -48,18 +48,18 @@
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">学历</view>
-					<input placeholder="请输入您的学历" name="input" maxlength="15"></input>
+					<input placeholder="请输入您的学历" :disabled="needdisabled == '1'" name="input" maxlength="15"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">职业</view>
-					<input placeholder="请输入您的职业" name="input" maxlength="20" v-model="formInfo.occupation"></input>
+					<input placeholder="请输入您的职业" :disabled="needdisabled == '1'" name="input" maxlength="20" v-model="formInfo.occupation"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">爱好</view>
-					<input placeholder="请输入您的爱好" name="input" maxlength="15" v-model="formInfo.hobby"></input>
+					<input placeholder="请输入您的爱好" :disabled="needdisabled == '1'" name="input" maxlength="15" v-model="formInfo.hobby"></input>
 				</view>
 				<!--   保存按钮   -->
-				<view class="page-bottom">
+				<view class="page-bottom" v-if="needdisabled === '2'">
 					<button class="cu-btn bg-theme" :disabled="!havaContent" :style="{background: themeColor}" @tap="saveAddress">编 辑</button>
 				</view>
 			</form>
@@ -93,20 +93,29 @@
 					province: '',
 					city: ''
 				},
-				id: ''
+				id: '',
+				needdisabled: '2'
 			};
 		},
 		onLoad(options) {
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
 			this.id = options.id
+			this.needdisabled = options.needdisabled
 			// 屏蔽微信右上角工具栏
 			wx.hideShareMenu()
 			this.date = this.$util.dateFormat(new Date(), '-')
 			// 获取用户信息
-			getUserInfo().then(res => {
-				this.formInfo = res.data
-				// 编写相关修改编辑内容
-			})
+			if (options.needdisabled && options.needdisabled == 1) {
+				getUserInfo({id: this.id}).then(res => {
+					this.formInfo = res.data
+					// 编写相关修改编辑内容
+				})
+			} else {
+				getUserInfo().then(res => {
+					this.formInfo = res.data
+					// 编写相关修改编辑内容
+				})
+			}
 		},
 		methods: {
 			sexChange(e) {
@@ -120,8 +129,8 @@
 					introduction: this.formInfo.introduction,
 					occupation: this.formInfo.occupation,
 					hobby: this.formInfo.hobby,
-					province: this.lastTime.province,
-					city: this.lastTime.city,
+					province: this.lastParams.province,
+					city: this.lastParams.city,
 				}
 				userInfoSet(lastParams).then(res => {
 					if (res) {

@@ -6,16 +6,16 @@
 		<view class="msg-box" v-if="list.length > 0">
 			<view class="msg-item" v-for="(item, index) in list" :key="index">
 				<view class="msg-item-left" :style="{
-					'background-color': icon[item.type-1].bgColor
+					'background-color': icon[0].bgColor
 				}">
 					<text class="cuIcon-notificationfill"></text>
 				</view>
 				<view class="msg-item-center">
 					<view class="msg-item-center-top">
-						<text>{{item.title}}</text>
-						<text>{{item.time}}</text>
+						<text>{{item.content}}</text>
+						<text>{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无时间'}}</text>
 					</view>
-					<text class="msg-item-center-bottom">{{item.msg}}</text>
+					<!--<text class="msg-item-center-bottom">{{item.msg}}</text>-->
 				</view>
 			</view>
 		</view>
@@ -41,37 +41,9 @@
 				}, {
 					bgColor: '#60c962'
 				}],
-				list: [
-				// 		{
-				// 	type: 1,
-				// 	title: '订单通知',
-				// 	msg: '您有待支付订单，请及时处理。',
-				// 	time: '08:48'
-				// }, {
-				// 	type: 2,
-				// 	title: '交易通知',
-				// 	msg: '您成功充值 100.00 元。',
-				// 	time: '昨天 08:48'
-				// }, {
-				// 	type: 3,
-				// 	title: '取餐通知',
-				// 	msg: '您有订餐已出餐，请及时领取。',
-				// 	time: '周五 08:48'
-				// }, {
-				// 	type: 4,
-				// 	title: '物流通知',
-				// 	msg: '你购买的宝贝物流有变动，请及时关注。',
-				// 	time: '11-01 08:48'
-				// }, {
-				// 	type: 5,
-				// 	title: '服务通知',
-				// 	msg: '您在 2019-01-02 10:10:10 进行密码修改，如非本人操作，请及时修改密码。',
-				// 	time: '2019-01-02 08:48'
-				// }
-				],
+				list: [],
 				params: {
-					type: 0,
-					size: 50,
+					size: 30,
 					current: 1
 				}
 			}
