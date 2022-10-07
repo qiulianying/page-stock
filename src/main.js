@@ -40,19 +40,6 @@ let instance = new Profile().$mount()
 //import instance from './components/dialogTest/instance'
 //Vue.prototype.$errorMsg = instance
 Vue.prototype.$errorMsg = instance
-
-/*
-* 引入云闪付授权组件：主要用于云闪付小程序或者h5打开情况下使用
-* 这里需要注意的是，这里不是用云闪付适配vue.js的情况，而是使用云闪付适配uni-app的情况，所以这里common.js需要修改
-* 参考git：https://gitee.com/openunionpay  uni-app demo
-* 需要注意的是云闪付组件和在微信小程序里面会报错，这里需要保证云闪付h5或者云闪付小程序需要在h5情况下使用
-* */
-// #ifdef H5
-import VueCupUI from './static/vue-cup-ui/lib/vue-cup-ui.common.js'
-import './static/vue-cup-ui/lib/vue-cup-ui.css'
-Vue.use(VueCupUI)
-// #endif
-
 Vue.use(uView); //使用uView
 Vue.use(VueI18n)
 Vue.component('cu-custom', cuCustom)
@@ -128,12 +115,13 @@ Vue.prototype.$toView = (page, mustReg = false, isRedirect = false, isPackage = 
 		url = mustReg && !Vue.prototype.$isMemmber() ?
 			`/pages/login/login?fromurl=${encodeURIComponent(`${page}`)}` : `${page}`
 	}
+	// 之前使用uni在体验版会出现停顿2秒左右的情况
 	if (isRedirect) {
-		uni.redirectTo({
+		wx.redirectTo({
 			url: url
 		})
 	} else {
-		uni.navigateTo({
+		wx.navigateTo({
 			url: url
 		})
 	}

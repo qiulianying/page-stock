@@ -3,7 +3,7 @@
           v-show="tabList.length > 0"
           style="background: #ffffff; box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.1);">
         <block v-for="(item, index) in tabList" :key="index">
-            <view v-if="item.otherImage && item.visible" class="action" @tap.stop="$toView('myPackageA/pages/createdream/index', true, false, true)"
+            <view v-if="item.otherImage && item.visible" class="action" @tap.stop="$toView('/myPackageA/pages/createdream/index', true, false, true)"
                   style="background: transparent; margin-top: -16rpx;">
                 <view class="cuIcon-" style="width: auto;">
                     <view class="bot-code-box">
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-    import addImg from '../../img/add.jpeg'
+    import addImg from '../../img/add.png'
     /**
      * @author: 冯耀华
      * @Date: 2022/03/01 15:20
@@ -106,7 +106,7 @@
             border-radius: 116rpx;
             margin: 12rpx auto;
             overflow: hidden;
-            background: url("../../img/add.jpeg") center center no-repeat;
+            background: url("../../img/add.png") center center no-repeat;
             background-size: contain;
             .image-box{
                 width: 38rpx;

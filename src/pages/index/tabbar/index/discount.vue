@@ -124,7 +124,7 @@
 
 			},
 			toShowList(item) {
-				this.$toView(`myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
+				this.$toView(`/myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
 			},
 		}
 	}

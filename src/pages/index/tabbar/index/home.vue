@@ -96,11 +96,11 @@
 				swiperList: [{
 					"style": 1,
 					"title": "园区活动",
-					"src": "/static/images/bg_index02.png"
+					"src": "/static/images/bg_index02.jpg"
 				}, {
 					"style": 1,
 					"title": "园区活动",
-					"src": "/static/images/bg_index03.png"
+					"src": "/static/images/bg_index03.jpg"
 				}], //轮播图数据
 				merchantTabCurIndex: 0,
 				// 分类
@@ -188,7 +188,7 @@
 				})
 			},
 			toShowList(item) {
-				this.$toView(`myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
+				this.$toView(`/myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
 			},
 			init(isShow = false) {
 				if (!isShow) {

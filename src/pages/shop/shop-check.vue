@@ -8,7 +8,7 @@
 				<view class="shop-title">
 					<view class="shop-info">
 						<image class="shop-img"
-							:src="'/static/images/head.png'"
+							:src="'/static/images/head.jpg'"
 							mode="aspectFill" />
 						<text class="text-bold my-textInfo">用户名称</text>
 					</view>

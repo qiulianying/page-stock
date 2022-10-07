@@ -4,16 +4,15 @@
 			<block slot="backText" class="text-black">关注</block>
 		</cu-custom>
 		<view class="msg-box" v-if="list.length > 0">
-			<view class="msg-item" v-for="(item, index) in list" :key="index">
-				<view class="msg-item-left" :style="{
-					'background-color': icon[item.type-1].bgColor
-				}">
-					<text class="cuIcon-notificationfill"></text>
+			<view class="msg-item" v-for="(item, index) in list" :key="index" @tap="toRouter(item)">
+				<view class="msg-item-left">
+					<image :src="item.avatar" class="zj-dream-imgArrayList" mode="aspectFill"
+						   :lazy-load="true"/>
 				</view>
 				<view class="msg-item-center">
 					<view class="msg-item-center-top">
-						<text class="mylistTitle">{{item.title}}</text>
-						<text class="follow">关注</text>
+						<text class="mylistTitle">{{item.nickname || item.username || '暂无名称'}}</text>
+						<text class="follow" @tap.stop="toFollow(item)">取消关注</text>
 					</view>
 				</view>
 			</view>
@@ -24,49 +23,11 @@
 </template>
 
 <script>
-	import { myFollow } from '../../api/platformgouc'
+	import {follow, myFollow} from '../../api/platformgouc'
 	export default {
 		data() {
 			return {
-				icon: [{
-					bgColor: '#5ec39d'
-				}, {
-					bgColor: '#e5392d'
-				}, {
-					bgColor: '#65cce2'
-				}, {
-					bgColor: '#e97a26'
-				}, {
-					bgColor: '#60c962'
-				}],
-				list: [
-					// 		{
-					// 	type: 1,
-					// 	title: '订单通知',
-					// 	msg: '您有待支付订单，请及时处理。',
-					// 	time: '08:48'
-					// }, {
-					// 	type: 2,
-					// 	title: '交易通知',
-					// 	msg: '您成功充值 100.00 元。',
-					// 	time: '昨天 08:48'
-					// }, {
-					// 	type: 3,
-					// 	title: '取餐通知',
-					// 	msg: '您有订餐已出餐，请及时领取。',
-					// 	time: '周五 08:48'
-					// }, {
-					// 	type: 4,
-					// 	title: '物流通知',
-					// 	msg: '你购买的宝贝物流有变动，请及时关注。',
-					// 	time: '11-01 08:48'
-					// }, {
-					// 	type: 5,
-					// 	title: '服务通知',
-					// 	msg: '您在 2019-01-02 10:10:10 进行密码修改，如非本人操作，请及时修改密码。',
-					// 	time: '2019-01-02 08:48'
-					// }
-				],
+				list: [],
 				params: {
 					size: 30,
 					current: 1
@@ -77,11 +38,28 @@
 		},
 		onLoad() {
 			this.imgUrl = this.$imgUrl
-			myFollow(this.params).then(res => {
-				this.list = res.data
-			})
+			this.getmyFollow()
 		},
 		methods: {
+			getmyFollow() {
+				myFollow(this.params).then(res => {
+					this.list = res.data.records
+					this.total = res.data.total
+				})
+			},
+			toRouter(item) {
+				this.$toView(`user/otherUser?id=${item.id}`, false, false, false)
+			},
+			toFollow(item) {
+				follow({userId: item.id}).then(res => {
+					uni.showToast({
+						title: '已取消关注!',
+						icon: 'success',
+						duration: 2000
+					});
+					this.getmyFollow()
+				})
+			},
 		}
 	}
 </script>
@@ -119,8 +97,11 @@
 					height: 96rpx;
 					line-height: 96rpx;
 					text-align: center;
-					background: #fff;
-					border-radius: 50%;
+					.zj-dream-imgArrayList {
+						width: 100%;
+						height: 100%;
+						border-radius: 50%;
+					}
 					text {
 						font-size: 64rpx;
 						color: #FFFFFF;
@@ -144,7 +125,7 @@
 							text-align: center;
 							font-size: 22rpx;
 							color: #8c8c8c;
-							width: 95rpx;
+							padding: 0 18rpx;
 							height: 50rpx;
 							border-radius: 26rpx;
 							line-height: 46rpx;

@@ -5,14 +5,14 @@
 		</cu-custom>
 		<view class="index-user-page">
 			<view class="index-user-info">
-				<image class="image-bg" src="/static/images/my-bg.png" />
+				<image class="image-bg" src="/static/images/my-bg.jpg" />
 				<!--消息以及相关设置-->
 				<view class="userSetting">
 <!--					<text :class="'myCuIcon cuIcon-comment'" @tap="toNews"></text>-->
 					<text :class="'myCuIcon cuIcon-moreandroid'" @tap="toPayMoney"></text>
 				</view>
 				<view class="index-user-info-box">
-					<image :src="this.$isMemmber() && userInfo.avatar && userInfo.avatar !== '' ? userInfo.avatar : '/static/images/head.png'" @tap="handleLogin"/>
+					<image :src="this.$isMemmber() && userInfo.avatar && userInfo.avatar !== '' ? userInfo.avatar : '/static/images/head.jpg'" @tap="handleLogin"/>
 					<view class="index-user-allArray">
 						<view class="index-user-ArrayList" v-for="(item, index) in ArrayList" :key="index">
 							<view class="listNumber">{{item.number || 0}}</view>
@@ -29,7 +29,9 @@
 					<view class="index-user-dreamTiteInfo">
 						<view class="name">{{userInfo.username || '请点击头像进行登录'}}</view>
 						<!--关注按钮-->
-						<view class="followButton" @click="toFollow">+ 关注</view>
+						<view :class="havaGet ? 'followButton havaGet' : 'followButton'" @click="toFollow">
+							{{havaGet ? '已关注' : '+ 关注'}}
+						</view>
 						<!--<view class="visitor" v-if="this.$isMemmber()">访客：{{userInfo.visited || 0}}</view>-->
 					</view>
 					<view class="myid">id:{{userInfo.id || '' }}</view>
@@ -104,7 +106,8 @@
 				userInfo: {
 					avatar: ''
 				},
-				id: ''
+				id: '',
+				havaGet: false,
 			}
 		},
 		computed: {},
@@ -135,18 +138,19 @@
 					this.ArrayList[3].number = res.data.dreams
 					this.cartList = res.data.myDreams
 					this.myKey += 1
+					this.havaGet = res.data.isFollowed == 1 ? true : false  //是否被当前登录人关注 0-否 1-是
 				})
 			},
 			toNews() {
 				this.$toView('user/user-msg')
 			},
 			toFollow() {
-				follow().then(res => {
-
+				follow({userId: this.id}).then(res => {
+					this.havaGet = !this.havaGet
 				})
 			},
 			toShowList(item) {
-				this.$toView(`myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
+				this.$toView(`/myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
 			},
 			handleLogin() {
 				this.$toView(`user/index?id=${this.id}&needdisabled=1`, false, false, false)
@@ -271,6 +275,11 @@
 						border-radius: 10px;
 						line-height: 54rpx;
 						text-align: center;
+					}
+
+					.havaGet {
+						background: #8d8b8a;
+						color: #ffffff;
 					}
 
 					.visitor {

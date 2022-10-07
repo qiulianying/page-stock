@@ -45,7 +45,7 @@
 								fontWeight: item.isWatched === 1 ? 'bold' : ''}"></text>
 						<text class="cuIcon-Number">{{item.watcheNum}}</text>
 					</view>
-					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'money')">
+					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'money')" v-if="!noPayMoney">
 						<text :class="'myCuIcon cuIcon-recharge'"></text>
 					</view>
 				</view>
@@ -84,6 +84,10 @@
 			}
 		},
 		props: {
+			noPayMoney: {
+				type: Boolean,
+				default: false
+			},
 			moreTitle: {
 				type: String,
 				default: '更多'

@@ -1,14 +1,14 @@
 <template>
 	<view class="index-user-page">
 		<view class="index-user-info">
-			<image class="image-bg" src="/static/images/my-bg.png" />
+			<image class="image-bg" src="/static/images/my-bg.jpg" />
 			<!--消息以及相关设置-->
 			<view class="userSetting">
-				<text :class="'myCuIcon cuIcon-comment'" @tap="toNews"></text>
+				<text :class="'myCuIcon cuIcon-recharge'" @tap="toNews"></text>
 				<text :class="'myCuIcon cuIcon-moreandroid'" @tap="modalName = true"></text>
 			</view>
 			<view class="index-user-info-box">
-				<image :src="this.$isMemmber() && userInfo.avatar && userInfo.avatar !== '' ? userInfo.avatar : '/static/images/head.png'" @tap="handleLogin"/>
+				<image :src="this.$isMemmber() && userInfo.avatar && userInfo.avatar !== '' ? userInfo.avatar : '/static/images/head.jpg'" @tap="handleLogin"/>
 				<view class="index-user-allArray">
 					<view class="index-user-ArrayList" @tap="toTypeList(item)" v-for="(item, index) in ArrayList" :key="index">
 						<view class="listNumber">{{item.number || 0}}</view>
@@ -30,7 +30,7 @@
 			</view>
 			<view class="index-user-dreamList">
 				<view class="flex flex-direction" v-if="cartList.length > 0">
-					<zj-dream-list :headerNo="true" :list="cartList" :key="myKey" @itemClick="toShowList" @addcommnt="addcommnt"></zj-dream-list>
+					<zj-dream-list :noPayMoney="true" :headerNo="true" :list="cartList" :key="myKey" @itemClick="toShowList" @addcommnt="addcommnt"></zj-dream-list>
 				</view>
 				<zj-empty v-if="cartList.length === 0" :img="`${imgUrl}1639019849000/pic_shoping.png`"
 						  text="暂无梦圆数据~" />
@@ -181,10 +181,10 @@
 				})
 			},
 			toNews() {
-				this.$toView('user/user-msg')
+
 			},
 			toShowList(item) {
-				this.$toView(`myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
+				this.$toView(`/myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)
 			},
 			handleLogin() {
 				// 如果没有登录，先跳转登录页面
@@ -223,7 +223,7 @@
 				right: 40rpx;
 				top: 160rpx;
 				color: #ffffff;
-				.cuIcon-comment {
+				.cuIcon-recharge {
 					margin-right: 60rpx;
 				}
 				.myCuIcon {

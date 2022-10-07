@@ -55,7 +55,7 @@ const http = (url, data = {}, option = {}, apiType) => {
                     if (res.data.data && res.data.data.code && (res.data.data.code == '100002' || res.data.data.code == '100003')) {
                         showToast(`${res.data.data.msg}：${res.data.data.code}`)
                         // 这里直接跳转登录页面让用户进行登录处理
-                        uni.navigateTo({
+                        wx.navigateTo({
                             url: '/pages/login/login'
                         })
                     } else {
@@ -91,7 +91,7 @@ const http = (url, data = {}, option = {}, apiType) => {
                     // 其他情况默认失败
                     if (!hideMsg) {
                         if (errorRedirect) {
-                            uni.redirectTo({
+                            wx.redirectTo({
                                 url: '/pages/error/error?error=' + encodeURIComponent('[' + res.statusCode + '] ' + httpLang.sysErr)
                             })
                         } else {
@@ -103,7 +103,6 @@ const http = (url, data = {}, option = {}, apiType) => {
             },
             fail: (err) => {
                 if (!hideLoading) uni.hideLoading()
-                console.log(234234234)
                 showToast(httpLang.networkErr)
                 // if (!hideMsg) {
                 //     if (errorRedirect) {
