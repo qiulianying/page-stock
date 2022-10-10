@@ -7,7 +7,7 @@
 			<scroll-view scroll-y class="zj-dream-list-data" @scrolltolower="lower">
 				<view class="msg-item" v-for="(item, index) in list" :key="index">
 					<view class="msg-item-left" :style="{
-					'background-color':icon[item.type == '11' || item.type == '12'  || item.type == '13' || item.type == '14' || item.type == '15' ? 1 : 0].bgColor
+					'background-color':icon[item.type && (item.type == '11' || item.type == '12'  || item.type == '13' || item.type == '14' || item.type == '15') ? 1 : 0].bgColor
 				}">
 						<text class="cuIcon-notificationfill"></text>
 					</view>
@@ -57,7 +57,6 @@
 		mounted() {
 			this.imgUrl = this.$imgUrl
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
-			this.customStyle.background = this.themeColor
 		},
 		methods: {
 			lower() {
