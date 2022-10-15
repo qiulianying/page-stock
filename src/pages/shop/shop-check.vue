@@ -8,15 +8,15 @@
 				<view class="shop-title">
 					<view class="shop-info">
 						<image class="shop-img"
-							:src="'/static/images/head.jpg'"
+							:src="otherUserInfo.avatar || '/static/images/head.jpg'"
 							mode="aspectFill" />
-						<text class="text-bold my-textInfo">用户名称</text>
+						<text class="text-bold my-textInfo">{{otherUserInfo.nickname || '暂无用户名称'}}</text>
 					</view>
 				</view>
 				<!--价格输入-->
 				<view class="shop-input-item" :class="showNumBoard ? ' shop-input-animation' : ''"
 					@tap.stop="showNumKeyBoard">
-					<text>助梦 ￥</text>
+					<text>助梦金 ￥</text>
 					<input class="shop-x-input text-right" v-model="inputMoney" disabled value=""
 						placeholder-class="shop-x-input-placeholder" :placeholder="'请输入助梦金额'" />
 				</view>
@@ -24,29 +24,28 @@
 			<!--选择支付的支付控件-->
 			<pay-radio  @getSelectCard="getSelectCard"></pay-radio>
 			<view class="page-bottom">
-				<button v-if="inputMoney == '' || inputMoney <= 0" disabled class="cu-btn"
+				<button v-if="inputMoney == '' || inputMoney <= 0" disabled class="cu-btn" :style="[{backgroundColor: themeColor}]"
 					type="">支付</button>
-				<button v-else class="cu-btn" :disabled="loading" :loading="loading" type=""
+				<button v-else class="cu-btn" :disabled="loading" :loading="loading" type="" :style="[{backgroundColor: themeColor}]"
 					@tap="checkPay"><text>确认支付</text><text
-						v-if="(selectedAccount.accountId == null ? payObj.actualMoney : payObj.payMoney) > 0"
 						class="margin-left-xs">￥{{Number(inputMoney)}}</text>
 				</button>
 			</view>
 		</view>
 		<!-- 备注弹窗 -->
-		<view class="shop-remark" :class="{'shop-remark-fixed' : showNumBoard}">
-			<text v-if="$util.strIsEmpty(remark)" @tap="showRemarkModal">{{ pageLang.addRemark }}</text>
+<!--		<view class="shop-remark" :class="{'shop-remark-fixed' : showNumBoard}">
+			<text v-if="$util.strIsEmpty(remark)" @tap="showRemarkModal">添加备注</text>
 			<template v-else>
 				<text class="text-black margin-right-xs">{{ remark }}</text>
 				<text @tap="showRemarkModal">{{ pageLang.editRemark }}</text>
 			</template>
-		</view>
+		</view>-->
 		<!-- 输入数字键盘 -->
-		<zj-num-keyboard ref="zj-num-keyboard" bg-color="#E43838" @input="inputNum" @delete="doBack"
+		<zj-num-keyboard ref="zj-num-keyboard" :payDisable="inputMoney == '' || inputMoney <= 0" :bg-color="themeColor" @input="inputNum" @delete="doBack"
 			@hide="showNumBoard = false" @pay="checkPay" />
-		<zj-prompt ref="zj-prompt" :input-default-value="remark" confirm-text-color="#E43838"
-			:modal-title="pageLang.addRemark" :input-placeholder="pageLang.payeeVisible" @onClickConfirm="setRemark" />
-		<zj-password-popup ref="check-password-pop" @input-ok="passwordInputOk"></zj-password-popup>
+<!--		<zj-prompt ref="zj-prompt" :input-default-value="remark" confirm-text-color="#E43838"
+			:modal-title="'添加备注'" :input-placeholder="pageLang.payeeVisible" @onClickConfirm="setRemark" />-->
+<!--		<zj-password-popup ref="check-password-pop" @input-ok="passwordInputOk"></zj-password-popup>-->
 		<!-- 支付密码错误弹窗 -->
 		<u-modal v-model="passwordErrorShow" :content="passwordErrorContent" @confirm="confirmPassword"
 			@cancel="cancelPassword" :show-cancel-button="true" cancel-text="重试" confirm-text="忘记密码"></u-modal>
@@ -54,9 +53,13 @@
 </template>
 
 <script>
+	import { getUserInfo, payment } from '../../api/platformgouc'
 	export default {
 		data() {
 			return {
+				userId: '',
+				dreamId: '',
+				otherUserInfo: {},
 				enterNormal: false,
 				payHref: '',
 				merchantNo: null,
@@ -72,168 +75,6 @@
 				selectedCard: {},
 				password: null,
 				payDiscountPromise: null,
-				payObj: {
-					"merchantNo": "9ZLWBzob",
-					"mkOrderNo": "6a50e926-b5eb-4c5f-985e-d0c720689827",
-					"billNo": "00011648518889540000042",
-					"amount": 12,
-					"actualMoney": 11.98,
-					"discountMoney": 0.02,
-					"deliveryMoney": 0,
-					"payMoney": 11.98,
-					"packMoney": 0,
-					"goods": null,
-					"useCouponInfos": [{
-						"couponNo": "SPDJQ164819129545844940",
-						"activityId": "5447080f1f4048bda5f8dcfdc9a07cbe",
-						"couponName": "同名测试",
-						"discountMoney": 0.02
-					}],
-					"allCouponInfo": [{
-						"couponNo": "SPDJQ164819129545844940",
-						"activityId": "5447080f1f4048bda5f8dcfdc9a07cbe",
-						"parentActivityId": "5447080f1f4048bda5f8dcfdc9a07cbe",
-						"owner": {
-							"regionName": "福州软件园",
-							"regionNo": "DL1333225698034458624"
-						},
-						"status": 1,
-						"activitySrc": {
-							"orgName": "福州软件园"
-						},
-						"activityName": "同名测试",
-						"activityLimit": {
-							"scene": [1, 2, 3, 16],
-							"goods": null,
-							"goodsUseless": null,
-							"validPeriod": {},
-							"merchantSuit": null
-						},
-						"favourLimit": {
-							"fullFavour": [{
-								"minMoney": 0.02,
-								"favourMoney": 0.02,
-								"consume": 0.02
-							}]
-						},
-						"couponValid": {
-							"begin": "2022-03-25",
-							"end": "2022-04-01"
-						},
-						"activityType": 0,
-						"couponType": 1,
-						"mkStatus": 2
-					}, {
-						"couponNo": "SPDJQ164845337255400310",
-						"activityId": "5447080f1f4048bda5f8dcfdc9a07cbe",
-						"parentActivityId": "5447080f1f4048bda5f8dcfdc9a07cbe",
-						"owner": {
-							"regionName": "福州软件园",
-							"regionNo": "DL1333225698034458624"
-						},
-						"status": 1,
-						"activitySrc": {
-							"orgName": "福州软件园"
-						},
-						"activityName": "同名测试",
-						"activityLimit": {
-							"scene": [1, 2, 3, 16],
-							"goods": null,
-							"goodsUseless": null,
-							"validPeriod": {},
-							"merchantSuit": null
-						},
-						"favourLimit": {
-							"fullFavour": [{
-								"minMoney": 0.02,
-								"favourMoney": 0.02,
-								"consume": 0.02
-							}]
-						},
-						"couponValid": {
-							"begin": "2022-03-28",
-							"end": "2022-04-04"
-						},
-						"activityType": 0,
-						"couponType": 1,
-						"mkStatus": 1
-					}, {
-						"couponNo": "SPDJQ164845337592870600",
-						"activityId": "5447080f1f4048bda5f8dcfdc9a07cbe",
-						"parentActivityId": "5447080f1f4048bda5f8dcfdc9a07cbe",
-						"owner": {
-							"regionName": "福州软件园",
-							"regionNo": "DL1333225698034458624"
-						},
-						"status": 1,
-						"activitySrc": {
-							"orgName": "福州软件园"
-						},
-						"activityName": "同名测试",
-						"activityLimit": {
-							"scene": [1, 2, 3, 16],
-							"goods": null,
-							"goodsUseless": null,
-							"validPeriod": {},
-							"merchantSuit": null
-						},
-						"favourLimit": {
-							"fullFavour": [{
-								"minMoney": 0.02,
-								"favourMoney": 0.02,
-								"consume": 0.02
-							}]
-						},
-						"couponValid": {
-							"begin": "2022-03-28",
-							"end": "2022-04-04"
-						},
-						"activityType": 0,
-						"couponType": 1,
-						"mkStatus": 1
-					}, {
-						"couponNo": "SPDJQ164845337858626430",
-						"activityId": "5447080f1f4048bda5f8dcfdc9a07cbe",
-						"parentActivityId": "5447080f1f4048bda5f8dcfdc9a07cbe",
-						"owner": {
-							"regionName": "福州软件园",
-							"regionNo": "DL1333225698034458624"
-						},
-						"status": 1,
-						"activitySrc": {
-							"orgName": "福州软件园"
-						},
-						"activityName": "同名测试",
-						"activityLimit": {
-							"scene": [1, 2, 3, 16],
-							"goods": null,
-							"goodsUseless": null,
-							"validPeriod": {},
-							"merchantSuit": null
-						},
-						"favourLimit": {
-							"fullFavour": [{
-								"minMoney": 0.02,
-								"favourMoney": 0.02,
-								"consume": 0.02
-							}]
-						},
-						"couponValid": {
-							"begin": "2022-03-28",
-							"end": "2022-04-04"
-						},
-						"activityType": 0,
-						"couponType": 1,
-						"mkStatus": 1
-					}],
-					"account": {
-						"accountId": "d69fbe140eb6499f9d38f3759fbc798c",
-						"subjectType": 5,
-						"actualMoney": 0,
-						"actualPoint": 0,
-						"pointDeductMoney": 0
-					}
-				},
 				queryResultCount: 0,
 				queryMaxCount: 4,
 				remark: '',
@@ -363,9 +204,21 @@
 			checkPay() {
 				console.log(this.selectedCard)
 				// 选择了微信支付到的情况写下
-				if (this.selectedCard && (this.selectedCard.cardId === 'WECHAT')) {
-					this.order()
+				let orderObj = {
+					timeStamp: '',
+					nonceStr: '',
+					package: '',
+					signType: 'MD5',
+					paySign: '',
 				}
+				payment({
+					dreamId: this.dreamId,
+					money: Number(this.inputMoney) * 100
+				}).then(res => {
+					orderObj = res.data.data
+					this.order(orderObj)
+				})
+
 				// 弹出密码框进行输入
 				// this.$refs['check-password-pop'].open()
 			},
@@ -381,21 +234,19 @@
 				})
 			},
 			/*最终支付：需要注意微信小程序*/
-			order(obj) {
+			order(orderObj) {
+				let _this = this
 				this.loading = true
-				let paymentList = []
-				let orderObj = {
-					timeStamp: '',
-					nonceStr: '',
-					package: '',
-					signType: 'MD5',
-					paySign: '',
-				}
+				_this.$toView(`shop/shop-check-success?pageTypePrice=${this.inputMoney}`, false, true, false)
+				return
+
 				// 如果选择的是微信支付
 				if (this.selectedCard && (this.selectedCard.cardId === 'WECHAT')) {
 					// 调用公共适配支付方法，底层有根据不同环境以及手机情况以及支付方法进行判断
 					this.$plugin.app.requestPayment(orderObj, {
 						success: res => {
+							// 跳转支付成功页面
+							_this.$toView(`shop/shop-check-success?pageTypePrice=${this.inputMoney}`, false, true, false)
 							uni.hideLoading()
 						},
 						fail: err => {
@@ -487,7 +338,14 @@
 
 		},
 		onLoad(option) {
-
+			this.userId = option.id
+			this.dreamId = option.dreamId
+			// 获取他人的用户信息
+			getUserInfo({
+				id: option.id
+			}).then(res => {
+				this.otherUserInfo = res.data
+			})
 		}
 	}
 </script>

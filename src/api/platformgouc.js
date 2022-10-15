@@ -24,3 +24,12 @@ export const myFollowed = (data, option) => http('user/myFollowed', data, {metho
 
 /*我的关注*/
 export const myFollow = (data, option) => http('user/myFollow', data, {method: 'GET'})
+
+/*微信支付统一接口*/
+export const payment = (data, option) => http('weixin/dream/payment', data, option)
+
+// 用户提现
+export const transfer = (data, option) => http('wxpay/transfer', data, option)
+
+// 提现记录接口
+

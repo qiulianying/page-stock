@@ -106,11 +106,6 @@ switch (environment) {
         ENV_BASE_API = '/app'
         ENV_REGION_ID = 'DL1306153654495223808'        //软件园渠道固定regionNo
         VUE_APP_PROCESS = 'x-oss-process'
-
-        //上线时，需要强制改为生产环境
-        // ENV_BASE_URL = 'https://spmapi.51zcm.cc'
-        // ENV_BASE_API = ''
-        // ENV_REGION_ID = 'DL1330809358619254784'
         break;
     case "develop":
         // 测试
@@ -118,18 +113,17 @@ switch (environment) {
         ENV_BASE_API = '/app'
         ENV_REGION_ID = 'DL1333225698034458624'
         VUE_APP_PROCESS = '==prVH2IHeofDf247APPUPLOADTAPROCESSfND=='
-
-
-        // 上线时，需要强制改为生产环境
-        // ENV_BASE_URL = 'https://spmapi.51zcm.cc'
-        // ENV_BASE_API = ''
-        // ENV_REGION_ID = 'DL1330809358619254784'
         break;
     case "master":
         //生产
-        ENV_BASE_URL = 'https://spmapi.51zcm.cc'
-        ENV_BASE_API = ''
-        ENV_REGION_ID = 'DL1330809358619254784'
+        ENV_BASE_URL = 'https://dream.kaihuaikj.com/api/app'
+        ENV_BASE_API = '/app'
+        ENV_REGION_ID = 'DL1333225698034458624'
+        VUE_APP_PROCESS = '==prVH2IHeofDf247APPUPLOADTAPROCESSfND=='
+
+        // ENV_BASE_URL = 'https://spmapi.51zcm.cc'
+        // ENV_BASE_API = ''
+        // ENV_REGION_ID = 'DL1330809358619254784'
         break;
 }
 // #endif

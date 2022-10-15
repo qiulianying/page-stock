@@ -50,6 +50,12 @@
 			}
 		},
 		{
+			"path": "pages/user/user-money",
+			"style": {
+				"navigationBarTitleText": "助梦中心"
+			}
+		},
+		{
 			"path": "pages/user/otherUser",
 			"style": {
 				"navigationBarTitleText": "他人信息"
@@ -59,6 +65,18 @@
 			"path": "pages/shop/shop-check",
 			"style": {
 				"navigationBarTitleText": "助梦金支付"
+			}
+		},
+		{
+			"path": "pages/shop/shop-check-success",
+			"style": {
+				"navigationBarTitleText": "助梦金支付成功"
+			}
+		},
+		{
+			"path": "pages/user/user-recharge",
+			"style": {
+				"navigationBarTitleText": "助梦金提现"
 			}
 		}
 	],
@@ -102,6 +120,19 @@
 					"style": {
 						"navigationBarTitleText": "更新状态"
 					}
+				},
+				{
+					"path": "pages/dealRecord/user-deal-record",
+					"style": {
+						"enablePullDownRefresh": true,
+						"navigationBarTitleText": "助梦记录"
+					}
+				},
+				{
+					"path": "pages/dealRecord/user-deal-record-detail",
+					"style": {
+						"navigationBarTitleText": "助梦记录记录详情"
+					}
 				}
 			]
 		},
@@ -135,14 +166,14 @@
 			},
 			{
 				"name": "我的筑梦",
-				"path": "myPackageA/pages/createdream/addcourse"
+				"path": "myPackageA/pages/dealRecord/user-deal-record"
 			},
 			{
 				"name": "个人信息",
-				"path": "pages/user/index"
+				"path": "pages/user/user-money"
 			},
 			{
-				"path": "pages/login/login",
+				"path": "pages/user/user-recharge",
 				"name": "登录"
 			}
 		]

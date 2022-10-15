@@ -24,7 +24,7 @@
 					<text :class="'myCuIcon cuIcon-' + infoItem.type" :style="{
 								color: DetailInfo[infoItem.needColor] === 1 ? themeColor : '',
 								fontWeight: DetailInfo[infoItem.needColor] === 1 ? 'bold' : ''}"></text>
-					<text class="cuIcon-Number" v-if="infoItem.numberShow">{{infoItem.number}}</text>
+					<text class="cuIcon-Number">{{infoItem.number}}</text>
 				</view>
 			</view>
 		</view>
@@ -151,8 +151,8 @@
 				},{
 					type: 'recharge',
 					number: 0,
-					name: '',
-					text: '助梦',
+					name: 'cashNum',
+					text: '助梦金',
 					needColor: ''
 				}],
 				swiperList: []
@@ -278,11 +278,19 @@
 							this.DreamDetailFun()
 						})
 						break;
+						// 给钱
+					case 'recharge':
+						this.$toView(`shop/shop-check?id=${this.DetailInfo.createBy}&dreamId=${this.DetailInfo.id}`, false, false, false)
+						break;
 				}
 			},
 			infoArrayShowInfo(content) {
 				this.infoArrayShow.forEach(item => {
-					item.number = content[item.name]
+					if (item.name === 'cashNum') {
+						item.number = content[item.name] * 100 + '元'
+					} else {
+						item.number = content[item.name]
+					}
 				})
 				return this.infoArrayShow
 			},
@@ -359,6 +367,7 @@
 					.cuIcon-Number {
 						display: inline-block;
 						vertical-align: middle;
+						margin-left: 4rpx;
 					}
 				}
 			}

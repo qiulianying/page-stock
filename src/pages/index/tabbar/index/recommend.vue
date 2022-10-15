@@ -7,16 +7,15 @@
 			<scroll-view scroll-y class="zj-dream-list-data" @scrolltolower="lower">
 				<view class="msg-item" v-for="(item, index) in list" :key="index">
 					<view class="msg-item-left" :style="{
-					'background-color':icon[item.type && (item.type == '11' || item.type == '12'  || item.type == '13' || item.type == '14' || item.type == '15') ? 1 : 0].bgColor
-				}">
+					'background-color':icon[item.type && (item.type == '11' || item.type == '12'  || item.type == '13' || item.type == '14' || item.type == '15') ? 1 : 0].bgColor}">
 						<text class="cuIcon-notificationfill"></text>
 					</view>
 					<view class="msg-item-center">
 						<view class="msg-item-center-top">
-							<text>{{item.content}}</text>
-							<text>{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无时间'}}</text>
+							<text>{{item.createName}}</text>
+							<text>{{item.createTime ? $util.getTime(new Date(Number(item.createTime))) : '暂无时间'}}</text>
 						</view>
-						<!--<text class="msg-item-center-bottom">{{item.msg}}</text>-->
+						<text class="msg-item-center-bottom">{{item.content}}</text>
 					</view>
 				</view>
 			</scroll-view>

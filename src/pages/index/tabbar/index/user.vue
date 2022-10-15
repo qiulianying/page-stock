@@ -4,7 +4,7 @@
 			<image class="image-bg" src="/static/images/my-bg.jpg" />
 			<!--消息以及相关设置-->
 			<view class="userSetting">
-				<text :class="'myCuIcon cuIcon-recharge'" @tap="toNews"></text>
+				<text :class="'myCuIcon cuIcon-recharge'" @tap="toUserMoney"></text>
 				<text :class="'myCuIcon cuIcon-moreandroid'" @tap="modalName = true"></text>
 			</view>
 			<view class="index-user-info-box">
@@ -180,8 +180,9 @@
 					this.myKey += 1
 				})
 			},
-			toNews() {
-
+			// 筑梦中心
+			toUserMoney() {
+				this.$toView(`user/user-money`, false, false, false)
 			},
 			toShowList(item) {
 				this.$toView(`/myPackageA/pages/dream/dream-detail?id=${item.id}`, false, false, true)

@@ -45,9 +45,13 @@
 								fontWeight: item.isWatched === 1 ? 'bold' : ''}"></text>
 						<text class="cuIcon-Number">{{item.watcheNum}}</text>
 					</view>
-<!--					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'money')" v-if="!noPayMoney">
+					<!--筑梦金相关金额自己的不进行展示-->
+					<view class="zj-dream-informTitle"
+						  @click="toSetInfo(item, 'money')"
+						  v-if="item.createBy != userId">
 						<text :class="'myCuIcon cuIcon-recharge'"></text>
-					</view>-->
+						<text class="cuIcon-Number">{{item.cashNum * 100 || 0}}元</text>
+					</view>
 				</view>
 			</view>
 		</view>
@@ -59,6 +63,7 @@
 	export default {
 		data() {
 			return {
+				userId: uni.getStorageSync('userId') || '',
 				appreciate: '',
 				like: '',
 				forward: '',
@@ -107,7 +112,7 @@
 				switch (infoItem) {
 					//给钱
 						case 'money':
-							this.$toView(`shop/shop-check?id=${item.item}`, false, false, false)
+							this.$toView(`shop/shop-check?id=${item.createBy}&dreamId=${item.id}`, false, false, false)
 							break;
 						// 评论
 					case 'comment':
@@ -169,7 +174,7 @@
 					this.itemClick(item)
 				} else {
 					// 跳转不同的详情页面
-					if (item.createBy == uni.getStorageSync('userId')) {
+					if (item.createBy == this.userId) {
 						this.$toView(`index/index?tabName=4`, false, true, false)
 					} else {
 						this.$toView(`user/otherUser?id=${item.createBy}`, false, false, false)

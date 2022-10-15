@@ -57,7 +57,7 @@
 				imgUrl: '',
 				isEdit: false,
 				current: 1,
-				size: 10,
+				size: 20,
 				total: 0, // 总数
 			}
 		},
