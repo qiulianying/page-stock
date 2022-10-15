@@ -24,7 +24,7 @@
 					<text :class="'myCuIcon cuIcon-' + infoItem.type" :style="{
 								color: DetailInfo[infoItem.needColor] === 1 ? themeColor : '',
 								fontWeight: DetailInfo[infoItem.needColor] === 1 ? 'bold' : ''}"></text>
-					<text class="cuIcon-Number">{{infoItem.number}}</text>
+					<text class="cuIcon-Number" v-if="infoItem.number !== 'none'">{{infoItem.number}}</text>
 				</view>
 			</view>
 		</view>
@@ -287,7 +287,7 @@
 			infoArrayShowInfo(content) {
 				this.infoArrayShow.forEach(item => {
 					if (item.name === 'cashNum') {
-						item.number = content[item.name] * 100 + '元'
+						item.number = 'none'
 					} else {
 						item.number = content[item.name]
 					}

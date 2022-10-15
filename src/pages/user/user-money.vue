@@ -1,22 +1,22 @@
 <template>
-    <view class="index-user-page" style="padding-bottom: 110rpx;">
+    <view class="index-user-page">
         <cu-custom bgColor="bg-white" is-back>
-            <block slot="backText" class="content">助梦中心</block>
+            <block slot="content">助梦中心</block>
         </cu-custom>
         <view class="index-user-info">
             <image class="image-bg" src="/static/images/Mask.png" />
             <view class="index-user-statistics">
                 <!--需要在存在用户手机号且作为软件园项目的时候才会存在钱包的情况-->
-                <view class="index-user-statistics-item">
-                    <text class="index-user-statistics-item-num">2</text>
+                <view class="index-user-statistics-item" @tap="toGetMoneyHistory">
+                    <text class="index-user-statistics-item-num">{{myMoneyInfo.totalCash ? myMoneyInfo.totalCash / 100 : 0}}</text>
                     <text>已获得</text>
                 </view>
                 <view class="index-user-statistics-item">
-                    <text class="index-user-statistics-item-num">0</text>
+                    <text class="index-user-statistics-item-num">{{myMoneyInfo.cashOut ? myMoneyInfo.cashOut / 100 : 0}}</text>
                     <text>已提现</text>
                 </view>
                 <view class="index-user-statistics-item" @tap="toGetMoney">
-                    <text class="index-user-statistics-item-num">2</text>
+                    <text class="index-user-statistics-item-num">{{myMoneyInfo.waitCashOut ? myMoneyInfo.waitCashOut / 100 : 0}}</text>
                     <text>待提现</text>
                 </view>
             </view>
@@ -30,7 +30,7 @@
             </view>
             <view class="cu-item arrow" @tap="$toView('index/index?tabName=1', false, false, false)">
                 <view class="content">
-                    <text class="text-black">看看大家的笔记</text>
+                    <text class="text-black">看看大家的梦想</text>
                 </view>
             </view>
         </view>
@@ -41,18 +41,34 @@
     import {
         mapActions
     } from 'vuex'
+    import { dreamCash } from '../../api/platformgouc'
     export default {
         data() {
             return {
+                myMoneyInfo: {},
                 themeColor: uni.getStorageSync('themeColor') || '#34A2E8'
             }
         },
         onLoad() {
           // 获取用户当前金额情况
+            dreamCash().then(res => {
+                this.myMoneyInfo = res.data
+            })
         },
         methods: {
+            toGetMoneyHistory() {
+                this.$toView(`/myPackageA/pages/dealRecord/user-deal-record`, false,false, true)
+            },
             toGetMoney() {
-                this.$toView('user/user-recharge', false,false,true)
+                if (this.myMoneyInfo.waitCashOut == 0) {
+                    uni.showToast({
+                        title: '暂无提现金额',
+                        icon: 'warning',
+                        duration: 2000
+                    })
+                    return
+                }
+                this.$toView(`user/user-recharge?money=${this.myMoneyInfo.waitCashOut || 0}`, false,false, false)
             }
         }
     }

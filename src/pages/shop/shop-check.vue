@@ -237,9 +237,6 @@
 			order(orderObj) {
 				let _this = this
 				this.loading = true
-				_this.$toView(`shop/shop-check-success?pageTypePrice=${this.inputMoney}`, false, true, false)
-				return
-
 				// 如果选择的是微信支付
 				if (this.selectedCard && (this.selectedCard.cardId === 'WECHAT')) {
 					// 调用公共适配支付方法，底层有根据不同环境以及手机情况以及支付方法进行判断

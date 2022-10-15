@@ -5,7 +5,7 @@
 		</cu-custom>
 		<view class="recharge-top" :style="{background: themeColor}">
 			<text>可提现金额</text>
-			<text>0.01</text>
+			<text>{{Number(AllMoney) / 100}}</text>
 		</view>
 		<view class="recharge-box justify-center">
 			<view class="padding-lr-lg">
@@ -29,10 +29,11 @@
 </template>
 
 <script>
-	import { transfer } from '../../api/platformgouc'
+	import { cashOut } from '../../api/platformgouc'
 	export default {
 		data() {
 			return {
+				AllMoney: 0,
 				money: null,
 				account: {},
 				selectedActivityIndex: -1,
@@ -42,20 +43,7 @@
 				queryMaxCount: 4,
 				activityList: [
 				],
-				payTypeData: [{
-					id: 1,
-					payType: 1,
-					payTypeName: '微信支付'
-				}, {
-					id: 2,
-					payType: 2,
-					payTypeName: '支付宝支付'
-				}, {
-					id: 3,
-					payType: 3,
-					payTypeName: '银行卡'
-				}],
-				themeColor: ''
+				themeColor: uni.getStorageSync('themeColor') || '#34A2E8'
 			}
 		},
 		methods: {
@@ -87,18 +75,16 @@
 				this.paySuccess()
 			},
 			paySuccess() {
-				transfer({
+				console.log(this.money)
+				cashOut({
 					money: Number(this.money) * 100
 				}).then(res => {
-					uni.showToast({
-						title: '支付成功'
-					})
-					uni.navigateBack()
+					this.$toView(`user/user-wallet-withdraw-success?amount=${this.money}`, false, false, false)
 				})
 			}
 		},
 		onLoad(option) {
-			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
+			this.AllMoney = option.money
 		}
 	}
 </script>

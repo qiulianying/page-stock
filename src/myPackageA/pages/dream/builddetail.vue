@@ -134,19 +134,15 @@
 					content: this.commentcontent,
 					parentId: 0,
 					businessId: this.NowItem.id,
-					type: 0,
+					type: 1,
 					level: 0,
-				}
-				// 如果是创建筑梦，需要额外参数
-				if (this.nowUserIs !== 'detail') {
-					params.type = 1
-					params.businessId = this.nowUserIs.id
 				}
 				addComment(params).then(res => {
 					this.showComment = false;
 					this.commentcontent = ''
 					this.getDreamBuildComment()
 					this.nowUserIs = 'detail'
+					this.infoArrayShow[1].number = Number(this.infoArrayShow[1].number) + 1
 				})
 			},
 			textareaAInput(e) {
@@ -163,6 +159,7 @@
 						// 点赞
 					case 'appreciate':
 						dreambuildPraise(`?id=${item.id}`).then(res => {
+							this.infoArrayShow[0].number = this.DetailInfo[infoItem.needColor] === 1 ? Number(this.infoArrayShow[0].number) - 1 : Number(this.infoArrayShow[0].number) + 1
 							this.DetailInfo[infoItem.needColor] = this.DetailInfo[infoItem.needColor] === 1 ? 0 : 1
 						})
 						break;
@@ -247,6 +244,7 @@
 					.cuIcon-Number {
 						display: inline-block;
 						vertical-align: middle;
+						margin-left: 4rpx;
 					}
 				}
 			}

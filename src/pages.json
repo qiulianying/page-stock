@@ -78,6 +78,12 @@
 			"style": {
 				"navigationBarTitleText": "助梦金提现"
 			}
+		},
+		{
+			"path": "pages/user/user-wallet-withdraw-success",
+			"style": {
+				"navigationBarTitleText": "提现已受理"
+			}
 		}
 	],
 	"subPackages": [

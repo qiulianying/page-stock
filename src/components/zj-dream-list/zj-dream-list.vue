@@ -50,7 +50,7 @@
 						  @click="toSetInfo(item, 'money')"
 						  v-if="item.createBy != userId">
 						<text :class="'myCuIcon cuIcon-recharge'"></text>
-						<text class="cuIcon-Number">{{item.cashNum * 100 || 0}}元</text>
+						<!--<text class="cuIcon-Number">{{item.cashNum * 100 || 0}}元</text>-->
 					</view>
 				</view>
 			</view>

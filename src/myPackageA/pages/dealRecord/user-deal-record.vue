@@ -4,24 +4,23 @@
 			<block slot="backText" class="content">助梦记录</block>
 		</cu-custom>
 		<!--标签定义多种查询情况-->
-		<u-tabs :list="list" :is-scroll="false" :current="current" @change="change" :active-color="themeColor"></u-tabs>
+		<u-tabs :list="list" :is-scroll="false" :current="status" @change="change" :active-color="themeColor"></u-tabs>
 		<view class="order-box">
-			<view class="order-item" v-for="(item, index) in record.list" :key="index"
-				@tap="$toView(`/myPackageA/pages/dealRecord/user-deal-record-detail?billNo=${item.billNo}`,false, false, true)">
+			<view class="order-item" v-for="(item, index) in record.records" :key="index">
 				<view class="order-item-left">
-					<image src="../../../static/images/pay/bank_card.png" />
+					<image :src="item.createAvatar || '/static/images/head.jpg'" />
 				</view>
 				<view class="order-item-center">
-					<text>{{ item.saler.merchantName || item.items[0].name }}</text>
+					<text>{{ item.createName || item.items[0].name }}</text>
 					<text>{{ item.createTime }}</text>
 				</view>
 				<view class="order-item-right">
 					<!-- 退款情况 -->
-					<view>+{{ $util.toMoney(item.actualAmount) }}</view>
-					<view>+{{ $util.toMoney(item.actualAmount) }}</view>
+					<view>{{status === 0 ? '+' : '-'}}{{ $util.toMoney(item.cash ? item.cash / 100 : 0) }}元</view>
+<!--					<view>+{{ $util.toMoney(item.actualAmount) }}</view>-->
 				</view>
 			</view>
-			<zj-empty v-if="record.loaded && (record.list == null || record.list.length === 0)"
+			<zj-empty v-if="record.loaded && (record.records == null || record.records.length === 0)"
 				:text="pageLang.emptyRecord" :img="`${imgUrl}1639019849000/pic_order.png`" />
 			<!-- <uni-load-more v-else :status="record.status"></uni-load-more> -->
 		</view>
@@ -29,32 +28,30 @@
 </template>
 
 <script>
-	import {  } from '../../../api/platformgouc'
+	import { dreamCashRecord } from '../../../api/platformgouc'
 	export default {
 		data() {
 			return {
 				themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
 				imgUrl: this.$imgUrl,
-				visible: {
-					page: false
-				},
 				record: {
 					loaded: false,
-					status: 'more',
+					size: 20,
+					total: 0, // 总数
 					pager: {
 						curPageNum: 0
 					},
-					list: []
+					records: []
 				},
 				list: [{
 					name: '收入'
 				}, {
 					name: '支出'
-				}, {
-					name: '全部'
 				}],
-				current: 0,
+				status: 0,
+				current: 1,
 				merchantNo: null, //门店号
+
 			}
 		},
 		computed: {
@@ -64,36 +61,22 @@
 		},
 		methods: {
 			change(index) {
-				console.log(index)
-				this.current = index;
-				this.loadRecordList({
-					curPageNum: 1
-				}, this.current)
+				this.status = index;
+				this.loadRecordList()
 			},
 			loadRecordList() {
-				this.record.list = [{
-					"actualAmount": 12.15,
-					"amount": 13.5,
-					"positive": 1,
-					"createTime": "2022-03-30 12:01:14",
-					"billNo": "00161648612874708001344",
-					"transactionType": 16,
-					"status": 3,
-					"saler": {
-						"merchantName": "久号食堂（软件园店）",
-						"merchantLogo": "service-org-7adc24dc/20211214/bb0f2e1683f24d41ada50a0b5df06ab8.png"
-					}
-				}]
-
-				this.visible.page = true
-
+				dreamCashRecord({
+					size: this.record.size,
+					current: 1
+				}, this.status).then(res => {
+					this.record.records = this.record.records.concat(res.data.records)
+				})
 			},
 
 		},
 		onPullDownRefresh() {
 			this.initData()
 		},
-
 		onLoad(option) {
 			this.merchantNo = option.merchantNo || null
 			this.loadRecordList()

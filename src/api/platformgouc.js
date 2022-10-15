@@ -29,7 +29,10 @@ export const myFollow = (data, option) => http('user/myFollow', data, {method: '
 export const payment = (data, option) => http('weixin/dream/payment', data, option)
 
 // 用户提现
-export const transfer = (data, option) => http('wxpay/transfer', data, option)
+export const cashOut = (data, option) => http('wxpay/cashOut', data, option)
 
 // 提现记录接口
+export const dreamCashRecord = (data, status, option) => http(`user/dreamCashRecord/${status}`, data, {method: 'GET'})
 
+// 我的助梦金
+export const dreamCash = (data, option) => http('user/dreamCash', data, {method: 'GET'})

@@ -6,9 +6,8 @@
 		<view class="msg-box" v-if="list.length > 0">
 			<scroll-view scroll-y class="zj-dream-list-data" @scrolltolower="lower">
 				<view class="msg-item" v-for="(item, index) in list" :key="index">
-					<view class="msg-item-left" :style="{
-					'background-color':icon[item.type && (item.type == '11' || item.type == '12'  || item.type == '13' || item.type == '14' || item.type == '15') ? 1 : 0].bgColor}">
-						<text class="cuIcon-notificationfill"></text>
+					<view class="msg-item-left">
+						<image :src="item.createAvatar || '/static/images/head.jpg'" />
 					</view>
 					<view class="msg-item-center">
 						<view class="msg-item-center-top">
@@ -44,7 +43,7 @@
 				}],
 				list: [],
 				params: {
-					size: 10,
+					size: 20,
 					current: 1
 				},
 				total: 0, // 总数
@@ -109,9 +108,12 @@
 					text-align: center;
 					background: #fff;
 					border-radius: 50%;
-					text {
-						font-size: 64rpx;
-						color: #FFFFFF;
+					image {
+						width: 100rpx;
+						height: 100rpx;
+						background: #fff;
+						border-radius: 50%;
+						border: 2rpx solid #F5F5F5;
 					}
 				}
 				&-center {
@@ -152,6 +154,6 @@
 	}
 
 	.zj-dream-list-data {
-		height: calc(100vh - 150rpx - 130upx);
+		height: calc(100vh - 170rpx - 130upx);
 	}
 </style>
