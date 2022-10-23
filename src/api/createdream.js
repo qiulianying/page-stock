@@ -11,6 +11,9 @@ export const DreamDetail = (id, option) => http(`dream/${id}`, id, {method: 'GET
 /*话题搜索*/
 export const getTopic = (data, option) => http(`topic/query${data}`, data, {method: 'GET'})
 
+/*话题分页搜索*/
+export const getTopicPage = (data, option) => http(`topic/page`, data, {method: 'GET'})
+
 /*话题创建*/
 export const CreateTopic = (data, option) => http(`topic`, data, option)
 

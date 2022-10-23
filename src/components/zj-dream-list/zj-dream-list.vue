@@ -23,7 +23,7 @@
 				</view>
 				<!--点赞喜欢等操作-->
 				<view class="zj-dream-informShow">
-					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'appreciate', index)">
+					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'appreciate')">
 						<text :class="'myCuIcon cuIcon-appreciate'" :style="{
 								color: item.isPraise === 1 ? themeColor : '',
 								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
@@ -108,7 +108,7 @@
 			}
 		},
 		methods: {
-			toSetInfo(item, infoItem, index) {
+			toSetInfo(item, infoItem) {
 				switch (infoItem) {
 					//给钱
 						case 'money':
@@ -116,7 +116,8 @@
 							break;
 						// 评论
 					case 'comment':
-						this.$emit('addcommnt', item)
+						// this.$emit('addcommnt', item)
+						this.$emit('itemClick', item)
 						break;
 						// 点赞
 					case 'appreciate':
@@ -181,8 +182,8 @@
 					}
 				}
 			},
-			itemClick(id) {
-				this.$emit('itemClick', id)
+			itemClick(item) {
+				this.$emit('itemClick', item)
 			},
 			lower(e) {
 				console.log(e)

@@ -22,9 +22,11 @@
 			</view>
 		</view>-->
 		<view :class="'wanted-' + theme" v-if="showWant">
-			<view class="header">猜你想要的</view>
+			<view class="header">猜你想要的话题</view>
 			<view class="list">
-				<view v-for="(item,index) in hotList" :key="index" @click="keywordsClick(item)">{{item.topicName}}</view>
+				<view v-for="(item,index) in hotList" :key="index" @click="keywordsClick(item)">
+					# {{item.topicName}}
+				</view>
 			</view>
 		</view>
 <!--  删除历史记录  -->
@@ -34,7 +36,7 @@
 </template>
 
 <script>
-	import { getTopic, CreateTopic } from '../../api/createdream'
+	import { getTopic, CreateTopic, getTopicPage } from '../../api/createdream'
 	export default{
 		name:"zy-search",
 		props:{
@@ -53,7 +55,9 @@
 			speechEngine: { //语音引擎=>讯飞:iFly,百度:'baidu'
 				type: String,
 				default: 'baidu'
-			}
+			},
+			current: 1,
+			size: 50
 		},
 		data() {
 			return {
@@ -65,6 +69,15 @@
 			};
 		},
 		methods: {
+			// 通过接口查询所有之前写过的话题
+			searchInfo() {
+				getTopicPage({
+					current: 1,
+					size: 50
+				}).then(res => {
+					this.hotList = res.data.records
+				})
+			},
 			clearInfo() {
 				this.searchText = ''
 			},

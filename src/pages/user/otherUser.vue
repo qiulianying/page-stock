@@ -9,7 +9,7 @@
 				<!--消息以及相关设置-->
 				<view class="userSetting">
 <!--					<text :class="'myCuIcon cuIcon-comment'" @tap="toNews"></text>-->
-					<text :class="'myCuIcon cuIcon-moreandroid'" @tap="toPayMoney"></text>
+<!--					<text :class="'myCuIcon cuIcon-moreandroid'" @tap="toPayMoney"></text>-->
 				</view>
 				<view class="index-user-info-box">
 					<image :src="this.$isMemmber() && userInfo.avatar && userInfo.avatar !== '' ? userInfo.avatar : '/static/images/head.jpg'" @tap="handleLogin"/>
@@ -60,28 +60,6 @@
 				showComment: false,
 				switchA: false,
 				myKey: 0,
-				modalArrayInfo: [
-					{
-						routerUrl: '',
-						title: '修改密码',
-						type: 'default'
-					},
-					{
-						routerUrl: '',
-						title: '隐身访问',
-						type: 'checkbox'
-					},
-					{
-						routerUrl: '',
-						title: '关于我们',
-						type: 'default'
-					},
-					{
-						routerUrl: '',
-						title: '意见反馈',
-						type: 'default'
-					}
-				],
 				modalName: false,
 				ArrayList: [
 					{

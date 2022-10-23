@@ -1,110 +1,140 @@
 <template>
 	<view class="user-user-msg-page">
-		<cu-custom bgColor="bg-white" is-back>
-			<block slot="backText" class="text-black my-testBlack">
-				<image :src="DetailInfo.createAvatar" class="userImg" mode="aspectFill"
-					   :lazy-load="true"/>
-				<span>{{DetailInfo.createName || '梦想详情'}}</span>
-			</block>
-		</cu-custom>
+		<view @tap="toHideInfo">
+			<cu-custom bgColor="bg-white" is-back>
+				<block slot="backText" class="text-black my-testBlack">
+					<image :src="DetailInfo.createAvatar" class="userImg" mode="aspectFill"
+						   :lazy-load="true"/>
+					<span>{{DetailInfo.createName || '梦想详情'}}</span>
+				</block>
+			</cu-custom>
 
-		<view style="width:100%;height:750rpx;margin:0 auto;align:center">
-			<u-swiper :list="swiperList" height="750" class="detail-swiper"></u-swiper>
-		</view>
-
-		<view class="goods-detail-info">
-			<view class="goods-title">
-				<span>{{DetailInfo.title || '暂无标题'}}</span>
-				<span class="createTime">{{$util.dateFormat(new Date(Number(DetailInfo.createTime)), '-')}} 创建</span>
+			<view style="width:100%;height:750rpx;margin:0 auto;align:center">
+				<u-swiper :list="swiperList" height="750" class="detail-swiper"></u-swiper>
 			</view>
-			<view class="goods-desc">{{DetailInfo.content}}</view>
-			<view class="zj-dream-informShow">
-				<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShow"
-					  @click="toSetInfo(DetailInfo, infoItem)">
-					<text :class="'myCuIcon cuIcon-' + infoItem.type" :style="{
+
+			<view class="goods-detail-info">
+				<view class="goods-title">
+					<span>{{DetailInfo.title || '暂无标题'}}</span>
+					<span class="createTime">{{$util.dateFormat(new Date(Number(DetailInfo.createTime)), '-')}} 创建</span>
+				</view>
+				<view class="goods-desc">{{DetailInfo.content}}</view>
+				<view class="zj-dream-informShow">
+					<view class="zj-dream-informTitle" v-for="infoItem in infoArrayShow"
+						  @tap.stop="toSetInfo(DetailInfo, infoItem)">
+						<text :class="'myCuIcon cuIcon-' + infoItem.type" :style="{
 								color: DetailInfo[infoItem.needColor] === 1 ? themeColor : '',
 								fontWeight: DetailInfo[infoItem.needColor] === 1 ? 'bold' : ''}"></text>
-					<text class="cuIcon-Number" v-if="infoItem.number !== 'none'">{{infoItem.number}}</text>
-				</view>
-			</view>
-		</view>
-
-		<!--详情其他内容-->
-		<view class="detail-row" v-if="DetailInfo.dreamBuilds && DetailInfo.dreamBuilds.length > 0">
-			<view class="detail-rowTitle">历程</view>
-			<view class="detail-Content-all"
-				  style="background-color: white;margin-top: 14rpx;border-radius: 20rpx;">
-				<view :class="item.files && item.files.length > 0 ? 'detail-Content' : 'detail-Content detailShowMore'"
-					  @tap="toBuildsDetail(item)"
-					  v-for="(item, index) in DetailInfo.dreamBuilds" :key="index">
-					<view class="detail-left">
-						<view class="detail-left-title">
-							{{item.content || '暂无数据'}}
-						</view>
-						<view>{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
-						<view class="detail-left-settting">
-							<view class="zj-dream-informTitle" @tap.stop="toSetBuilds(item, 'appreciate')">
-								<text :class="'myCuIcon cuIcon-appreciate'" :style="{
-								color: item.isPraise === 1 ? themeColor : '',
-								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
-								<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praiseNum || 0}}</text>
-							</view>
-							<view class="zj-dream-informTitle" @tap.stop="toSetBuilds(item, 'comment')">
-								<text :class="'myCuIcon cuIcon-comment'"></text>
-								<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.commentNum || 0}}</text>
-							</view>
-						</view>
-					</view>
-					<!--图片-->
-					<view class="detail-right" v-if="item.files && item.files.length > 0">
-						<img :src="item.files[0].url" alt="">
+						<text class="cuIcon-Number" v-if="infoItem.number !== 'none'">{{infoItem.number}}</text>
 					</view>
 				</view>
 			</view>
-		</view>
 
-		<!--详情相关评论-->
-		<view class="detail-row" v-if="commentArray.length > 0">
-			<view class="detail-rowTitle">热评论</view>
-			<view class="commentInfo">
-				<view class="commentHeader" v-for="(item, index) in commentArray" :key="index">
-					<image :src="item.createAvatar" class="userImg" mode="aspectFill"
-						   :lazy-load="true"/>
-					<view class="headerRight">
-						<view class="name">
-							<view>
-								{{item.createName || '暂无数据'}}
+			<!--详情其他内容-->
+			<view class="detail-row" v-if="DetailInfo.dreamBuilds && DetailInfo.dreamBuilds.length > 0">
+				<view class="detail-rowTitle">历程</view>
+				<view class="detail-Content-all"
+					  style="background-color: white;margin-top: 14rpx;border-radius: 20rpx;">
+					<view :class="item.files && item.files.length > 0 ? 'detail-Content' : 'detail-Content detailShowMore'"
+						  @tap="toBuildsDetail(item)"
+						  v-for="(item, index) in DetailInfo.dreamBuilds" :key="index">
+						<view class="detail-left">
+							<view class="detail-left-title">
+								{{item.content || '暂无数据'}}
 							</view>
-							<!--点赞或者其他类型操作-->
-							<view>
-								<view class="zj-dream-informTitle" @tap="builderAppreciate(item)">
+							<view>{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
+							<view class="detail-left-settting">
+								<view class="zj-dream-informTitle" @tap.stop="toSetBuilds(item, 'appreciate')">
 									<text :class="'myCuIcon cuIcon-appreciate'" :style="{
 								color: item.isPraise === 1 ? themeColor : '',
 								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
-									<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praise || 0}}</text>
+									<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praiseNum || 0}}</text>
+								</view>
+								<view class="zj-dream-informTitle" @tap.stop="toSetBuilds(item, 'comment')">
+									<text :class="'myCuIcon cuIcon-comment'"></text>
+									<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.commentNum || 0}}</text>
 								</view>
 							</view>
 						</view>
-						<view class="time">{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
-						<view class="commentShow">{{item.content || '暂无评论'}}</view>
+						<!--图片-->
+						<view class="detail-right" v-if="item.files && item.files.length > 0">
+							<img :src="item.files[0].url" alt="">
+						</view>
 					</view>
 				</view>
 			</view>
-		</view>
 
-		<!--更新状态-->
-		<view class="page-bottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
-			<button class="cu-btn bg-theme" :style="{background: themeColor}">更新状态</button>
-		</view>
-
-		<!--输入评论弹窗-->
-		<u-modal v-model="showComment" v-if="showComment" @confirm="confirm" :async-close="true" :title="'请输入您的评论内容'" :show-cancel-button="true">
-			<view class="slot-content">
-				<view class="comment-content">
-					<textarea class="comment-textarea" :focus="true" maxlength="200" @input="textareaAInput" placeholder="分享你的评论, 更有机会获得关注和奖励哦"></textarea>
+			<!--详情相关评论-->
+			<view class="detail-row" v-if="commentArray.length > 0">
+				<view class="detail-rowTitle">热评论</view>
+				<view class="commentInfo">
+					<view class="commentHeader" v-for="(item, index) in commentArray" :key="index">
+						<image :src="item.createAvatar" class="userImg" mode="aspectFill"
+							   :lazy-load="true"/>
+						<view class="headerRight">
+							<view class="name">
+								<view>
+									{{item.createName || '暂无数据'}}
+								</view>
+								<!--点赞或者其他类型操作-->
+								<view>
+									<view class="zj-dream-informTitle" @tap="builderAppreciate(item)">
+										<text :class="'myCuIcon cuIcon-appreciate'" :style="{
+								color: item.isPraise === 1 ? themeColor : '',
+								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
+										<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praise || 0}}</text>
+									</view>
+									<view class="zj-dream-informTitle" @tap.stop="toCommentMore(item)">
+										<text :class="'myCuIcon cuIcon-comment'"></text>
+										<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.comments.length || 0}}</text>
+									</view>
+								</view>
+							</view>
+							<view class="time">{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
+							<view class="commentShow">{{item.content || '暂无评论'}}</view>
+						</view>
+						<!--二级评论-->
+						<view v-for="(itemlist, itemIndex) in item.comments" :key="itemIndex" style="margin-left: 40rpx">
+							<image :src="itemlist.createAvatar" class="userImg" mode="aspectFill"
+								   :lazy-load="true"/>
+							<view class="headerRight">
+								<view class="name">
+									<view>
+										{{itemlist.createName || '暂无数据'}}
+									</view>
+									<!--点赞或者其他类型操作-->
+									<view>
+										<view class="zj-dream-informTitle" @tap="builderAppreciate(itemlist)">
+											<text :class="'myCuIcon cuIcon-appreciate'" :style="{
+								color: itemlist.isPraise === 1 ? themeColor : '',
+								fontWeight: itemlist.isPraise === 1 ? 'bold' : ''}"></text>
+											<text class="cuIcon-Number" style="margin-left: 10rpx;">{{itemlist.praise || 0}}</text>
+										</view>
+									</view>
+								</view>
+								<view class="time">{{itemlist.createTime ? $util.dateFormat(new Date(Number(itemlist.createTime)), '-') : '暂无发布时间'}}</view>
+								<view class="commentShow">{{itemlist.content || '暂无评论'}}</view>
+							</view>
+						</view>
+					</view>
 				</view>
 			</view>
-		</u-modal>
+
+			<!--更新状态-->
+			<view class="page-bottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
+				<button class="cu-btn bg-theme" :style="{background: themeColor}">更新状态</button>
+			</view>
+		</view>
+
+		<!--底部评论输入框方式解决-->
+		<view class="cu-bar input" v-if="showComment" :style="[{bottom:InputBottom+'px', marginTop: '30rpx'}]">
+			<input class="solid-bottom" :adjust-position="false" :focus="showComment"
+				   placeholder="只言片语也如繁星璀璨"
+				   maxlength="300" cursor-spacing="10"
+				   @input="textareaAInput"
+				   @focus="InputFocus" @blur="InputBlur"></input>
+			<button class="cu-btn bg-green shadow" @tap="confirm" :disabled="!commentcontent">发送</button>
+		</view>
 	</view>
 </template>
 
@@ -114,11 +144,12 @@
 	export default {
 		data() {
 			return {
+				InputBottom: 0,
 				themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
 				commentcontent: '',	// 评论内容
-				NowItem: {},
 				commentArray: [], // 评论列表
 				nowUserIs: 'detail', // 默认评论是添加梦想评论
+				nowUserType:'detail', // 默认评论是添加梦想评论
 				showComment: false,
 				DetailInfo: {},
 				infoArrayShow: [{
@@ -172,6 +203,16 @@
 			this.getDreamComment()
 		},
 		methods: {
+			toHideInfo() {
+				this.showComment = false
+				this.commentcontent = ''
+			},
+			InputFocus(e) {
+				this.InputBottom = e.detail.height
+			},
+			InputBlur(e) {
+				this.InputBottom = 0
+			},
 			builderAppreciate(item) {
 				// 评论点赞
 				praiseComment(`?id=${item.id}`).then(res => {
@@ -182,6 +223,7 @@
 				uni.setStorageSync('dreamBuildContent', item)
 				this.$toView(`/myPackageA/pages/dream/builddetail?id=${item.id}`, false, false, true)
 			},
+			// 筑梦点赞以及评论
 			toSetBuilds(item, type) {
 				if (type === 'appreciate') {
 					// 筑梦点赞
@@ -191,7 +233,8 @@
 				} else {
 					// 进行评论
 					this.showComment = true
-					this.nowUserIs = item
+					this.nowUserIs = 'buildDream'
+					this.nowUserType = item
 				}
 			},
 			saveCourse() {
@@ -218,19 +261,31 @@
 					}
 				})
 			},
+			// 二级评论处理
+			toCommentMore(item) {
+				this.showComment = true
+				this.nowUserIs = 'commentMore'
+				this.nowUserType = item
+			},
 			confirm() {
+				console.log(this.commentcontent)
 				// 添加评论
 				let params = {
 					content: this.commentcontent,
 					parentId: 0,
-					businessId: this.NowItem.id,
+					businessId: this.DetailInfo.id,
 					type: 0,
-					level: 0,
+					level: 1,
 				}
-				// 如果是创建筑梦，需要额外参数
-				if (this.nowUserIs !== 'detail') {
+				if (this.nowUserIs === 'buildDream') {
+					// 如果是创建筑梦，需要额外参数
 					params.type = 1
-					params.businessId = this.nowUserIs.id
+					params.businessId = this.nowUserType.id
+				} else if (this.nowUserIs === 'commentMore') {
+					// 如果是创建二级评论
+					params.type = 0
+					params.parentId = this.nowUserType.id
+					params.level = 2
 				}
 				addComment(params).then(res => {
 					this.showComment = false;
@@ -238,6 +293,7 @@
 					this.DreamDetailFun()
 					this.getDreamComment()
 					this.nowUserIs = 'detail'
+					this.nowUserType = 'detail'
 				})
 			},
 			textareaAInput(e) {
@@ -249,7 +305,6 @@
 					case 'comment':
 						this.commentcontent = ''
 						this.showComment = true
-						this.NowItem = item
 						break;
 						// 点赞
 					case 'appreciate':

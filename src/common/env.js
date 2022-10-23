@@ -102,14 +102,14 @@ if (env === 'release') {
 switch (environment) {
     case "devTest":
         // 开发
-        ENV_BASE_URL = 'https://dream.kaihuaikj.com/api/app'
+        ENV_BASE_URL = 'https://dream.kaihuaikj.com/test/api/app'
         ENV_BASE_API = '/app'
         ENV_REGION_ID = 'DL1306153654495223808'        //软件园渠道固定regionNo
         VUE_APP_PROCESS = 'x-oss-process'
         break;
     case "develop":
         // 测试
-        ENV_BASE_URL = 'https://dream.kaihuaikj.com/api/app'
+        ENV_BASE_URL = 'https://dream.kaihuaikj.com/test/api/app'
         ENV_BASE_API = '/app'
         ENV_REGION_ID = 'DL1333225698034458624'
         VUE_APP_PROCESS = '==prVH2IHeofDf247APPUPLOADTAPROCESSfND=='

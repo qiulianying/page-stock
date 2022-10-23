@@ -104,6 +104,7 @@
 			// 屏蔽微信右上角工具栏
 			wx.hideShareMenu()
 			this.date = this.$util.dateFormat(new Date(), '-')
+			this.formInfo.birthday = new Date().getTime()
 			// 获取用户信息
 			if (options.needdisabled && options.needdisabled == 1) {
 				getUserInfo({id: this.id}).then(res => {
@@ -131,6 +132,7 @@
 					hobby: this.formInfo.hobby,
 					province: this.lastParams.province,
 					city: this.lastParams.city,
+					birthday: this.formInfo.birthday
 				}
 				userInfoSet(lastParams).then(res => {
 					if (res) {
@@ -144,6 +146,7 @@
 			},
 			DateChange(e) {
 				this.date = e.detail.value
+				this.formInfo.birthday = new Date(e.detail.value);
 			},
 			RegionChange(e) {
 				this.region = e.detail.value

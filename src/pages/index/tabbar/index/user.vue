@@ -26,7 +26,6 @@
 					<view class="name">{{userInfo.username || '请点击头像进行登录'}}</view>
 					<view class="visitor" v-if="this.$isMemmber()">访客：{{userInfo.visited || 0}}</view>
 				</view>
-				<view class="myid" v-if="this.$isMemmber()">id:{{userInfo.id || '' }}</view>
 			</view>
 			<view class="index-user-dreamList">
 				<view class="flex flex-direction" v-if="cartList.length > 0">
@@ -45,7 +44,7 @@
 					<view class="action text-blue" @tap="modalName = false">取消</view>
 				</view>
 				<view class="cu-list menu text-left">
-					<view class="cu-item" :class="{arrow: item.type !== 'checkbox'}" v-for="(item,index) in modalArrayInfo" :key="index">
+					<view @tap="toRouter(item)" class="cu-item" :class="{arrow: item.type !== 'checkbox'}" v-for="(item,index) in modalArrayInfo" :key="index">
 						<view class="content mySwitchContent" v-if="item.type === 'checkbox'">
 							<view>{{item.title}}</view>
 							<view><switch @change="SwitchA" :class="switchA?'checked':''" :checked="switchA?true:false"></switch></view>
@@ -99,7 +98,7 @@
 					{
 						routerUrl: '',
 						title: '意见反馈',
-						type: 'default'
+						type: 'opinion'
 					}
 				],
 				modalName: false,
@@ -146,6 +145,13 @@
 			this.customStyle.background = this.themeColor
 		},
 		methods: {
+			toRouter(item) {
+				switch (item.type) {
+					case 'opinion':
+						this.$toView('user/options', false, false, false)
+						break;
+				}
+			},
 			confirm() {
 				// 添加评论
 				addComment({

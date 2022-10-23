@@ -6,6 +6,7 @@ import util from './common/util'
 import shopMall from './common/shopMall'
 import {
 	FILE_URL,
+	BASE_URL,
 	UPLOAD_URL,
 	MP_WECHAT_APPID,
 	MP_APPLET_APPID,
@@ -58,6 +59,7 @@ Vue.mixin(globalMixins)
 Vue.prototype.$store = store
 Vue.prototype.$util = util
 Vue.prototype.$shopMall = shopMall
+Vue.prototype.$baseUrl = BASE_URL
 Vue.prototype.$fileURL = FILE_URL
 Vue.prototype.$spMatefileURL = SPMATE_FILE_URL
 // 封装的uni-app文件流上传方式

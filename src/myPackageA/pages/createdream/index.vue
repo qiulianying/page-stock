@@ -104,7 +104,7 @@ export default {
             "content": "",
             "fileGroupId": null, // 文件组id
             "deadLine": '',  // 截止日期
-            "isPublic": 0, // 是否公开
+            "isPublic": 1, // 是否公开
             "updateRate": 1, // 默认每天打卡
             "topicIds": [], // 话题id列表
             "longitude": "",
@@ -121,12 +121,11 @@ export default {
       checkboxMe: false,
       imgList: [],
       textareaBValue: '',
-      themeColor: '',
+      themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
         lastTime: '',
     };
   },
   onLoad(options) {
-      this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
     // 屏蔽微信右上角工具栏
     wx.hideShareMenu()
     this.lastTime = this.$util.dateFormat(new Date(), '-')
@@ -141,6 +140,14 @@ export default {
       },
       // 创建梦
       saveAddress() {
+          if (!this.dreamContent.title) {
+              uni.showToast({
+                  title: '请输入必填项梦想标题',
+                  icon: 'warning',
+                  duration: 2000
+              })
+              return
+          }
           let _this = this
           uni.showLoading({
               title: '梦想创建中...',
@@ -149,7 +156,7 @@ export default {
           if (this.imgList.length > 0) {
               console.log(this.imgList)
               // 使用uni-app方法进行文件流上传
-              this.$upload(this.imgList[0], 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
+              this.$upload(this.imgList[0], this.$baseUrl + '/file/upload', 'files', {
                   isSystem: 0
               }).then(res => {
                   if (this.imgList.length === 1) {
@@ -161,7 +168,7 @@ export default {
                           if (index === 0) {
                               return
                           }
-                          this.$upload(item, 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
+                          this.$upload(item, this.$baseUrl + '/file/upload', 'files', {
                               fileGroupId: res.data[0].fileGroupId,
                               isSystem: 0
                           }).then(response => {
@@ -197,6 +204,7 @@ export default {
     // 话题选择
       topicSelect() {
           this.showInput = true
+          this.$refs.zysearchInfo.searchInfo()
           this.$refs.zysearchInfo.clearInfo()
       },
       // 地图选择

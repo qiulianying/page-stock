@@ -84,6 +84,12 @@
 			"style": {
 				"navigationBarTitleText": "提现已受理"
 			}
+		},
+		{
+			"path": "pages/user/options",
+			"style": {
+				"navigationBarTitleText": "意见反馈"
+			}
 		}
 	],
 	"subPackages": [

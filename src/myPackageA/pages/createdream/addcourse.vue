@@ -71,7 +71,7 @@ export default {
       if (this.imgList.length > 0) {
         console.log(this.imgList)
         // 使用uni-app方法进行文件流上传
-        this.$upload(this.imgList[0], 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
+        this.$upload(this.imgList[0], this.$baseUrl + '/file/upload', 'files', {
           isSystem: 0
         }).then(res => {
           if (this.imgList.length === 1) {
@@ -83,7 +83,7 @@ export default {
               if (index === 0) {
                 return
               }
-              this.$upload(item, 'https://dream.kaihuaikj.com/api/app/app/file/upload', 'files', {
+              this.$upload(item, this.$baseUrl + '/file/upload', 'files', {
                 fileGroupId: res.data[0].fileGroupId,
                 isSystem: 0
               }).then(response => {
