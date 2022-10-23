@@ -146,6 +146,7 @@
 		},
 		methods: {
 			toRouter(item) {
+				this.modalName = false
 				switch (item.type) {
 					case 'opinion':
 						this.$toView('user/options', false, false, false)

@@ -46,9 +46,9 @@
 						</view>
 					</picker>
 				</view>
-				<view class="cu-form-group ">
+				<view class="cu-form-group " @tap="showDaySelect = true">
 					<view class="title">学历</view>
-					<input placeholder="请输入您的学历" :disabled="needdisabled == '1'" name="input" maxlength="15"></input>
+					<input disabled placeholder="请选择您的学历" name="input" maxlength="15" :value="nowoccupation"></input>
 				</view>
 				<view class="cu-form-group ">
 					<view class="title">职业</view>
@@ -64,6 +64,8 @@
 				</view>
 			</form>
 		</view>
+		<!--选择天数-->
+		<u-select v-model="showDaySelect" :list="listDay" @confirm="confirmDay"></u-select>
 	</view>
 </template>
 
@@ -72,6 +74,38 @@
 	export default {
 		data() {
 			return {
+				showDaySelect: false,
+				nowoccupation: '',
+				listDay: [
+					{
+						value: 0,
+						label: '小学'
+					},
+					{
+						value: 1,
+						label: '初中'
+					},
+					{
+						value: 2,
+						label: '高中'
+					},
+					{
+						value: 3,
+						label: '本科'
+					},
+					{
+						value: 4,
+						label: '研究生'
+					},
+					{
+						value: 5,
+						label: '博士'
+					},
+					{
+						value: 6,
+						label: '博士后'
+					}
+				],
 				gender: 0,
 				// 表单内容数据
 				formInfo: {
@@ -80,8 +114,9 @@
 					gender: 0,
 					introduction: '',
 					birthday: '',
-					occupation: '',
-					hobby: ''
+					occupation: '', // 学历  0-小学 1-初中 2-高中 3-本科 4-研究生 5-博士 6-博士后
+					hobby: '',
+					phone: ''
 				},
 				themeColor: '',
 				havaContent: true,
@@ -110,21 +145,35 @@
 				getUserInfo({id: this.id}).then(res => {
 					this.formInfo = res.data
 					// 编写相关修改编辑内容
+					this.lastParams.province = res.data.province || this.region[0]
+					this.lastParams.city = res.data.city || this.region[1]
+					this.lastParams.area = res.data.area || this.region[2]
+					this.nowoccupation = this.listDay[res.data.occupation].label || '小学'
 				})
 			} else {
 				getUserInfo().then(res => {
 					this.formInfo = res.data
 					// 编写相关修改编辑内容
+					this.lastParams.province = res.data.province || this.region[0]
+					this.lastParams.city = res.data.city || this.region[1]
+					this.lastParams.area = res.data.area || this.region[2]
+					this.nowoccupation = this.listDay[res.data.occupation].label || '小学'
 				})
 			}
 		},
 		methods: {
+			confirmDay(e) {
+				console.log(e)
+				this.formInfo.occupation = e[0].value
+				this.nowoccupation = e[0].label
+			},
 			sexChange(e) {
 				this.formInfo.gender = e.detail.value
 			},
 			saveAddress() {
 				let lastParams = {
 					id: this.formInfo.id,
+					phone: this.formInfo.phone,
 					nickname: this.formInfo.nickname,
 					gender: this.formInfo.gender,
 					introduction: this.formInfo.introduction,
@@ -152,6 +201,7 @@
 				this.region = e.detail.value
 				this.lastParams.province = this.region[0]
 				this.lastParams.city = this.region[1]
+				this.lastParams.area = this.region[2]
 			}
 		}
 	}
