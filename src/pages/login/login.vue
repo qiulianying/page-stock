@@ -1,12 +1,12 @@
 <template>
-	<view class="login-login-page">
-		<cu-custom bgColor="bg-white" is-back>
+	<view class="login-login-page" style="background: url('../../static/images/loginBg.jpg');background-size: 100% 100%">
+<!--		<cu-custom bgColor="bg-white" is-back>
 			<block slot="content" class="text-black">登录</block>
-		</cu-custom>
+		</cu-custom>-->
 		<view class="page-box">
-			<view class="page-img">
+<!--			<view class="page-img">
 				<image class="login-logo" :src="myLoginSrc" mode="widthFix" v-if="myLoginSrc" />
-			</view>
+			</view>-->
 <!--			<button class="cu-btn page-box-btn bg-theme" open-type="getPhoneNumber"
 				@getphonenumber="getPhoneNumber">微信一键登录</button>-->
 			<button class="cu-btn page-box-btn bg-theme" @tap="technological">微信一键登录</button>
@@ -202,6 +202,8 @@
 </style>
 <style lang="scss">
 	.login-login-page {
+		position: relative;
+		height: 100vh;
 		.page-box {
 			text-align: center;
 
@@ -211,7 +213,10 @@
 		  }
 
 			.page-box-btn {
-				margin: 40rpx 60rpx;
+				position: absolute;
+				bottom: 20vh;
+				width: 90%;
+				left: 5%;
 				border-radius: 47rpx;
 				font-size: 34rpx;
 				color: #FFFFFF;
@@ -240,8 +245,8 @@
 
 		.page-img {
 			width: 100%;
-			height: 280rpx;
-			margin: 20% 0;
+			// height: 280rpx;
+			// margin: 20% 0;
 
 			.login-logo {
 				width: 228rpx;

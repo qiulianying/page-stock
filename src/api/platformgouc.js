@@ -36,3 +36,9 @@ export const dreamCashRecord = (data, status, option) => http(`user/dreamCashRec
 
 // 我的助梦金
 export const dreamCash = (data, option) => http('user/dreamCash', data, {method: 'GET'})
+
+// 微信退出登录
+export const loginOut = (data, option) => http('loginout/wechat', data, {method: 'GET'})
+
+// 意见反馈
+export const feedback = (data, option) => http('feedback', data, option)

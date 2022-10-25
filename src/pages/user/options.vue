@@ -4,26 +4,26 @@
             <block slot="content" class="text-black">意见反馈</block>
         </cu-custom>
         <form>
-            <view class="cu-form-group margin-top">
-                <view class="title">简要概括</view>
-                <input placeholder="请输入简要概括" name="input"></input>
-            </view>
             <view class="cu-form-group">
-                <textarea maxlength="500" @input="textareaAInput" placeholder="请输入反馈的详细内容"></textarea>
+                <textarea maxlength="500" class="cu-form-groupText"
+                          :value="dreamContent.content"
+                          @input="textareaAInput" placeholder="请输入反馈的详细内容"></textarea>
             </view>
             <!--   保存按钮   -->
             <view class="page-bottom">
-                <button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveAddress">保 存</button>
+                <button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveAddress">提交反馈</button>
             </view>
         </form>
     </view>
 </template>
 
 <script>
+    import { feedback } from '../../api/platformgouc'
     export default {
         name: "options",
         data() {
             return {
+                userId: uni.getStorageSync('userId') || '',
                 dreamContent: {
                     content: ''
                 },
@@ -41,13 +41,29 @@
                 this.dreamContent.content = e.detail.value
             },
             saveAddress() {
-
+                feedback({
+                    id: this.userId,
+                    content: this.dreamContent.content
+                }).then(res => {
+                    uni.showToast({
+                        title: '反馈意见已成功提交!',
+                        icon: 'success',
+                        duration: 2000
+                    })
+                    this.dreamContent.content = ''
+                })
             }
         }
     }
 </script>
 
 <style scoped lang="scss">
+    .cu-form-group {
+        .cu-form-groupText {
+            height: 600rpx;
+        }
+    }
+
     .page-bottom {
         button {
             margin: 64rpx 24rpx 24rpx;

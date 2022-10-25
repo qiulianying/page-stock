@@ -107,7 +107,7 @@ Vue.prototype.$isMemmber = () => {
 * isRedirect：是否需要直接跳转或者保存当前路径跳转
 * isPackage：是否分包
 * */
-Vue.prototype.$toView = (page, mustReg = false, isRedirect = false, isPackage = false) => {
+Vue.prototype.$toView = (page, mustReg = false, isRedirect = false, isPackage = false, closeAll = false) => {
 	let url = ''
 	if (!isPackage) {
 		// 如果不是分包里面的路由
@@ -118,7 +118,11 @@ Vue.prototype.$toView = (page, mustReg = false, isRedirect = false, isPackage = 
 			`/pages/login/login?fromurl=${encodeURIComponent(`${page}`)}` : `${page}`
 	}
 	// 之前使用uni在体验版会出现停顿2秒左右的情况
-	if (isRedirect) {
+	if (closeAll) {
+		wx.reLaunch({
+			url: url
+		})
+	} else if (isRedirect) {
 		wx.redirectTo({
 			url: url
 		})

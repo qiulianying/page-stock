@@ -39,8 +39,8 @@
 		<view class="cu-modal bottom-modal" :class="modalName ? 'show' : ''">
 			<view class="cu-dialog">
 				<view class="cu-bar bg-white">
-					<view class="action text-green">确定</view>
-					<view class="action">设置</view>
+					<!--<view class="action text-green">确定</view>-->
+					<view class="action">相关设置</view>
 					<view class="action text-blue" @tap="modalName = false">取消</view>
 				</view>
 				<view class="cu-list menu text-left">
@@ -56,44 +56,39 @@
 				</view>
 			</view>
 		</view>
-		<!--输入评论弹窗-->
-		<u-modal v-model="showComment" @confirm="confirm" :async-close="true" :title="'请输入您的评论内容'" :show-cancel-button="true">
-			<view class="slot-content">
-				<view class="comment-content">
-					<textarea class="comment-textarea" :focus="true" maxlength="200" @input="textareaAInput" placeholder="分享你的评论, 更有机会获得关注和奖励哦"></textarea>
-				</view>
-			</view>
-		</u-modal>
+		<!--退出登录弹窗-->
+		<u-modal v-model="showLogin" :content="'请确认是否退出登录'" @confirm="logout" :async-close="true" :show-cancel-button="true"></u-modal>
 	</view>
 </template>
 
 <script>
-	import { getUserInfo } from '../../../../api/platformgouc'
+	import { getUserInfo, loginOut } from '../../../../api/platformgouc'
 	import {addComment} from "../../../../api/createdream";
 
 	export default {
 		data() {
 			return {
+				showLogin: false,
 				commentcontent: '',	// 评论内容
 				NowItem: {},
 				showComment: false,
 				switchA: false,
 				myKey: 0,
 				modalArrayInfo: [
+					// {
+					// 	routerUrl: '',
+					// 	title: '修改密码',
+					// 	type: 'default'
+					// },
+					// {
+					// 	routerUrl: '',
+					// 	title: '隐身访问',
+					// 	type: 'checkbox'
+					// },
 					{
 						routerUrl: '',
-						title: '修改密码',
-						type: 'default'
-					},
-					{
-						routerUrl: '',
-						title: '隐身访问',
-						type: 'checkbox'
-					},
-					{
-						routerUrl: '',
-						title: '关于我们',
-						type: 'default'
+						title: '退出登录',
+						type: 'logout'
 					},
 					{
 						routerUrl: '',
@@ -151,7 +146,18 @@
 					case 'opinion':
 						this.$toView('user/options', false, false, false)
 						break;
+					case 'logout':
+						this.showLogin = true
+						break;
 				}
+			},
+			logout() {
+				loginOut().then(res => {
+					uni.removeStorageSync('mspToken');
+					uni.removeStorageSync('userId');
+					uni.removeStorageSync('userInfo');
+					this.$toView('login/login', false, false, false, true)
+				})
 			},
 			confirm() {
 				// 添加评论

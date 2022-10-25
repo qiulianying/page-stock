@@ -185,7 +185,7 @@
 				"path": "pages/user/user-money"
 			},
 			{
-				"path": "pages/user/user-recharge",
+				"path": "pages/login/login",
 				"name": "登录"
 			}
 		]
