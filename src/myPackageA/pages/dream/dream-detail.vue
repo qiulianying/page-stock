@@ -120,14 +120,14 @@
 				</view>
 			</view>
 
-			<!--更新状态-->
+			<!--添加筑梦-->
 			<view class="page-bottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
-				<button class="cu-btn bg-theme" :style="{background: themeColor}">更新状态</button>
+				<button class="cu-btn bg-theme" :style="{background: themeColor}">添加筑梦</button>
 			</view>
 		</view>
 
 		<!--底部评论输入框方式解决-->
-		<view class="cu-bar input" v-if="showComment" :style="[{bottom:InputBottom+'px', marginTop: '30rpx'}]">
+		<view class="cu-bar input" v-show="showComment" :style="[{position: 'relative', bottom:InputBottom+'px', marginTop: '30rpx'}]">
 			<input class="solid-bottom" :adjust-position="false" :focus="showComment"
 				   placeholder="只言片语也如繁星璀璨"
 				   maxlength="300" cursor-spacing="10"

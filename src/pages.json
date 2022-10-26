@@ -130,7 +130,7 @@
 				{
 					"path": "pages/createdream/addcourse",
 					"style": {
-						"navigationBarTitleText": "更新状态"
+						"navigationBarTitleText": "添加筑梦"
 					}
 				},
 				{

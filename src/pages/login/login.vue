@@ -1,5 +1,5 @@
 <template>
-	<view class="login-login-page" style="background: url('../../static/images/loginBg.jpg');background-size: 100% 100%">
+	<view class="login-login-page" style="background: url('/static/images/loginBg.jpg');background-size: 100% 100%">
 <!--		<cu-custom bgColor="bg-white" is-back>
 			<block slot="content" class="text-black">登录</block>
 		</cu-custom>-->

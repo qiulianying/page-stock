@@ -109,7 +109,7 @@ export default {
           dreambuild(this.dreamContent).then(res => {
               uni.hideLoading()
               uni.showToast({
-                  title: '梦想创建成功',
+                  title: '筑梦成功,加油吧!',
                   icon: 'success',
                   duration: 2000
               });
