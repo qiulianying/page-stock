@@ -127,8 +127,8 @@
 		</view>
 
 		<!--底部评论输入框方式解决-->
-		<view class="cu-bar input" v-show="showComment" :style="[{position: 'relative', bottom:InputBottom+'px', marginTop: '30rpx'}]">
-			<input class="solid-bottom" :adjust-position="false" :focus="showComment"
+		<view class="cu-bar input" v-show="showComment" :style="[{marginTop: '30rpx'}]">
+			<input class="solid-bottom" :adjust-position="true" :focus="showComment"
 				   placeholder="只言片语也如繁星璀璨"
 				   maxlength="300" cursor-spacing="10"
 				   @input="textareaAInput"
