@@ -19,6 +19,9 @@ export const getOpenId = (data, option) => http('login/openid', data, {method: '
 /*我的消息*/
 export const getNewsPage = (data, option) => http('msg/page', data, {method: 'GET'})
 
+/*删除消息*/
+export const deletePage = (id, option) => http(`msg/${id}`, id, {method: 'DELETE'})
+
 /*我的粉丝*/
 export const myFollowed = (data, option) => http('user/myFollowed', data, {method: 'GET'})
 

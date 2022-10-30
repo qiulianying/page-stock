@@ -1,7 +1,7 @@
 <template>
 	<view>
 		<view v-if="testIndex.length > 0" class="zj-dream-list-item"
-			  v-for="(item,index) in testIndex" :key="index">
+			  v-for="(item,index) in testIndex" :key="index" @longpress="deleteThisInfo(item, index)">
 			<view class="zj-dream-header">
 				<view @tap="itemClick(item)">
 					<image :src="item.createAvatar"
@@ -63,14 +63,16 @@
 				</view>
 			</view>
 		</u-popup>
+		<u-modal v-model="showDelete" :content="'请确认是否删除该数据!'" @confirm="sureDelete" :async-close="true" :show-cancel-button="true"></u-modal>
 	</view>
 </template>
 
 <script>
-	import { putPraise, putCollect, putWatch } from '../../api/createdream'
+	import { putPraise, putCollect, putWatch, deleteDream } from '../../api/createdream'
 	export default {
 		data() {
 			return {
+				showDelete: false,
 				allTypeArray: [1,2,5,10,50,100,'自定义'],
 				showInput: false,
 				userId: uni.getStorageSync('userId') || '',
@@ -80,6 +82,7 @@
 				themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
 				commentcontent: '',	// 评论内容
 				NowItem: {},
+				NowIndex: 0,
 				showComment: false,
 				myNeedKey: 0,
 				testIndex: []
@@ -119,6 +122,23 @@
 			}
 		},
 		methods: {
+			sureDelete() {
+				// 判断不同调用不同接口
+				console.log(this.NowItem)
+				deleteDream(this.NowItem.id).then(res => {
+					// 直接清理数组
+					this.testIndex.splice(this.NowIndex, 1)
+					this.showDelete = false
+				})
+			},
+			deleteThisInfo(item, index) {
+				// 只有自己创建的才有效
+				if (item.isAuthor === 1) {
+					this.NowIndex = index
+					this.NowItem = item
+					this.showDelete = true
+				}
+			},
 			toPayMoney(item, index) {
 				if (index === this.allTypeArray.length - 1) {
 					this.$toView(`shop/shop-check?id=${this.NowItem.createBy}&dreamId=${this.NowItem.id}`, false, false, false)

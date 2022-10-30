@@ -34,7 +34,7 @@
 			<view class="detail-row" v-if="DetailInfo.dreamBuilds && DetailInfo.dreamBuilds.length > 0">
 				<view class="detail-rowHeader">
 					<view class="detail-rowHeaderTitle">筑梦列表</view>
-					<view class="page-bottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
+					<view class="myNeedbottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
 						<button class="cu-btn bg-theme" :style="{background: themeColor}">更新状态 +</button>
 					</view>
 				</view>
@@ -125,10 +125,10 @@
 				</view>
 			</view>
 
-			<!--添加筑梦-->
-<!--			<view class="page-bottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
-				<button class="cu-btn bg-theme" :style="{background: themeColor}">添加筑梦</button>
-			</view>-->
+			<!--更新状态-->
+			<view class="page-bottom" v-if="DetailInfo.isAuthor === 1 && (!DetailInfo.dreamBuilds || DetailInfo.dreamBuilds.length === 0)" @tap="saveCourse">
+				<button class="cu-btn bg-theme" :style="{background: themeColor}">更新状态 +</button>
+			</view>
 		</view>
 
 		<!--底部评论输入框方式解决-->
@@ -586,13 +586,27 @@
 		}
 	}
 
-	.page-bottom {
+	.myNeedbottom {
 		button {
 			border-radius: 47rpx;
 			font-size: 30rpx;
 			color: #FFFFFF;
 			height: 64rpx;
 			line-height: 64rpx;
+			text-align: center;
+			display: block;
+		}
+	}
+
+	/*底部按钮*/
+	.page-bottom {
+		button {
+			margin: 60rpx 24rpx 20rpx;
+			border-radius: 47rpx;
+			font-size: 34rpx;
+			color: #FFFFFF;
+			height: 84rpx;
+			line-height: 84rpx;
 			text-align: center;
 			display: block;
 		}

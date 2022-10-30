@@ -1,6 +1,6 @@
 {
     "name" : "助梦行",
-    "appid" : "__UNI__B48E472",
+    "appid" : "__UNI__D68B57A",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -94,12 +94,12 @@
                 "enable" : true
             }
         },
-        "sdkConfigs": {
+        "sdkConfigs" : {
             // 使用地图或位置相关功能必须填写其一
-            "maps": {
-                "qqmap": {
+            "maps" : {
+                "qqmap" : {
                     // 腾讯地图秘钥 https://lbs.qq.com/dev/console/key/manage
-                    "key": "HTPBZ-N2OWQ-7KH57-GDTE2-XAK6S-LKBYP"
+                    "key" : "HTPBZ-N2OWQ-7KH57-GDTE2-XAK6S-LKBYP"
                 }
             }
         }

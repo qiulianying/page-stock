@@ -5,7 +5,7 @@
 		</cu-custom>
 		<view class="msg-box" v-if="list.length > 0">
 			<scroll-view scroll-y class="zj-dream-list-data" @scrolltolower="lower">
-				<view class="msg-item" v-for="(item, index) in list" :key="index">
+				<view class="msg-item" v-for="(item, index) in list" :key="index" @longpress="deleteThisInfo(item, index)">
 					<view class="msg-item-left">
 						<image :src="item.createAvatar || '/static/images/head.jpg'" />
 					</view>
@@ -21,32 +21,25 @@
 		</view>
 		<zj-empty v-if="list.length === 0" :img="`${imgUrl}1639019849000/pic_shoping.png`"
 				  text="暂无消息通知~" />
+		<u-modal v-model="showDelete" :content="'请确认是否删除该消息!'" @confirm="sureDelete" :async-close="true" :show-cancel-button="true"></u-modal>
 	</view>
 </template>
 
 <script>
-	import { getNewsPage } from '../../../../api/platformgouc'
+	import { getNewsPage, deletePage } from '../../../../api/platformgouc'
 	export default {
 		data() {
 			return {
 				imgUrl: '',
-				icon: [{
-					bgColor: '#5ec39d'
-				}, {
-					bgColor: '#e5392d'
-				}, {
-					bgColor: '#65cce2'
-				}, {
-					bgColor: '#e97a26'
-				}, {
-					bgColor: '#60c962'
-				}],
 				list: [],
 				params: {
 					size: 20,
 					current: 1
 				},
 				total: 0, // 总数
+				NowIndex: '',
+				NowItem: '',
+				showDelete: false
 			}
 		},
 		created() {
@@ -57,6 +50,19 @@
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
 		},
 		methods: {
+			sureDelete() {
+				// 判断不同调用不同接口
+				deletePage(this.NowItem.id).then(res => {
+					// 直接清理数组
+					this.list.splice(this.NowIndex, 1)
+					this.showDelete = false
+				})
+			},
+			deleteThisInfo(item, index) {
+				this.NowIndex = index
+				this.NowItem = item
+				this.showDelete = true
+			},
 			lower() {
 				if (this.total > this.list.length) {
 					this.params.current += 1

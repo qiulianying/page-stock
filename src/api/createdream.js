@@ -3,6 +3,9 @@ import http from "../common/http";
 /*新增梦想*/
 export const addDream = (data, option) => http('dream', data, option)
 
+/*删除梦想*/
+export const deleteDream = (id, option) => http(`dream/${id}`, id, {method: 'DELETE'})
+
 /*梦想详情搜索*/
 export const DreamDetail = (id, option) => http(`dream/${id}`, id, {method: 'GET'})
 
