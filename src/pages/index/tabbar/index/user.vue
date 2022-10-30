@@ -301,13 +301,14 @@
 		.index-user-dream {
 			background-color: #ffffff;
 			.index-user-dreamTite {
-				width: 90%;
+				width: 85%;
 				margin: 0 auto 50rpx;
 				.index-user-dreamTiteInfo {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
 					.name {
+						margin-left: 20rpx;
 						margin-bottom: 10rpx;
 						font-size: 32rpx;
 						font-family: PingFangSC-Semibold, PingFang SC;

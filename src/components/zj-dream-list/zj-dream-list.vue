@@ -40,7 +40,7 @@
 						<text class="cuIcon-Number">{{item.commentNum}}</text>
 					</view>
 					<view class="zj-dream-informTitle" @click="toSetInfo(item, 'forward')">
-						<text :class="'myCuIcon cuIcon-camera'" :style="{
+						<text :class="'myCuIcon cuIcon-we'" :style="{
 								color: item.isWatched === 1 ? themeColor : '',
 								fontWeight: item.isWatched === 1 ? 'bold' : ''}"></text>
 						<text class="cuIcon-Number">{{item.watcheNum}}</text>
@@ -55,6 +55,14 @@
 				</view>
 			</view>
 		</view>
+		<u-popup v-model="showInput" mode="bottom" :closeable="true">
+			<view class="myMoney">
+				<view class="myMoneyTitle">为他助梦</view>
+				<view class="allTypeThisInfo" @tap="toPayMoney(item, index)" v-for="(item, index) in allTypeArray" :key="index" :style="{marginRight: index === 2 || index === 5 ? 0 : '3%'}">
+					<span v-if="item !== '自定义'">￥</span>{{item}}
+				</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -63,6 +71,8 @@
 	export default {
 		data() {
 			return {
+				allTypeArray: [1,2,5,10,50,100,'自定义'],
+				showInput: false,
 				userId: uni.getStorageSync('userId') || '',
 				appreciate: '',
 				like: '',
@@ -73,6 +83,7 @@
 				showComment: false,
 				myNeedKey: 0,
 				testIndex: []
+
 			}
 		},
 		created() {
@@ -108,11 +119,20 @@
 			}
 		},
 		methods: {
+			toPayMoney(item, index) {
+				if (index === this.allTypeArray.length - 1) {
+					this.$toView(`shop/shop-check?id=${this.NowItem.createBy}&dreamId=${this.NowItem.id}`, false, false, false)
+				} else {
+					this.$toView(`shop/shop-check?id=${this.NowItem.createBy}&dreamId=${this.NowItem.id}&price=${item}`, false, false, false)
+				}
+				this.showInput = false
+			},
 			toSetInfo(item, infoItem) {
 				switch (infoItem) {
 					//给钱
 						case 'money':
-							this.$toView(`shop/shop-check?id=${item.createBy}&dreamId=${item.id}`, false, false, false)
+							this.NowItem = item
+							this.showInput = true
 							break;
 						// 评论
 					case 'comment':
@@ -286,6 +306,37 @@
 				vertical-align: middle;
 				margin-left: 10rpx;
 			}
+		}
+	}
+	/*弹出层搜索框*/
+	.myMoney {
+		height: 660rpx;
+		width: 96%;
+		margin: 30rpx auto;
+		.myMoneyTitle {
+			text-align: center;
+			font-size: 34rpx;
+			font-weight: 500;
+			color: #333333;
+			margin-bottom: 80rpx;
+		}
+		.allTypeThisInfo {
+			border-radius: 30rpx;
+			text-align: center;
+			display: inline-block;
+			vertical-align: middle;
+			width: 31%;
+			margin-right: 3%;
+			font-size: 48rpx;
+			font-weight: 600;
+			color: #333333;
+			height: 120rpx;
+			line-height: 120rpx;
+			background: #FFFFFF;
+			box-shadow: 0px 2px 17px 0px rgba(0,0,0,0.05);
+			opacity: 0.98;
+			border: 1rpx solid #DBDBDB;
+			margin-bottom: 30rpx;
 		}
 	}
 </style>

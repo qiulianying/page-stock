@@ -113,8 +113,7 @@ export default {
                   icon: 'success',
                   duration: 2000
               });
-              // this.$toView(`/myPackageA/pages/dream/dream-detail?id=${this.dreamContent.dreamId}`, false, true, true)
-            uni.navigateBack();
+              this.$toView(`/myPackageA/pages/dream/dream-detail?id=${this.dreamContent.dreamId}`, false, true, true)
           })
       },
     ChooseImage() {

@@ -57,6 +57,7 @@
 	export default {
 		data() {
 			return {
+				havePrice: false, //路由中是否存在需要支付的金额
 				userId: '',
 				dreamId: '',
 				otherUserInfo: {},
@@ -117,7 +118,7 @@
 				this.selectedCard = value
 			},
 			showNumKeyBoard() {
-				// if (this.havePrice) return
+				if (this.havePrice) return
 				this.showNumBoard = true
 				this.$refs['zj-num-keyboard'].show()
 			},
@@ -337,6 +338,21 @@
 		onLoad(option) {
 			this.userId = option.id
 			this.dreamId = option.dreamId
+			//获取金额信息，如果有传入就固定相关金额，并且不能修改金额
+			if (option.price && option.price !== 'false' && option.price != "undefined" && option.price != undefined) {
+				this.havePrice = true
+				this.$nextTick(() => {
+					this.$refs['zj-num-keyboard'].hide()
+				})
+				if(option.price === '0'){
+					this.inputMoney = '0.00'
+					this.pageTypePrice = this.inputMoney
+				}else{
+					this.inputMoney = option.price
+					this.pageTypePrice = this.inputMoney
+				}
+			}
+
 			// 获取他人的用户信息
 			getUserInfo({
 				id: option.id

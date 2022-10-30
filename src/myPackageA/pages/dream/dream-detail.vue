@@ -32,7 +32,12 @@
 
 			<!--详情其他内容-->
 			<view class="detail-row" v-if="DetailInfo.dreamBuilds && DetailInfo.dreamBuilds.length > 0">
-				<view class="detail-rowTitle">历程</view>
+				<view class="detail-rowHeader">
+					<view class="detail-rowHeaderTitle">筑梦列表</view>
+					<view class="page-bottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
+						<button class="cu-btn bg-theme" :style="{background: themeColor}">更新状态 +</button>
+					</view>
+				</view>
 				<view class="detail-Content-all"
 					  style="background-color: white;margin-top: 14rpx;border-radius: 20rpx;">
 					<view :class="item.files && item.files.length > 0 ? 'detail-Content' : 'detail-Content detailShowMore'"
@@ -121,13 +126,13 @@
 			</view>
 
 			<!--添加筑梦-->
-			<view class="page-bottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
+<!--			<view class="page-bottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
 				<button class="cu-btn bg-theme" :style="{background: themeColor}">添加筑梦</button>
-			</view>
+			</view>-->
 		</view>
 
 		<!--底部评论输入框方式解决-->
-		<view class="cu-bar input" v-show="showComment" :style="[{marginTop: '30rpx'}]">
+		<view class="cu-bar input" v-if="showComment" :style="[{marginTop: '30rpx'}]">
 			<input class="solid-bottom" :adjust-position="true" :focus="showComment"
 				   placeholder="只言片语也如繁星璀璨"
 				   maxlength="300" cursor-spacing="10"
@@ -135,6 +140,15 @@
 				   @focus="InputFocus" @blur="InputBlur"></input>
 			<button class="cu-btn bg-green shadow" @tap="confirm" :disabled="!commentcontent">发送</button>
 		</view>
+
+		<u-popup v-model="showInput" mode="bottom" :closeable="true">
+			<view class="myMoney">
+				<view class="myMoneyTitle">为他助梦</view>
+				<view class="allTypeThisInfo" @tap="toPayMoney(item, index)" v-for="(item, index) in allTypeArray" :key="index" :style="{marginRight: index === 2 || index === 5 ? 0 : '3%'}">
+					<span v-if="item !== '自定义'">￥</span>{{item}}
+				</view>
+			</view>
+		</u-popup>
 	</view>
 </template>
 
@@ -144,6 +158,9 @@
 	export default {
 		data() {
 			return {
+				allTypeArray: [1,2,5,10,50,100,'自定义'],
+				showInput: false,
+				userId: uni.getStorageSync('userId') || '',
 				InputBottom: 0,
 				themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
 				commentcontent: '',	// 评论内容
@@ -173,7 +190,7 @@
 					text: '评论',
 					numberShow: true
 				},{
-					type: 'camera',
+					type: 'we',
 					number: 0,
 					name: 'watcheNum',
 					text: '围观',
@@ -184,7 +201,8 @@
 					number: 0,
 					name: 'cashNum',
 					text: '助梦金',
-					needColor: ''
+					needColor: '',
+					numberShow: true
 				}],
 				swiperList: []
 			}
@@ -299,6 +317,14 @@
 			textareaAInput(e) {
 				this.commentcontent = e.detail.value
 			},
+			toPayMoney(item, index) {
+				if (index === this.allTypeArray.length - 1) {
+					this.$toView(`shop/shop-check?id=${this.DetailInfo.createBy}&dreamId=${this.DetailInfo.id}`, false, false, false)
+				} else {
+					this.$toView(`shop/shop-check?id=${this.DetailInfo.createBy}&dreamId=${this.DetailInfo.id}&price=${item}`, false, false, false)
+				}
+				this.showInput = false
+			},
 			toSetInfo(item, infoItem) {
 				switch (infoItem.type) {
 						// 评论
@@ -335,13 +361,17 @@
 						break;
 						// 给钱
 					case 'recharge':
-						this.$toView(`shop/shop-check?id=${this.DetailInfo.createBy}&dreamId=${this.DetailInfo.id}`, false, false, false)
+						// 如果是自己就不进行任何操作
+						if (this.DetailInfo.createBy == this.userId) {
+							return
+						}
+						this.showInput = true
 						break;
 				}
 			},
 			infoArrayShowInfo(content) {
 				this.infoArrayShow.forEach(item => {
-					if (item.name === 'cashNum') {
+					if (item.name === 'cashNum' && this.DetailInfo.createBy != this.userId) {
 						item.number = 'none'
 					} else {
 						item.number = content[item.name]
@@ -430,8 +460,23 @@
 
 		.detail-row {
 			margin-bottom: 40rpx;
+			.detail-rowHeader {
+				width: 96%;
+				margin: 40rpx auto 30rpx;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				.detail-rowHeaderTitle {
+					font-size: 30rpx;
+					font-weight: 500;
+					color: #333333;
+				}
+			}
+
 			.detail-rowTitle {
-				font-size: 26rpx;
+				display: inline-block;
+				vertical-align: middle;
+				font-size: 30rpx;
 				font-weight: 500;
 				color: #333333;
 				margin: 20rpx 0 20rpx 20rpx;
@@ -543,14 +588,45 @@
 
 	.page-bottom {
 		button {
-			margin: 60rpx 24rpx 20rpx;
 			border-radius: 47rpx;
-			font-size: 34rpx;
+			font-size: 30rpx;
 			color: #FFFFFF;
-			height: 84rpx;
-			line-height: 84rpx;
+			height: 64rpx;
+			line-height: 64rpx;
 			text-align: center;
 			display: block;
+		}
+	}
+
+	/*弹出层搜索框*/
+	.myMoney {
+		height: 660rpx;
+		width: 96%;
+		margin: 30rpx auto;
+		.myMoneyTitle {
+			text-align: center;
+			font-size: 34rpx;
+			font-weight: 500;
+			color: #333333;
+			margin-bottom: 80rpx;
+		}
+		.allTypeThisInfo {
+			border-radius: 30rpx;
+			text-align: center;
+			display: inline-block;
+			vertical-align: middle;
+			width: 31%;
+			margin-right: 3%;
+			font-size: 48rpx;
+			font-weight: 600;
+			color: #333333;
+			height: 120rpx;
+			line-height: 120rpx;
+			background: #FFFFFF;
+			box-shadow: 0px 2px 17px 0px rgba(0,0,0,0.05);
+			opacity: 0.98;
+			border: 1rpx solid #DBDBDB;
+			margin-bottom: 30rpx;
 		}
 	}
 </style>

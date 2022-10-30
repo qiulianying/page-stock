@@ -224,7 +224,7 @@
 		.index-user-dream {
 			background-color: #ffffff;
 			.index-user-dreamTite {
-				width: 90%;
+				width: 85%;
 				margin: 0 auto 20rpx;
 				.index-user-dreamTiteInfo {
 					display: flex;
