@@ -49,6 +49,7 @@
 		<!-- 支付密码错误弹窗 -->
 		<u-modal v-model="passwordErrorShow" :content="passwordErrorContent" @confirm="confirmPassword"
 			@cancel="cancelPassword" :show-cancel-button="true" cancel-text="重试" confirm-text="忘记密码"></u-modal>
+		<u-toast ref="uToast" />
 	</view>
 </template>
 
@@ -203,7 +204,11 @@
 				this.$set(item, 'logo', null)
 			},
 			checkPay() {
-				console.log(this.selectedCard)
+				if (Number(this.inputMoney) > 200) {
+					this.$refs.uToast.show({
+						title: '打赏金额不得超过200元!'
+					})
+				}
 				// 选择了微信支付到的情况写下
 				let orderObj = {
 					timeStamp: '',

@@ -69,7 +69,7 @@
 					size: this.record.size,
 					current: 1
 				}, this.status).then(res => {
-					this.record.records = this.record.records.concat(res.data.records)
+					this.record.records = res.data.records
 				})
 			},
 

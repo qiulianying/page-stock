@@ -8,8 +8,9 @@
         <input name="input" :disabled="true" :value="title"></input>
       </view>
       <view class="cu-form-group">
-        <textarea maxlength="200" @input="textareaAInput" placeholder="请描述你的努力,奋斗的样子真好看"></textarea>
+        <textarea maxlength="200" @input="textareaAInput" placeholder="请描述你的努力,奋斗的样子真好看(限200字)"></textarea>
       </view>
+      <view style="text-align: right;background: #fff;padding-right: 20rpx;font-size: 20rpx" v-show="dreamContent.content.length > 0">您还能输入{{200 - dreamContent.content.length}}字</view>
       <view class="cu-bar bg-white">
         <view class="action">
           历程图片
@@ -26,7 +27,7 @@
               <text class='cuIcon-close'></text>
             </view>
           </view>
-          <view class="solids" @tap="ChooseImage" v-if="imgList.length<4">
+          <view class="solids" @tap="ChooseImage" v-if="imgList.length < 4">
             <text class='cuIcon-cameraadd'></text>
           </view>
         </view>
@@ -118,7 +119,7 @@ export default {
       },
     ChooseImage() {
       uni.chooseImage({
-        count: 9, //默认9
+        count: 1, //默认4
         sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album'], //从相册选择
         success: (res) => {

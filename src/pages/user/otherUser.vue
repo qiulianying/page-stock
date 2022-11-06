@@ -76,7 +76,7 @@
 					},
 					{
 						number: '',
-						name: '金梦'
+						name: '榜单'
 					}
 				],
 				imgUrl: '',

@@ -15,7 +15,7 @@
 
 			<view class="goods-detail-info">
 				<view class="goods-title">
-					<span>{{DetailInfo.title || '暂无标题'}}</span>
+					<span v-if="DetailInfo.title">{{DetailInfo.title}}</span>
 					<span class="createTime">{{$util.dateFormat(new Date(Number(DetailInfo.createTime)), '-')}} 创建</span>
 				</view>
 				<view class="goods-desc">{{DetailInfo.content}}</view>
@@ -115,6 +115,10 @@
 								fontWeight: itemlist.isPraise === 1 ? 'bold' : ''}"></text>
 											<text class="cuIcon-Number" style="margin-left: 10rpx;">{{itemlist.praise || 0}}</text>
 										</view>
+										<view class="zj-dream-informTitle" @tap.stop="toCommentMore(itemlist)">
+											<text :class="'myCuIcon cuIcon-comment'"></text>
+											<text class="cuIcon-Number" style="margin-left: 10rpx;">{{itemlist.comments.length || 0}}</text>
+										</view>
 									</view>
 								</view>
 								<view class="time">{{itemlist.createTime ? $util.dateFormat(new Date(Number(itemlist.createTime)), '-') : '暂无发布时间'}}</view>
@@ -149,6 +153,7 @@
 				</view>
 			</view>
 		</u-popup>
+		<u-toast ref="uToast" />
 	</view>
 </template>
 
@@ -270,6 +275,7 @@
 					this.infoArrayShowInfo(res.data)
 					// 进行图片组获取
 					if (res.data.files && res.data.files.length > 0) {
+						this.swiperList = []
 						res.data.files.forEach(item => {
 							this.swiperList.push({
 								image: item.url,
@@ -292,8 +298,7 @@
 					content: this.commentcontent,
 					parentId: 0,
 					businessId: this.DetailInfo.id,
-					type: 0,
-					level: 1,
+					type: 0
 				}
 				if (this.nowUserIs === 'buildDream') {
 					// 如果是创建筑梦，需要额外参数
@@ -351,10 +356,15 @@
 						})
 						break;
 						// 围观
-					case 'camera':
+					case 'we':
 						putWatch({
 							id: item.id
 						}).then(res => {
+							if (this.DetailInfo[infoItem.needColor] === 0) {
+								this.$refs.uToast.show({
+									title: '围观成功，该梦想的筑梦会通知到您!'
+								})
+							}
 							this.DetailInfo[infoItem.needColor] = this.DetailInfo[infoItem.needColor] === 1 ? 0 : 1
 							this.DreamDetailFun()
 						})

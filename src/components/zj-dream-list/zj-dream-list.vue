@@ -64,6 +64,7 @@
 			</view>
 		</u-popup>
 		<u-modal v-model="showDelete" :content="'请确认是否删除该数据!'" @confirm="sureDelete" :async-close="true" :show-cancel-button="true"></u-modal>
+		<u-toast ref="uToast" />
 	</view>
 </template>
 
@@ -202,6 +203,9 @@
 								item.isWatched = 0
 								item.watcheNum = parseInt(item.watcheNum) - 1
 							} else {
+								this.$refs.uToast.show({
+									title: '围观成功，该梦想的筑梦会通知到您!'
+								})
 								item.isWatched = 1
 								item.watcheNum = parseInt(item.watcheNum) + 1
 							}

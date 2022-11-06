@@ -5,18 +5,19 @@
     </cu-custom>
     <form class="cu-myDream">
       <view class="cu-form-group">
-        <input placeholder="写梦想标题更有可能被人关注 (必填)" name="input" maxlength="30" @input="titeInput"></input>
+        <input placeholder="写梦想标题更有可能被人关注(限制30字)" name="input" maxlength="30" @input="titeInput"></input>
       </view>
       <view class="cu-form-group">
-        <textarea maxlength="200" @input="textareaAInput" placeholder="分享你的梦想Plan, 发布状态的图片 视频 影集动态 更有机会获得关注和奖励哦"></textarea>
+        <textarea maxlength="200" @input="textareaAInput" placeholder="分享你的梦想Plan, 发布状态的图片 视频 影集动态 更有机会获得关注和奖励哦(限制200字)"></textarea>
       </view>
+      <view style="text-align: right;background: #fff;padding-right: 20rpx;font-size: 20rpx" v-show="dreamContent.content.length > 0">您还能输入{{200 - dreamContent.content.length}}字</view>
       <view class="cu-bar bg-white">
-<!--        <view class="action">
+        <view class="action">
           梦想图片
         </view>
         <view class="action">
           {{imgList.length}}/6
-        </view>-->
+        </view>
       </view>
       <view class="cu-form-group">
         <view class="grid col-4 grid-square flex-sub">
@@ -26,7 +27,7 @@
               <text class='cuIcon-close'></text>
             </view>
           </view>
-          <view class="solids" @tap="ChooseImage" v-if="imgList.length<4">
+          <view class="solids" @tap="ChooseImage" v-if="imgList.length < 6">
             <text class='cuIcon-cameraadd'></text>
           </view>
         </view>
@@ -56,7 +57,7 @@
                 <text class="cuIcon- zjIcon-address text-theme"></text>
                 <text>选话题</text>
             </view>
-            <input readonly placeholder="点击选择或生成话题" name="input" :value="titleInfo"></input>
+            <input placeholder="点击选择或生成话题" name="input" disabled :value="titleInfo"></input>
         </view>
       <view class="cu-form-group" @tap="chooseLocation">
         <view class="title">
@@ -80,7 +81,7 @@
       </view>-->
         <!--   保存按钮   -->
         <view class="page-bottom">
-            <button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveAddress">保 存</button>
+            <button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveAddress">创建梦</button>
         </view>
     </form>
       <!--   弹出层搜索框   -->
@@ -239,7 +240,7 @@ export default {
     },
     ChooseImage() {
       uni.chooseImage({
-        count: 9, //默认9
+        count: 1, //默认9
         sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album'], //从相册选择
         success: (res) => {

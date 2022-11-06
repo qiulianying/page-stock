@@ -108,11 +108,11 @@
 					},
 					{
 						number: '',
-						name: '筑梦'
+						name: '梦想'
 					},
 					{
 						number: '',
-						name: '金梦'
+						name: '榜单'
 					}
 				],
 				customStyle:{
@@ -187,8 +187,8 @@
 					this.userInfo = res.data
 					this.ArrayList[0].number = res.data.fans
 					this.ArrayList[1].number = res.data.follows
-					this.ArrayList[2].number = res.data.dreamBuilds
-					this.ArrayList[3].number = res.data.dreams
+					this.ArrayList[2].number = res.data.dreams
+					this.ArrayList[3].number = res.data.goldDreams
 					this.cartList = res.data.myDreams
 					this.myKey += 1
 				})

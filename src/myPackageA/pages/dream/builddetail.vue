@@ -15,7 +15,7 @@
 
 			<view class="goods-detail-info">
 				<view class="goods-title">
-					<span>{{DetailInfo.title || '暂无标题'}}</span>
+					<span v-if="DetailInfo.title">{{DetailInfo.title}}</span>
 					<span class="createTime">{{$util.dateFormat(new Date(Number(DetailInfo.createTime)), '-')}} 创建</span>
 				</view>
 				<view class="goods-desc">{{DetailInfo.content}}</view>
@@ -180,8 +180,7 @@
 					content: this.commentcontent,
 					parentId: 0,
 					businessId: this.DetailInfo.id,
-					type: 1,
-					level: 1,
+					type: 1
 				}
 				if (this.nowUserIs === 'commentMore') {
 					params.parentId = this.nowUserType.id

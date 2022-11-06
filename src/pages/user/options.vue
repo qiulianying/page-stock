@@ -7,8 +7,9 @@
             <view class="cu-form-group">
                 <textarea maxlength="500" class="cu-form-groupText"
                           :value="dreamContent.content"
-                          @input="textareaAInput" placeholder="请输入反馈的详细内容"></textarea>
+                          @input="textareaAInput" placeholder="请输入反馈的详细内容(限制500字)"></textarea>
             </view>
+            <view style="text-align: right;background: #fff;padding-right: 20rpx;font-size: 20rpx" v-show="dreamContent.content.length > 0">您还能输入{{500 - dreamContent.content.length}}字</view>
             <!--   保存按钮   -->
             <view class="page-bottom">
                 <button class="cu-btn bg-theme" :style="{background: themeColor}" @tap="saveAddress">提交反馈</button>
@@ -51,6 +52,9 @@
                         duration: 2000
                     })
                     this.dreamContent.content = ''
+                    setTimeout(() => {
+                        uni.navigateBack();
+                    }, 1000)
                 })
             }
         }
@@ -60,7 +64,7 @@
 <style scoped lang="scss">
     .cu-form-group {
         .cu-form-groupText {
-            height: 600rpx;
+            height: 500rpx;
         }
     }
 

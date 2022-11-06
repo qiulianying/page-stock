@@ -42,7 +42,7 @@
 					{
 						name: 'home',
 						icon: 'item01',
-						title: '金梦',
+						title: '榜单',
 						barColor: 'white',
 						visible: true,
 						isFresh: false //是否刷新数据
