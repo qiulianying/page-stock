@@ -6,8 +6,20 @@
 		<view class="myheader-search">
 			<view class="search-box">
 				<view class="search-box-left">
-					<u-search :placeholder="searchText" v-model="keyword" :focus="false" :show-action="false" @search="inputSearch()">
-					</u-search>
+<!--					<u-search :placeholder="searchText" v-model="keyword"
+							  :focus="false"
+							  :show-action="false"
+							  :clearabled="true"
+							  @search="inputSearch()">
+					</u-search>-->
+					<text class="cuIcon-search"></text>
+					<input type="text"
+						   v-model="keyword"
+						   :placeholder="searchText"
+						   @input="inputSearch"
+						   :clearabled="true"
+						   confirm-type="search">
+					</input>
 				</view>
 			</view>
 		</view>
@@ -137,6 +149,23 @@
 		.search-box {
 			width: 96%;
 			margin: 0 auto;
+
+			.search-box-left {
+				background-color: #f5f5f5;
+				line-height: 32px;
+				height: 64rpx;
+				font-size: 24rpx;
+				color: #333333;
+				flex: 1;
+				display: flex;
+				align-items: center;
+				border-radius: 10rpx;
+				padding: 0 20rpx;
+
+				.cuIcon-search {
+					margin-right: 10rpx;
+				}
+			}
 		}
 	}
 	.pb100 {

@@ -56,8 +56,8 @@
 									</view>
 								</view>
 							</view>
-							<view class="time">{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
 							<view class="commentShow">{{item.content || '暂无评论'}}</view>
+							<view class="time">{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
 						</view>
 						<!--二级评论-->
 						<view v-for="(itemlist, itemIndex) in item.comments" :key="itemIndex" style="margin-left: 40rpx">
@@ -76,10 +76,14 @@
 								fontWeight: itemlist.isPraise === 1 ? 'bold' : ''}"></text>
 											<text class="cuIcon-Number" style="margin-left: 10rpx;">{{itemlist.praise || 0}}</text>
 										</view>
+										<view class="zj-dream-informTitle" @tap.stop="toCommentMore(itemlist)">
+											<text :class="'myCuIcon cuIcon-comment'"></text>
+											<text class="cuIcon-Number" style="margin-left: 10rpx;">{{itemlist.comments.length || 0}}</text>
+										</view>
 									</view>
 								</view>
+								<view class="commentShow">回复 <span style="color: #999999">{{itemlist.parentCreateName}}</span>：{{itemlist.content || '暂无评论'}}</view>
 								<view class="time">{{itemlist.createTime ? $util.dateFormat(new Date(Number(itemlist.createTime)), '-') : '暂无发布时间'}}</view>
-								<view class="commentShow">{{itemlist.content || '暂无评论'}}</view>
 							</view>
 						</view>
 					</view>
@@ -101,6 +105,7 @@
 <script>
 	import {addComment, getDreamBuildComment, praiseComment} from '../../../api/createdream'
 	import {dreambuildPraise} from '../../../api/home'
+	import defaultImg from "../../../static/images/my-bg.jpg";
 	export default {
 		data() {
 			return {
@@ -124,7 +129,11 @@
 					name: 'commentNum',
 					text: '评论'
 				}],
-				swiperList: []
+				swiperList: [
+					{
+						image: defaultImg
+					}
+				]
 			}
 		},
 		onLoad(options) {
@@ -133,6 +142,7 @@
 			this.infoArrayShowInfo(this.DetailInfo)
 			// 进行图片组获取
 			if (this.DetailInfo.files && this.DetailInfo.files.length > 0) {
+				this.swiperList = []
 				this.DetailInfo.files.forEach(item => {
 					this.swiperList.push({
 						image: item.url,
@@ -392,7 +402,6 @@
 						.commentShow {
 							font-size: 30rpx;
 							color: #333333;
-							margin-top: 10rpx;
 						}
 					}
 				}

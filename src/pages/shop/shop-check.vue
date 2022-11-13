@@ -208,6 +208,7 @@
 					this.$refs.uToast.show({
 						title: '打赏金额不得超过200元!'
 					})
+					return
 				}
 				// 选择了微信支付到的情况写下
 				let orderObj = {

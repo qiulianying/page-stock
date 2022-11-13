@@ -16,7 +16,7 @@
           历程图片
         </view>
         <view class="action">
-          {{imgList.length}}/4
+          {{imgList.length}}/6
         </view>
       </view>
       <view class="cu-form-group">
@@ -27,7 +27,7 @@
               <text class='cuIcon-close'></text>
             </view>
           </view>
-          <view class="solids" @tap="ChooseImage" v-if="imgList.length < 4">
+          <view class="solids" @tap="ChooseImage" v-if="imgList.length < 6">
             <text class='cuIcon-cameraadd'></text>
           </view>
         </view>
@@ -119,13 +119,19 @@ export default {
       },
     ChooseImage() {
       uni.chooseImage({
-        count: 1, //默认4
+        count: 6, //默认4
         sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
         sourceType: ['album'], //从相册选择
         success: (res) => {
-            console.log(res)
           if (this.imgList.length != 0) {
-            this.imgList = this.imgList.concat(res.tempFilePaths)
+            // 如果图片超出，进行截取
+            if (this.imgList.length + res.tempFilePaths.length > 6) {
+              let ax = this.imgList.concat(res.tempFilePaths)
+              ax.splice(6, (ax.length) - 6)
+              this.imgList = ax
+            } else {
+              this.imgList = this.imgList.concat(res.tempFilePaths)
+            }
           } else {
             this.imgList = res.tempFilePaths
           }

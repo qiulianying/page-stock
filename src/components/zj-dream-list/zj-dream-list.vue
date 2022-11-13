@@ -12,6 +12,10 @@
 						<view>{{item.createName}}</view>
 						<view class="zj-dream-headerContentTime">{{$util.dateFormat(new Date(Number(item.createTime)), '-')}}发布了</view>
 					</view>
+					<!--删除按钮-->
+					<view class="needTodelete" v-if="item.createBy === userId" @tap.stop="deleteThisInfo(item, index)">
+						<text :class="'myCuIcon cuIcon-delete'"></text>
+					</view>
 					<view>
 						<view class="zj-dream-title">{{item.title}}</view>
 						<view class="zj-dream-content">{{item.content}}</view>
@@ -241,8 +245,17 @@
 	.zj-dream-list-item {
 		width: 100%;
 		padding: 30rpx 32rpx;
+		position: relative;
 
 		.zj-dream-header {
+			.needTodelete {
+				position: absolute;
+				right: 30rpx;
+				top: 35rpx;
+				z-index: 30;
+				font-size: 40rpx;
+			}
+
 			.zj-dream-headerImg {
 				width: 72rpx;
 				height: 72rpx;

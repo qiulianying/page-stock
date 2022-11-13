@@ -52,9 +52,9 @@
                         duration: 2000
                     })
                     this.dreamContent.content = ''
-                    setTimeout(() => {
-                        uni.navigateBack();
-                    }, 1000)
+                    wx.navigateBack({
+                        delta: 1
+                    })
                 })
             }
         }

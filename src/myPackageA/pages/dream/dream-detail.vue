@@ -10,7 +10,7 @@
 			</cu-custom>
 
 			<view style="width:100%;height:750rpx;margin:0 auto;align:center">
-				<u-swiper :list="swiperList" height="750" class="detail-swiper"></u-swiper>
+				<u-swiper :img-mode="'aspectFit'" :list="swiperList" height="750" class="detail-swiper"></u-swiper>
 			</view>
 
 			<view class="goods-detail-info">
@@ -89,14 +89,14 @@
 								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
 										<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praise || 0}}</text>
 									</view>
-									<view class="zj-dream-informTitle" @tap.stop="toCommentMore(item)">
+<!--									<view class="zj-dream-informTitle" @tap.stop="toCommentMore(item)">
 										<text :class="'myCuIcon cuIcon-comment'"></text>
 										<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.comments.length || 0}}</text>
-									</view>
+									</view>-->
 								</view>
 							</view>
+							<view class="commentShow" @tap.stop="toCommentMore(item)">{{item.content || '暂无评论'}}</view>
 							<view class="time">{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
-							<view class="commentShow">{{item.content || '暂无评论'}}</view>
 						</view>
 						<!--二级评论-->
 						<view v-for="(itemlist, itemIndex) in item.comments" :key="itemIndex" style="margin-left: 40rpx">
@@ -115,14 +115,14 @@
 								fontWeight: itemlist.isPraise === 1 ? 'bold' : ''}"></text>
 											<text class="cuIcon-Number" style="margin-left: 10rpx;">{{itemlist.praise || 0}}</text>
 										</view>
-										<view class="zj-dream-informTitle" @tap.stop="toCommentMore(itemlist)">
+<!--										<view class="zj-dream-informTitle" @tap.stop="toCommentMore(itemlist)">
 											<text :class="'myCuIcon cuIcon-comment'"></text>
 											<text class="cuIcon-Number" style="margin-left: 10rpx;">{{itemlist.comments.length || 0}}</text>
-										</view>
+										</view>-->
 									</view>
 								</view>
+								<view class="commentShow" @tap.stop="toCommentMore(itemlist)">回复 <span style="color: #999999">{{itemlist.parentCreateName}}</span>：{{itemlist.content || '暂无评论'}}</view>
 								<view class="time">{{itemlist.createTime ? $util.dateFormat(new Date(Number(itemlist.createTime)), '-') : '暂无发布时间'}}</view>
-								<view class="commentShow">{{itemlist.content || '暂无评论'}}</view>
 							</view>
 						</view>
 					</view>
@@ -160,6 +160,7 @@
 <script>
 	import {addComment, DreamDetail, putCollect, putPraise, putWatch, getDreamComment, praiseComment} from '../../../api/createdream'
 	import { dreambuildPraise } from '../../../api/home'
+	import defaultImg from '../../../static/images/my-bg.jpg'
 	export default {
 		data() {
 			return {
@@ -209,7 +210,11 @@
 					needColor: '',
 					numberShow: true
 				}],
-				swiperList: []
+				swiperList: [
+					{
+						image: defaultImg
+					}
+				]
 			}
 		},
 		onUnload() {
@@ -562,6 +567,7 @@
 						font-size: 28rpx;
 						color: #999999;
 						width: 84%;
+						margin-bottom: 10rpx;
 
 						.name {
 							display: flex;
@@ -576,7 +582,6 @@
 						.commentShow {
 							font-size: 30rpx;
 							color: #333333;
-							margin-top: 10rpx;
 						}
 					}
 				}

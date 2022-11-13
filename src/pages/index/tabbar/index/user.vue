@@ -301,20 +301,20 @@
 		.index-user-dream {
 			background-color: #ffffff;
 			.index-user-dreamTite {
-				width: 85%;
+				// width: 85%;
 				margin: 0 auto 50rpx;
 				.index-user-dreamTiteInfo {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
 					.name {
-						margin-left: 20rpx;
-						margin-bottom: 10rpx;
 						font-size: 32rpx;
 						font-family: PingFangSC-Semibold, PingFang SC;
 						font-weight: 600;
 						color: #2A2A2A;
 						line-height: 36rpx;
+						width: 286rpx;
+						text-align: center;
 					}
 
 					.visitor {
