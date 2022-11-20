@@ -27,7 +27,7 @@
 			<view class="index-user-dream">
 				<view class="index-user-dreamTite">
 					<view class="index-user-dreamTiteInfo">
-						<view class="name">{{userInfo.username || '请点击头像进行登录'}}</view>
+						<view class="name">{{userInfo.nickname || userInfo.username || '点击头像进行登录'}}</view>
 						<!--关注按钮-->
 						<view :class="havaGet ? 'followButton havaGet' : 'followButton'" @click="toFollow">
 							{{havaGet ? '已关注' : '+ 关注'}}

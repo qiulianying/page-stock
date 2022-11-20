@@ -10,6 +10,8 @@
 <!--			<button class="cu-btn page-box-btn bg-theme" open-type="getPhoneNumber"
 				@getphonenumber="getPhoneNumber">微信一键登录</button>-->
 			<button class="cu-btn page-box-btn bg-theme" @tap="technological">微信一键登录</button>
+			<button class="cu-btn page-box-btn page-box-btn-mobile"
+					@tap="toTest">直接试用</button>
 			<button class="cu-btn page-box-btn page-box-btn-mobile" v-if="false"
 					@tap="toView('login/login-mobile')">手机号登录</button>
 		</view>
@@ -66,6 +68,17 @@
 						});
 					}
 				});
+			},
+			// 直接试用
+			toTest() {
+				if (!this.checkboxThis) {
+					uni.showToast({
+						title: '请阅读并同意用户协议！',
+						icon: 'none'
+					})
+					return
+				}
+				this.$toView('index/index', false, false, false)
 			},
 			// 获取用户信息
 			technological() {
@@ -229,6 +242,10 @@
 
 				// background: #3FAEEF;
 				&-mobile {
+					position: absolute;
+					bottom: 11vh;
+					width: 90%;
+					left: 5%;
           font-weight: 500;
           color: #523DB8;
 					height: 90rpx;

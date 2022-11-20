@@ -23,7 +23,7 @@
 		<view class="index-user-dream">
 			<view class="index-user-dreamTite">
 				<view class="index-user-dreamTiteInfo">
-					<view class="name">{{userInfo.username || '点击头像进行登录'}}</view>
+					<view class="name">{{userInfo.nickname || userInfo.username || '点击头像进行登录'}}</view>
 					<view class="visitor" v-if="this.$isMemmber()">访客：{{userInfo.visited || 0}}</view>
 				</view>
 			</view>

@@ -26,11 +26,13 @@
             <view class="cu-item arrow" @tap="$toView('/myPackageA/pages/createdream/index', false, false, true)">
                 <view class="content">
                     <text class="text-black">发布梦想获得更多助梦金</text>
+                    <text style="float: right">去发布</text>
                 </view>
             </view>
             <view class="cu-item arrow" @tap="$toView('index/index?tabName=1', false, false, false)">
                 <view class="content">
                     <text class="text-black">看看大家的梦想</text>
+                    <text style="float: right">去梦圈</text>
                 </view>
             </view>
         </view>
