@@ -34,7 +34,9 @@
 			</view>
 			<view class="index-user-dreamList">
 				<view class="flex flex-direction" v-if="cartList.length > 0">
-					<zj-dream-list :noPayMoney="true" :headerNo="true" :list="cartList" :key="myKey" @itemClick="toShowList" @addcommnt="addcommnt"></zj-dream-list>
+					<scroll-view scroll-y class="zj-dream-list-data" @scrolltolower="lower">
+						<zj-dream-list :noPayMoney="true" :headerNo="true" :list="cartList" :key="myKey" @itemClick="toShowList" @addcommnt="addcommnt"></zj-dream-list>
+					</scroll-view>
 				</view>
 				<zj-empty v-if="cartList.length === 0" :img="`${imgUrl}1639019849000/pic_shoping.png`"
 						  text="暂无梦圆数据~" />
@@ -147,9 +149,11 @@
 				},
 				themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
 				myParams: {
-					"size": 10,
+					"size": 5,
 					"current": 1
-				}
+				},
+				myWatchesTotal: 1,
+				myCollectTotal: 1
 			}
 		},
 		computed: {},
@@ -166,16 +170,49 @@
 			this.customStyle.background = this.themeColor
 		},
 		methods: {
+			lower() {
+				if (this.merchantTabCurIndex == 1) {
+					this.myCollectFun('add')
+				} else if (this.merchantTabCurIndex == 2) {
+					this.myWatchesFun('add')
+				}
+			},
 			// 获取围观
-			myWatchesFun() {
+			myWatchesFun(type) {
+				if (this.cartList.length >= this.myWatchesTotal && type === 'add') {
+					return
+				}
+				if (type === 'add') {
+					this.myParams.current = this.myParams.current + 1
+				}
 				myWatches(this.myParams).then(res => {
-					this.cartList = res.data.records
+					if (type === 'add') {
+						if (res.data.records.length > 0) {
+							this.cartList = this.cartList.concat(res.data.records)
+						}
+					} else {
+						this.cartList = res.data.records
+					}
+					this.myWatchesTotal = res.data.total
 				})
 			},
 			// 获取收藏
-			myCollectFun() {
+			myCollectFun(type) {
+				if (this.cartList.length >= this.myCollectTotal && type === 'add') {
+					return
+				}
+				if (type === 'add') {
+					this.myParams.current = this.myParams.current + 1
+				}
 				myCollect(this.myParams).then(res => {
-					this.cartList = res.data.records
+					if (type === 'add') {
+						if (res.data.records.length > 0) {
+							this.cartList = this.cartList.concat(res.data.records)
+						}
+					} else {
+						this.cartList = res.data.records
+					}
+					this.myCollectTotal = res.data.total
 				})
 			},
 			tabSelect(e) {
@@ -187,14 +224,14 @@
 						break;
 					case 1:
 						this.myParams = {
-							"size": 10,
+							"size": 5,
 							"current": 1
 						}
 						this.myCollectFun()
 						break;
 					case 2:
 						this.myParams = {
-							"size": 10,
+							"size": 5,
 							"current": 1
 						}
 						this.myWatchesFun()
@@ -405,8 +442,9 @@
 			}
 
 			.index-user-dreamList {
-				height: calc(100vh - 750rpx);
-				overflow-y: auto;
+				.zj-dream-list-data {
+					height: calc(100vh - 770rpx);
+				}
 			}
 		}
 

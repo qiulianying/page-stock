@@ -145,13 +145,6 @@
 			if (options.needdisabled && options.needdisabled == 1) {
 				getUserInfo({id: this.id}).then(res => {
 					this.formInfo = res.data
-					// 编写相关修改编辑内容
-					if (res.data.province && res.data.city && res.data.area) {
-						this.region = [res.data.province, res.data.city, res.data.area]
-					}
-					if (res.data.birthday) {
-						this.date = this.$util.dateFormatDay(new Date(res.data.birthday), '-')
-					}
 					this.lastParams.province = res.data.province || this.region[0]
 					this.lastParams.city = res.data.city || this.region[1]
 					this.lastParams.area = res.data.area || this.region[2]
@@ -159,6 +152,13 @@
 				})
 			} else {
 				getUserInfo().then(res => {
+					// 编写相关修改编辑内容
+					if (res.data.birthday) {
+						this.date = this.$util.dateFormatDay(Number(res.data.birthday), '-')
+					}
+					if (res.data.province && res.data.city) {
+						this.region = [res.data.province, res.data.city, res.data.area]
+					}
 					this.formInfo = res.data
 					// 编写相关修改编辑内容
 					this.lastParams.province = res.data.province || this.region[0]

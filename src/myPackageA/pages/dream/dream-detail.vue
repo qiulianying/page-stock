@@ -251,7 +251,7 @@
 				if (this.buildDream.length >= this.buildtotal) {
 					return
 				}
-				if (type === 'add' && this.dreamList.length < this.buildtotal) {
+				if (type === 'add' && this.buildDream.length < this.buildtotal) {
 					this.dreamList.current = this.dreamList.current + 1
 				} else {
 					this.dreamList.current = 1
@@ -511,6 +511,7 @@
 			text-align: center;
 			font-size: 32rpx;
 			color: #1C6CFE;
+			margin-bottom: 30rpx;
 		}
 
 		.detail-row {
