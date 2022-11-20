@@ -98,6 +98,7 @@ import { addDream, upload } from '../../../api/createdream'
 export default {
   data() {
     return {
+        needReturn: false,
         titleInfo: '',
         dreamContent: {
             title: '', // 标题
@@ -141,15 +142,20 @@ export default {
       },
       // 创建梦
       saveAddress() {
+        let _this = this
+        if (this.needReturn) {
+          return;
+        }
+        this.needReturn = true
           if (!this.dreamContent.title) {
               uni.showToast({
-                  title: '请输入必填项梦想标题',
-                  icon: 'warning',
+                  title: '请输入梦想标题',
+                  icon: 'error',
                   duration: 2000
               })
+              _this.needReturn = false
               return
           }
-          let _this = this
           uni.showLoading({
               title: '梦想创建中...',
               mask: true
@@ -176,14 +182,19 @@ export default {
                               if (index === this.imgList.length - 1) {
                                   _this.createInfo(res.data[0].fileGroupId)
                               }
+                          }).finally(() => {
+                            _this.needReturn = false
                           })
                       })
                   }
               }).catch(err => {
                   console.log(err)
+              }).finally(() => {
+                _this.needReturn = false
               })
           } else {
               this.createInfo()
+            _this.needReturn = false
           }
       },
       // 最终创建新数据

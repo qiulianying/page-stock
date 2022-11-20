@@ -6,7 +6,9 @@
 		<view v-if="visible.page" class="page-box flex flex-direction item align-center">
 			<image src="/static/images/success.png"></image>
 			<text style="font-size: 34rpx; margin: 24rpx 0;">{{ pageLang.paySuccess }}</text>
-			<text style="font-size: 30rpx; color: #666666;">{{ pageLang.paySuccessMsg.replace('${0}', 0.01) }}</text>
+			<text style="font-size: 30rpx; color: #666666;">
+				{{ pageLang.paySuccessMsg.replace('${0}', price) }}
+			</text>
 			<view class="flex" style="width: 100%; margin-top: 120rpx;">
 				<button class="cu-btn page-box-btn text-theme"
 					:style="[{color: themeColor, border: `2rpx solid ${themeColor}`}]"
@@ -29,7 +31,7 @@
 				consume: 0,
 				merchantNo: null,
 				themeColor: '',
-				price: 'false'
+				price: 0
 			}
 		},
 		computed: {
@@ -47,7 +49,7 @@
 				orderNo
 			} = option
 			if (option.pageTypePrice) {
-				this.price = option.pageTypePrice
+				this.price = Number(option.pageTypePrice)
 			}
 			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
 		}

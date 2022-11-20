@@ -237,7 +237,7 @@
 				})
 				this.$refs['check-password-pop'].close()
 				uni.navigateTo({
-					url: `pages/shop/shop-check-success?orderNo=123&pageTypePrice=1`
+					url: `pages/shop/shop-check-success?orderNo=123&pageTypePrice=${this.inputMoney}`
 				})
 			},
 			/*最终支付：需要注意微信小程序*/

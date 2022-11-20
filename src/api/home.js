@@ -11,7 +11,7 @@ export const getDreambuild = (data, option) => http('dreambuild', data, option)
 // 删除梦
 
 // 筑梦列表
-export const getDreamPage = (data, option) => http(`dreambuild/page${data}`, data, {method: 'GET'})
+export const getDreamPage = (data, option) => http(`dreambuild/page`, data, {method: 'GET'})
 
 /*梦圈*/
 // 梦圈列表

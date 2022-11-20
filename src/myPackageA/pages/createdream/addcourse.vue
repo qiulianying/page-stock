@@ -45,6 +45,7 @@ import { dreambuild } from '../../../api/createdream'
 export default {
   data() {
     return {
+      needReturn: false,
         title: '',
         dreamContent: {
             "dreamId": null,
@@ -65,6 +66,10 @@ export default {
     // 创建梦
     saveAddress() {
       let _this = this
+      if (this.needReturn) {
+        return;
+      }
+      this.needReturn = true
       uni.showLoading({
         title: '梦想创建中...',
         mask: true
@@ -91,14 +96,19 @@ export default {
                 if (index === this.imgList.length - 1) {
                   _this.createInfo(res.data[0].fileGroupId)
                 }
+              }).finally(() => {
+                _this.needReturn = false
               })
             })
           }
         }).catch(err => {
           console.log(err)
+        }).finally(() => {
+          _this.needReturn = false
         })
       } else {
         this.createInfo()
+        _this.needReturn = false
       }
     },
       // 最终创建新数据

@@ -291,7 +291,7 @@
 				bottom: 0;
 				left: 0;
 				background: #ffffff;
-				box-shadow: 0px -6px 40px 0px rgba(98,119,192,0.07);
+				// box-shadow: 0px -6px 40px 0px rgba(98,119,192,0.07);
 				backdrop-filter: blur(9px);
 				height: 80rpx;
 				border-radius: 20rpx 20rpx 0 0;
@@ -322,6 +322,7 @@
 						font-family: PingFangSC-Semibold, PingFang SC;
 						font-weight: 600;
 						color: #2A2A2A;
+						margin-right: 34rpx;
 					}
 				}
 				.myid {

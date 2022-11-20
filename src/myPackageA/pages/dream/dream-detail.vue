@@ -31,7 +31,7 @@
 			</view>
 
 			<!--详情其他内容-->
-			<view class="detail-row" v-if="DetailInfo.dreamBuilds && DetailInfo.dreamBuilds.length > 0">
+			<view class="detail-row" v-if="buildDream && buildDream.length > 0" style="margin-bottom: 8px">
 				<view class="detail-rowHeader">
 					<view class="detail-rowHeaderTitle">筑梦列表</view>
 					<view class="myNeedbottom" v-if="DetailInfo.isAuthor === 1" @tap="saveCourse">
@@ -42,7 +42,7 @@
 					  style="background-color: white;margin-top: 14rpx;border-radius: 20rpx;">
 					<view :class="item.files && item.files.length > 0 ? 'detail-Content' : 'detail-Content detailShowMore'"
 						  @tap="toBuildsDetail(item)"
-						  v-for="(item, index) in DetailInfo.dreamBuilds" :key="index">
+						  v-for="(item, index) in buildDream" :key="index">
 						<view class="detail-left">
 							<view class="detail-left-title">
 								{{item.content || '暂无数据'}}
@@ -68,6 +68,9 @@
 					</view>
 				</view>
 			</view>
+			<!--查看更多-->
+			<view class="seeMoreBuild" v-if="buildDream && buildDream.length > 0"
+				  @tap="getDreamPageApi('add')">{{buildDream.length < buildtotal ? '查看更多筑梦' : '暂无更多筑梦'}}</view>
 
 			<!--详情相关评论-->
 			<view class="detail-row" v-if="commentArray.length > 0">
@@ -130,7 +133,7 @@
 			</view>
 
 			<!--更新状态-->
-			<view class="page-bottom" v-if="DetailInfo.isAuthor === 1 && (!DetailInfo.dreamBuilds || DetailInfo.dreamBuilds.length === 0)" @tap="saveCourse">
+			<view class="page-bottom" v-if="DetailInfo.isAuthor === 1 && (!buildDream || buildDream.length === 0)" @tap="saveCourse">
 				<button class="cu-btn bg-theme" :style="{background: themeColor}">更新状态 +</button>
 			</view>
 		</view>
@@ -159,7 +162,7 @@
 
 <script>
 	import {addComment, DreamDetail, putCollect, putPraise, putWatch, getDreamComment, praiseComment} from '../../../api/createdream'
-	import { dreambuildPraise } from '../../../api/home'
+	import { dreambuildPraise, getDreamPage } from '../../../api/home'
 	import defaultImg from '../../../static/images/my-bg.jpg'
 	export default {
 		data() {
@@ -174,7 +177,7 @@
 				nowUserIs: 'detail', // 默认评论是添加梦想评论
 				nowUserType:'detail', // 默认评论是添加梦想评论
 				showComment: false,
-				DetailInfo: {},
+				DetailInfo: {},  // 详情
 				infoArrayShow: [{
 					type: 'appreciate',
 					number: 0,
@@ -214,7 +217,14 @@
 					{
 						image: defaultImg
 					}
-				]
+				],
+				buildDream: [], // 筑梦列表
+				dreamList: {
+					dreamId: '',
+					current: 1,
+					size: 5
+				},
+				buildtotal: 1
 			}
 		},
 		onUnload() {
@@ -225,12 +235,33 @@
 		},
 		onLoad(options) {
 			this.id = options.id
+			this.dreamList.dreamId = options.id
 		},
 		onShow() {
 			this.DreamDetailFun()
 			this.getDreamComment()
+			this.getDreamPageApi()
 		},
 		methods: {
+			// 获取筑梦列表
+			getDreamPageApi(type) {
+				if (this.buildDream.length >= this.buildtotal) {
+					return
+				}
+				if (type === 'add' && this.dreamList.length < this.buildtotal) {
+					this.dreamList.current = this.dreamList.current + 1
+				} else {
+					this.dreamList.current = 1
+				}
+				getDreamPage(this.dreamList).then(res => {
+					this.buildtotal = res.data.total
+					if (type === 'add' && res.data.records.length > 0) {
+						this.buildDream = this.buildDream.concat(res.data.records)
+					} else {
+						this.buildDream = res.data.records
+					}
+				})
+			},
 			toHideInfo() {
 				this.showComment = false
 				this.commentcontent = ''
@@ -471,6 +502,12 @@
 					}
 				}
 			}
+		}
+
+		.seeMoreBuild {
+			text-align: center;
+			font-size: 32rpx;
+			color: #1C6CFE;
 		}
 
 		.detail-row {

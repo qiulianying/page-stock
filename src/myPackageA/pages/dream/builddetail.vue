@@ -50,13 +50,13 @@
 								fontWeight: item.isPraise === 1 ? 'bold' : ''}"></text>
 										<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.praise || 0}}</text>
 									</view>
-									<view class="zj-dream-informTitle" @tap.stop="toCommentMore(item)">
+<!--									<view class="zj-dream-informTitle" @tap.stop="toCommentMore(item)">
 										<text :class="'myCuIcon cuIcon-comment'"></text>
 										<text class="cuIcon-Number" style="margin-left: 10rpx;">{{item.comments.length || 0}}</text>
-									</view>
+									</view>-->
 								</view>
 							</view>
-							<view class="commentShow">{{item.content || '暂无评论'}}</view>
+							<view class="commentShow" @tap.stop="toCommentMore(item)">{{item.content || '暂无评论'}}</view>
 							<view class="time">{{item.createTime ? $util.dateFormat(new Date(Number(item.createTime)), '-') : '暂无发布时间'}}</view>
 						</view>
 						<!--二级评论-->
@@ -76,13 +76,13 @@
 								fontWeight: itemlist.isPraise === 1 ? 'bold' : ''}"></text>
 											<text class="cuIcon-Number" style="margin-left: 10rpx;">{{itemlist.praise || 0}}</text>
 										</view>
-										<view class="zj-dream-informTitle" @tap.stop="toCommentMore(itemlist)">
+<!--										<view class="zj-dream-informTitle" @tap.stop="toCommentMore(itemlist)">
 											<text :class="'myCuIcon cuIcon-comment'"></text>
 											<text class="cuIcon-Number" style="margin-left: 10rpx;">{{itemlist.comments.length || 0}}</text>
-										</view>
+										</view>-->
 									</view>
 								</view>
-								<view class="commentShow">回复 <span style="color: #999999">{{itemlist.parentCreateName}}</span>：{{itemlist.content || '暂无评论'}}</view>
+								<view class="commentShow" @tap.stop="toCommentMore(itemlist)">回复 <span style="color: #999999">{{itemlist.parentCreateName}}</span>：{{itemlist.content || '暂无评论'}}</view>
 								<view class="time">{{itemlist.createTime ? $util.dateFormat(new Date(Number(itemlist.createTime)), '-') : '暂无发布时间'}}</view>
 							</view>
 						</view>

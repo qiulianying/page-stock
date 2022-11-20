@@ -34,7 +34,6 @@
 						</view>
 						<!--<view class="visitor" v-if="this.$isMemmber()">访客：{{userInfo.visited || 0}}</view>-->
 					</view>
-					<view class="myid">id:{{userInfo.id || '' }}</view>
 				</view>
 				<view class="index-user-dreamList">
 					<view class="flex flex-direction" v-if="cartList.length > 0">
