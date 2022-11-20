@@ -9,7 +9,11 @@
 				<input maxlength="20" class="mysearchInput" focus type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词" v-model.trim="searchText"/>
 			</template>-->
 			<template>
-				<input maxlength="20" class="mysearchInput" type="text" value="" confirm-type="search" @confirm="searchStart()" placeholder="请输入关键词" v-model.trim="searchText"/>
+				<input maxlength="20" class="mysearchInput" type="text" value=""
+					   :adjust-position="true"
+					   @focus="InputFocus" @blur="InputBlur"
+					   confirm-type="search" @confirm="searchStart()"
+					   placeholder="请输入关键词" v-model.trim="searchText"/>
 			</template>
 		</view>
 <!--		<view :class="'s-' + theme" v-if="hList.length > 0">
@@ -61,6 +65,7 @@
 		},
 		data() {
 			return {
+				InputBottom: 0,
         		showDeleteHistory: false,
         		content: '该操作将删除之前的历史记录，请确认是否继续',
 				searchText:'',								//搜索关键词
@@ -69,6 +74,14 @@
 			};
 		},
 		methods: {
+			InputFocus(e) {
+				this.InputBottom = e.detail.height
+				this.$emit('changeHeight', this.InputBottom + 300)
+			},
+			InputBlur(e) {
+				this.InputBottom = 0
+				this.$emit('changeHeight', 0)
+			},
 			// 通过接口查询所有之前写过的话题
 			searchInfo() {
 				getTopicPage({

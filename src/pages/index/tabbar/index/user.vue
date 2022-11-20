@@ -23,9 +23,14 @@
 		<view class="index-user-dream">
 			<view class="index-user-dreamTite">
 				<view class="index-user-dreamTiteInfo">
-					<view class="name">{{userInfo.username || '请点击头像进行登录'}}</view>
+					<view class="name">{{userInfo.username || '点击头像进行登录'}}</view>
 					<view class="visitor" v-if="this.$isMemmber()">访客：{{userInfo.visited || 0}}</view>
 				</view>
+			</view>
+			<!--tabs栏切换-->
+			<view class="myTabsInfo">
+				<u-tabs height="40" class="myTabsInfo" :list="merchantTabList" :is-scroll="true" :font-size="28"
+						:current="merchantTabCurIndex" @change="tabSelect" :active-color="themeColor"></u-tabs>
 			</view>
 			<view class="index-user-dreamList">
 				<view class="flex flex-direction" v-if="cartList.length > 0">
@@ -62,12 +67,28 @@
 </template>
 
 <script>
-	import { getUserInfo, loginOut } from '../../../../api/platformgouc'
+	import { getUserInfo, loginOut, myCollect, myWatches } from '../../../../api/platformgouc'
 	import {addComment} from "../../../../api/createdream";
 
 	export default {
 		data() {
 			return {
+				merchantTabCurIndex: 0,
+				// 分类
+				merchantTabList: [
+					{
+						id: 0,
+						name: '我的梦想'
+					},
+					{
+						id: 1,
+						name: '收藏'
+					},
+					{
+						id: 2,
+						name: '围观'
+					}
+				],
 				showLogin: false,
 				commentcontent: '',	// 评论内容
 				NowItem: {},
@@ -119,9 +140,15 @@
 					background: "#34A2E8"
 				},
 				imgUrl: '',
-				cartList: [],	// 梦想对应数据
+				myDreamsList: [], // 梦想对应数据
+				cartList: [], // 展示相关数据
 				userInfo: {
 					avatar: ''
+				},
+				themeColor: uni.getStorageSync('themeColor') || '#34A2E8',
+				myParams: {
+					"size": 10,
+					"current": 1
 				}
 			}
 		},
@@ -136,10 +163,46 @@
 		},
 		mounted() {
 			this.imgUrl = this.$imgUrl
-			this.themeColor = uni.getStorageSync('themeColor') || '#34A2E8'
 			this.customStyle.background = this.themeColor
 		},
 		methods: {
+			// 获取围观
+			myWatchesFun() {
+				myWatches(this.myParams).then(res => {
+					this.cartList = res.data.records
+				})
+			},
+			// 获取收藏
+			myCollectFun() {
+				myCollect(this.myParams).then(res => {
+					this.cartList = res.data.records
+				})
+			},
+			tabSelect(e) {
+				this.merchantTabCurIndex = e
+				// 切换不同数据
+				switch (e) {
+					case 0:
+						this.cartList = [...this.myDreamsList]
+						break;
+					case 1:
+						this.myParams = {
+							"size": 10,
+							"current": 1
+						}
+						this.myCollectFun()
+						break;
+					case 2:
+						this.myParams = {
+							"size": 10,
+							"current": 1
+						}
+						this.myWatchesFun()
+						break
+					default:
+						break
+				}
+			},
 			toRouter(item) {
 				this.modalName = false
 				switch (item.type) {
@@ -189,6 +252,7 @@
 					this.ArrayList[1].number = res.data.follows
 					this.ArrayList[2].number = res.data.dreams
 					this.ArrayList[3].number = res.data.goldDreams
+					this.myDreamsList = JSON.parse(JSON.stringify(res.data.myDreams))
 					this.cartList = res.data.myDreams
 					this.myKey += 1
 				})
@@ -307,6 +371,7 @@
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
+					position: relative;
 					.name {
 						font-size: 32rpx;
 						font-family: PingFangSC-Semibold, PingFang SC;
@@ -332,6 +397,11 @@
 					color: #D8D8D8;
 					line-height: 16rpx;
 				}
+			}
+
+			/*tabs栏*/
+			.myTabsInfo {
+
 			}
 
 			.index-user-dreamList {

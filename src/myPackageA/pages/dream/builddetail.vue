@@ -35,7 +35,7 @@
 				<view class="detail-rowTitle">热评论</view>
 				<view class="commentInfo">
 					<view class="commentHeader" v-for="(item, index) in commentArray" :key="index">
-						<image :src="item.createAvatar" class="userImg" mode="aspectFill"
+						<image :src="item.createAvatar" class="userImg" mode="aspectFill" @tap="toRouter(item)"
 							   :lazy-load="true"/>
 						<view class="headerRight">
 							<view class="name">
@@ -61,7 +61,7 @@
 						</view>
 						<!--二级评论-->
 						<view v-for="(itemlist, itemIndex) in item.comments" :key="itemIndex" style="margin-left: 40rpx">
-							<image :src="itemlist.createAvatar" class="userImg" mode="aspectFill"
+							<image :src="itemlist.createAvatar" class="userImg" mode="aspectFill" @tap="toRouter(itemlist)"
 								   :lazy-load="true"/>
 							<view class="headerRight">
 								<view class="name">
@@ -156,6 +156,9 @@
 			this.getDreamBuildComment()
 		},
 		methods: {
+			toRouter(item) {
+				this.$toView(`user/otherUser?id=${item.createBy}`, false, false, false)
+			},
 			toHideInfo() {
 				this.showComment = false
 				this.commentcontent = ''

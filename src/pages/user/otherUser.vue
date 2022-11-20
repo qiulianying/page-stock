@@ -32,7 +32,6 @@
 						<view :class="havaGet ? 'followButton havaGet' : 'followButton'" @click="toFollow">
 							{{havaGet ? '已关注' : '+ 关注'}}
 						</view>
-						<!--<view class="visitor" v-if="this.$isMemmber()">访客：{{userInfo.visited || 0}}</view>-->
 					</view>
 				</view>
 				<view class="index-user-dreamList">
@@ -223,26 +222,27 @@
 		.index-user-dream {
 			background-color: #ffffff;
 			.index-user-dreamTite {
-				width: 85%;
-				margin: 0 auto 20rpx;
+				// width: 85%;
+				margin: 0 auto 50rpx;
 				.index-user-dreamTiteInfo {
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
 					position: relative;
 					.name {
-						margin-bottom: 10rpx;
 						font-size: 32rpx;
 						font-family: PingFangSC-Semibold, PingFang SC;
 						font-weight: 600;
 						color: #2A2A2A;
 						line-height: 36rpx;
+						width: 286rpx;
+						text-align: center;
 					}
 
 					.followButton {
 						position: absolute;
 						top: -20rpx;
-						right: 0;
+						right: 34rpx;
 						font-size: 26rpx;
 						font-weight: 500;
 						color: #2A2A2A;

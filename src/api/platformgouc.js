@@ -45,3 +45,9 @@ export const loginOut = (data, option) => http('loginout/wechat', data, {method:
 
 // 意见反馈
 export const feedback = (data, option) => http('feedback', data, option)
+
+// 我的收藏
+export const myCollect = (data, option) => http('user/myCollect', data, {method: 'GET'})
+
+// 我的围观
+export const myWatches = (data, option) => http('user/myWatches', data, {method: 'GET'})

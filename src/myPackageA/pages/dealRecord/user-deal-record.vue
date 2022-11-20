@@ -1,7 +1,7 @@
 <template>
 	<view class="user-user-deal-record-page">
 		<cu-custom bgColor="bg-white" is-back>
-			<block slot="backText" class="content">助梦记录</block>
+			<block slot="content">助梦记录</block>
 		</cu-custom>
 		<!--标签定义多种查询情况-->
 		<u-tabs :list="list" :is-scroll="false" :current="status" @change="change" :active-color="themeColor"></u-tabs>
@@ -12,7 +12,7 @@
 				</view>
 				<view class="order-item-center">
 					<text>{{ item.createName || item.items[0].name }}</text>
-					<text>{{ item.createTime }}</text>
+					<text>{{$util.dateFormat(new Date(Number(item.createTime)), '-')}}</text>
 				</view>
 				<view class="order-item-right">
 					<!-- 退款情况 -->

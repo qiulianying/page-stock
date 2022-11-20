@@ -85,9 +85,9 @@
         </view>
     </form>
       <!--   弹出层搜索框   -->
-      <u-popup v-model="showInput" mode="bottom" :closeable="true">
+      <u-popup v-model="showInput" mode="bottom" :closeable="true" :height="myHeight">
           <view class="mySearch">
-              <zy-search :isFocus="true" :theme="'circle'" ref="zysearchInfo" :showWant="true" @mySearchInfo="mySearchInfo"></zy-search>
+              <zy-search @changeHeight="changeHeight" :isFocus="true" :theme="'circle'" ref="zysearchInfo" :showWant="true" @mySearchInfo="mySearchInfo"></zy-search>
           </view>
       </u-popup>
   </view>
@@ -98,6 +98,7 @@ import { addDream, upload } from '../../../api/createdream'
 export default {
   data() {
     return {
+      myHeight: 800,
         needReturn: false,
         titleInfo: '',
         dreamContent: {
@@ -134,6 +135,13 @@ export default {
     this.dreamContent.deadLine = new Date().getTime()
   },
   methods: {
+    changeHeight(number) {
+      if (number > 0) {
+        this.myHeight = 800 + number
+      } else {
+        this.myHeight = 800
+      }
+    },
       // 填写话题
       mySearchInfo(item) {
           this.showInput = false

@@ -114,7 +114,8 @@
 					gender: 0,
 					introduction: '',
 					birthday: '',
-					occupation: '', // 学历  0-小学 1-初中 2-高中 3-本科 4-研究生 5-博士 6-博士后
+					occupation: '', // 职业
+					education: '', // 学历  0-小学 1-初中 2-高中 3-本科 4-研究生 5-博士 6-博士后
 					hobby: '',
 					phone: ''
 				},
@@ -138,17 +139,23 @@
 			this.needdisabled = options.needdisabled
 			// 屏蔽微信右上角工具栏
 			wx.hideShareMenu()
-			this.date = this.$util.dateFormat(new Date(), '-')
+			this.date = this.$util.dateFormatDay(new Date(), '-')
 			this.formInfo.birthday = new Date().getTime()
 			// 获取用户信息
 			if (options.needdisabled && options.needdisabled == 1) {
 				getUserInfo({id: this.id}).then(res => {
 					this.formInfo = res.data
 					// 编写相关修改编辑内容
+					if (res.data.province && res.data.city && res.data.area) {
+						this.region = [res.data.province, res.data.city, res.data.area]
+					}
+					if (res.data.birthday) {
+						this.date = this.$util.dateFormatDay(new Date(res.data.birthday), '-')
+					}
 					this.lastParams.province = res.data.province || this.region[0]
 					this.lastParams.city = res.data.city || this.region[1]
 					this.lastParams.area = res.data.area || this.region[2]
-					this.nowoccupation = this.listDay[res.data.occupation].label || '小学'
+					this.nowoccupation = this.listDay[res.data.education].label || '小学'
 				})
 			} else {
 				getUserInfo().then(res => {
@@ -157,14 +164,14 @@
 					this.lastParams.province = res.data.province || this.region[0]
 					this.lastParams.city = res.data.city || this.region[1]
 					this.lastParams.area = res.data.area || this.region[2]
-					this.nowoccupation = this.listDay[res.data.occupation].label || '小学'
+					this.nowoccupation = this.listDay[res.data.education].label || '小学'
 				})
 			}
 		},
 		methods: {
 			confirmDay(e) {
 				console.log(e)
-				this.formInfo.occupation = e[0].value
+				this.formInfo.education = e[0].value
 				this.nowoccupation = e[0].label
 			},
 			sexChange(e) {
@@ -177,11 +184,12 @@
 					nickname: this.formInfo.nickname,
 					gender: this.formInfo.gender,
 					introduction: this.formInfo.introduction,
-					occupation: this.formInfo.occupation,
+					education: this.formInfo.education,
 					hobby: this.formInfo.hobby,
 					province: this.lastParams.province,
 					city: this.lastParams.city,
-					birthday: this.formInfo.birthday
+					birthday: this.formInfo.birthday,
+					occupation: this.formInfo.occupation,
 				}
 				userInfoSet(lastParams).then(res => {
 					if (res) {
@@ -195,7 +203,7 @@
 			},
 			DateChange(e) {
 				this.date = e.detail.value
-				this.formInfo.birthday = new Date(e.detail.value);
+				this.formInfo.birthday = (new Date(e.detail.value).getTime()).toString();
 			},
 			RegionChange(e) {
 				this.region = e.detail.value

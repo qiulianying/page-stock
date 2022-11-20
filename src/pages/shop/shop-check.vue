@@ -33,13 +33,9 @@
 			</view>
 		</view>
 		<!-- 备注弹窗 -->
-<!--		<view class="shop-remark" :class="{'shop-remark-fixed' : showNumBoard}">
-			<text v-if="$util.strIsEmpty(remark)" @tap="showRemarkModal">添加备注</text>
-			<template v-else>
-				<text class="text-black margin-right-xs">{{ remark }}</text>
-				<text @tap="showRemarkModal">{{ pageLang.editRemark }}</text>
-			</template>
-		</view>-->
+		<view class="shop-remark" :class="{'shop-remark-fixed' : showNumBoard}">
+			<text @tap="downFile">《助梦金规则须知》</text>
+		</view>
 		<!-- 输入数字键盘 -->
 		<zj-num-keyboard ref="zj-num-keyboard" :payDisable="inputMoney == '' || inputMoney <= 0" :bg-color="themeColor" @input="inputNum" @delete="doBack"
 			@hide="showNumBoard = false" @pay="checkPay" />
@@ -112,6 +108,23 @@
 			}
 		},
 		methods: {
+			// 规则
+			downFile() {
+				let url = 'https://dream.kaihuaikj.com/cashRule.pdf'
+				uni.downloadFile({
+					url: url,
+					success: function (res) {
+						var filePath = res.tempFilePath;
+						uni.openDocument({
+							filePath: filePath,
+							showMenu: true,
+							success: function (res) {
+								console.log('打开文档成功');
+							}
+						});
+					}
+				});
+			},
 			// 支付方式
 			getSelectCard(value) {
 				console.log('输出value')
